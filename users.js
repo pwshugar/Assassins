@@ -20,16 +20,28 @@ db.open(function(err, db) {
 });
  
 exports.findByUsername = function(req, res) {
-    var username = req;
+    var username = req.body.username;
     console.log('Retrieving user: ' + username);
+    var check = function(item){
+        if (item === null){
+            console.log('this is null', item);
+            addUser(req, res);
+            req.session.username = req.body.username;    
+            res.redirect('/');
+        } else {
+            console.log('this is login', item);
+            res.redirect('/login')
+        }
+    }
     db.collection('users', function(err, collection) {
-        collection.findOne({'username':new BSON.ObjectID(username)}, function(err, item) {
-            res.send(item);
+        collection.findOne({'username':username}, function(err, item) {
+            console.log('this is check', item);
+            check(item);
         });
     });
 };
  
-exports.addUser = function(req, res) {
+var addUser = function(req, res) {
     var user = req.body;
     console.log('Adding user: ' + JSON.stringify(user));
     db.collection('users', function(err, collection) {
@@ -42,7 +54,7 @@ exports.addUser = function(req, res) {
             }
         });
     });
-}
+};
  
  
 var populateDB = function() {

@@ -64,11 +64,7 @@ app.post('/login', function(req, res){
 });
 
 app.post('/signup', function(req, res){
-	console.log(users.findByUsername(req.body.username, res));
-    // req.session.username = req.body.username;    
-    // req.session.password = req.body.password;
-    // users.findByUsername(req, res);
-	// res.redirect('/');
+    users.findByUsername(req, res);
 });
 
 app.get('/', function(req, res){
