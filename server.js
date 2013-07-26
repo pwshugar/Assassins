@@ -49,6 +49,7 @@ var app = express();
 
 app.use(express.cookieParser());
 app.use(express.session({secret: '1234567890QWERTY'}));
+app.use(express.bodyParser());
 // app.use(express.session({
 //   store: new MongoStore({
 //     url: 'mongodb://root:myPassword@mongo.onmodulus.net:27017/3xam9l3'
@@ -56,12 +57,13 @@ app.use(express.session({secret: '1234567890QWERTY'}));
 //   secret: '1234567890QWERTY'
 // }));
 app.post('/login', function(req, res){
-	console.log('sent');
-	res.end('Worked.');
+    req.session.username = req.body.username;    
+    req.session.password = req.body.password;
+	res.redirect('/home');
 });
 
 app.get('/', function(req, res){
-  if(!req.session.user) {
+  if(!req.session.data) {
     res.redirect('/login');
   } else {
     res.redirect('/home');
@@ -69,7 +71,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/home', function(req, res){
-  if(!req.session.user) {
+  if(!req.session.username) {
     res.redirect('/login');
   } else {
     res.end('Your Home.');
@@ -85,33 +87,7 @@ app.get('/login', function(req, res) {
   res.sendfile(__dirname + '/index.html');
 });
 
-app.post('/')
 
-// app.get('/awesome', function(req, res) {
-//   if(req.session.lastPage) {
-//     res.write('Last page was: ' + req.session.lastPage + '. ');
-//   }
-//   req.session.lastPage = '/awesome';
-//   res.end('Your Awesome.');
-// });
-
-// app.get('/radical', function(req, res) {
-//   if(req.session.lastPage) {
-//     res.write('Last page was: ' + req.session.lastPage + '. ');
-//   }
-
-//   req.session.lastPage = '/radical';
-//   res.end('What a radical visit!');
-// });
-
-// app.get('/tubular', function(req, res) {
-//   if(req.session.lastPage) {
-//     res.write('Last page was: ' + req.session.lastPage + '. ');
-//   }
-
-//   req.session.lastPage = '/tubular';
-//   res.end('Are you a surfer?');
-// });
 
 app.listen(process.env.PORT || 8080);
 

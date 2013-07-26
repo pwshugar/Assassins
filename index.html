@@ -25,28 +25,12 @@
 <html>
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"> </script>
-    <script>
-    $(document).ready(function(){
-      $("button").click(function(){
-        $.post("/login",
-        {
-          username:$('#username')[0].value,
-          password:$('#password')[0].value
-        },
-        function(data,status){
-          alert("Data: " + data + "\nStatus: " + status);
-          $('#username')[0].value = '';
-          $('#password')[0].value = '';
-        });
-      });
-    });
-    </script>
   </head>
   <body>
-    <form action="demo_form.asp">
-      Username: <input id="username" type="text" name="username"><br>
-      Password: <input id="password" type="text" name="password"><br>
-      <button type="button" value="Submit">Submit</button>
-    </form> 
+  <form method="post" action="/login">
+      Username<input type="text" name="username"><br>
+      Password<input type="text" name="password"><br>
+      <input type="submit" value="Submit">
+  </form>
 </body>
 </html>
