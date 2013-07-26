@@ -43,7 +43,7 @@
 //     console.log(data);
 //   });
 // });
-
+var users = require('./users.js');
 var express = require('express');
 var app = express();
 
@@ -59,6 +59,7 @@ app.use(express.bodyParser());
 app.post('/login', function(req, res){
     req.session.username = req.body.username;    
     req.session.password = req.body.password;
+    users.addUser(req, res);
 	res.redirect('/home');
 });
 
@@ -79,17 +80,13 @@ app.get('/home', function(req, res){
 });
 
 app.get('/login', function(req, res) {
-  // if(req.session.lastPage) {
-  //   res.write('Last page was: ' + req.session.lastPage + '. ');
-  // }
-
-  // req.session.lastPage = '/login';
   res.sendfile(__dirname + '/index.html');
 });
 
 
 
 app.listen(process.env.PORT || 8080);
+console.log('Listening on port 8080...');
 
 
 
