@@ -1,7 +1,8 @@
-<!doctype html>
+<!-- <!doctype html>
 <html ng-app>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  </head>
     <script src="/socket.io/socket.io.js"></script>
     <script>
     var socket = io.connect('http://localhost');
@@ -10,13 +11,42 @@
       socket.emit('my other event', { my: 'data' });
     });
     </script>
-  </head>
   <body>
     <div>
       <label>Name:</label>
       <input type="text" ng-model="name" placeholder="Enter a name here">
       <hr>
-      <h1>Hello {{name}}!</h1>
+      <h1>Helloq {{name}}!</h1>
     </div>
   </body>
+</html> -->
+
+<!doctype html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"> </script>
+    <script>
+    $(document).ready(function(){
+      $("button").click(function(){
+        $.post("/login",
+        {
+          username:$('#username')[0].value,
+          password:$('#password')[0].value
+        },
+        function(data,status){
+          alert("Data: " + data + "\nStatus: " + status);
+          $('#username')[0].value = '';
+          $('#password')[0].value = '';
+        });
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <form action="demo_form.asp">
+      Username: <input id="username" type="text" name="username"><br>
+      Password: <input id="password" type="text" name="password"><br>
+      <button type="button" value="Submit">Submit</button>
+    </form> 
+</body>
 </html>
