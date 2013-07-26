@@ -1,0 +1,40 @@
+<!-- <!doctype html>
+<html ng-app>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  </head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    var socket = io.connect('http://localhost');
+    socket.on('news', function (data) {
+      console.log(data);
+      socket.emit('my other event', { my: 'data' });
+    });
+    </script>
+  <body>
+    <div>
+      <label>Name:</label>
+      <input type="text" ng-model="name" placeholder="Enter a name here">
+      <hr>
+      <h1>Helloq {{name}}!</h1>
+    </div>
+  </body>
+</html> -->
+
+<!doctype html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"> </script>
+    <script>
+    </script>
+  </head>
+  <body>
+    <h1 id="Login">Sign Up!</h1>
+    <form method="post" action="/signup">
+      Username<input type="text" name="username"><br>
+      Password<input type="text" name="password"><br>
+      <input type="submit" value="Submit">
+    </form>
+    <p>Already signed up? Log in <a href="http://127.0.0.1:8080/login">here</a></p>
+  </body>
+</html>

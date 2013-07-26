@@ -19,10 +19,12 @@ db.open(function(err, db) {
     }
 });
  
-exports.findAll = function(req, res) {
+exports.findByUsername = function(req, res) {
+    var username = req;
+    console.log('Retrieving user: ' + username);
     db.collection('users', function(err, collection) {
-        collection.find().toArray(function(err, items) {
-            res.send(items);
+        collection.findOne({'username':new BSON.ObjectID(username)}, function(err, item) {
+            res.send(item);
         });
     });
 };
@@ -48,11 +50,11 @@ var populateDB = function() {
     var users = [
     {
         username: "Shugardude",
-        passward: "foofoo"
+        password: "foofoo"
     },
     {
         username: "pdawg",
-        passward: "oof"
+        password: "oof"
     }];
  
     db.collection('users', function(err, collection) {

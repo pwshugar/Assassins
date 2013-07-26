@@ -60,30 +60,38 @@ app.post('/login', function(req, res){
     req.session.username = req.body.username;    
     req.session.password = req.body.password;
     users.addUser(req, res);
-	res.redirect('/home');
+	res.redirect('/');
+});
+
+app.post('/signup', function(req, res){
+	console.log(users.findByUsername(req.body.username, res));
+    // req.session.username = req.body.username;    
+    // req.session.password = req.body.password;
+    // users.findByUsername(req, res);
+	// res.redirect('/');
 });
 
 app.get('/', function(req, res){
-  if(!req.session.data) {
-    res.redirect('/login');
-  } else {
-    res.redirect('/home');
-  }
-});
-
-app.get('/home', function(req, res){
   if(!req.session.username) {
     res.redirect('/login');
   } else {
-    res.end('Your Home.');
+    res.end("You're Logged In");
   }
 });
 
-app.get('/login', function(req, res) {
-  res.sendfile(__dirname + '/index.html');
+app.get('/user/*', function(req, res){
+  console.log('this is params', req.params[0]);
+  res.end('hi');
 });
 
 
+app.get('/login', function(req, res) {
+  res.sendfile('./login.html');
+});
+
+app.get('/signup', function(req, res) {
+  res.sendfile('./signup.html');
+});
 
 app.listen(process.env.PORT || 8080);
 console.log('Listening on port 8080...');
