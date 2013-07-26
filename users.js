@@ -18,28 +18,36 @@ db.open(function(err, db) {
         });
     }
 });
- 
-exports.findByUsername = function(req, res) {
+
+exports.signup = function(req, res){
     var username = req.body.username;
-    console.log('Retrieving user: ' + username);
     var check = function(item){
         if (item === null){
-            console.log('this is null', item);
             addUser(req, res);
             req.session.username = req.body.username;    
             res.redirect('/');
         } else {
-            console.log('this is login', item);
             res.redirect('/login')
         }
-    }
+    };
+    console.log('Retrieving user: ' + username);
     db.collection('users', function(err, collection) {
         collection.findOne({'username':username}, function(err, item) {
-            console.log('this is check', item);
             check(item);
         });
     });
 };
+ 
+// var findByUsername = function(req, res) {
+//     var username = req.body.username;
+//     console.log('Retrieving user: ' + username);
+//     db.collection('users', function(err, collection) {
+//         collection.findOne({'username':username}, function(err, item) {
+//             console.log('this is check', item);
+//             return item;
+//         });
+//     });
+// };
  
 var addUser = function(req, res) {
     var user = req.body;
@@ -62,11 +70,11 @@ var populateDB = function() {
     var users = [
     {
         username: "Shugardude",
-        password: "foofoo"
+        password: "foo"
     },
     {
-        username: "pdawg",
-        password: "oof"
+        username: "Peter",
+        password: "foo"
     }];
  
     db.collection('users', function(err, collection) {

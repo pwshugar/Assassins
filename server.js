@@ -64,7 +64,7 @@ app.post('/login', function(req, res){
 });
 
 app.post('/signup', function(req, res){
-    users.findByUsername(req, res);
+    users.signup(req, res);
 });
 
 app.get('/', function(req, res){
