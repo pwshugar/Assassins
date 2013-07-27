@@ -1,9 +1,15 @@
 var users = require('./users.js');
 var express = require('express');
 var app = express();
+var MongoStore = require('connect-mongo')(express);
 
 app.use(express.cookieParser());
-app.use(express.session({secret: '1234567890QWERTY'}));
+app.use(express.session({
+    secret: '1234567890QWERTY',
+    store: new MongoStore({
+      db: users.sdb
+    })
+  }));
 app.use(express.bodyParser());
 
 app.post('/login', function(req, res){
@@ -15,11 +21,8 @@ app.post('/signup', function(req, res){
 });
 
 app.get('/', function(req, res){
-  if(!req.session.username) {
-    res.redirect('/login');
-  } else {
-    res.end("You're Logged In");
-  }
+  if(!req.session.username) { res.redirect('/login'); }
+  else { res.end("You're Logged In"); }
 });
 
 app.get('/home', function(req, res){
