@@ -22,11 +22,9 @@ app.get('/', function(req, res){
   }
 });
 
-app.get('/user/*', function(req, res){
-  console.log('this is params', req.params[0]);
-  res.end('hi');
+app.get('/home', function(req, res){
+  	res.end('home');
 });
-
 
 app.get('/login', function(req, res) {
   res.sendfile('./login.html');
@@ -36,8 +34,14 @@ app.get('/signup', function(req, res) {
   res.sendfile('./signup.html');
 });
 
+app.get('/*', function(req, res) {
+	res.redirect('/');
+});
+
 app.listen(process.env.PORT || 8080);
 console.log('Listening on port 8080...');
+
+
 
 
 
