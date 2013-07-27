@@ -27,46 +27,56 @@
     <link href="./css/style.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"> </script>
     <script type="text/javascript">
-      $(function() { 
-        $("#post").on('click',function() { 
-          // $('.fail').hide();
-          console.log('submitted');
-          console.log($('#username')[0].value);
-          $.ajax({  
-              url:"/signup",
-              type: "post",  
-              data: {
-                username: $('#username')[0].value,
-                password: $('#password')[0].value
-              },
-              success: function(data){
-                if (data === 'false'){
-                  $('#username')[0].value = '';
-                  $('#password')[0].value = '';
-                  $("#already").css("display", "block");
-                } else {
-                  window.location.href = 'http://127.0.0.1:8080/';
+      $(function() {
+        $(".enter").on('keypress',function(e) {
+          if(e.which === 13) {
+            $('#post').click();
+          }
+        });
+        $("#post").on('click',function() {
+          if ($('#username')[0].value.length < 1){
+            $(".warning").css("display", "none");
+            $("#shortname").css("display", "block");
+          } else if ($('#password')[0].value.length < 1){
+            $(".warning").css("display", "none");
+            $("#shortpass").css("display", "block");
+          } else {
+            $.ajax({  
+                url:"/signup",
+                type: "post",  
+                data: {
+                  username: $('#username')[0].value,
+                  password: $('#password')[0].value
+                },
+                success: function(data){
+                  if (data === 'false'){
+                    $('#username')[0].value = '';
+                    $('#password')[0].value = '';
+                    $(".warning").css("display", "none");
+                    $("#already").css("display", "block");
+                  } else {
+                    window.location.href = 'http://127.0.0.1:8080/';
+                  }
+                },
+                error:function(data){
+                  console.log(data);
+                  console.log('failed')
                 }
-              },
-              error:function(data){
-                console.log(data);
-                console.log('failed')
-              }
-          });
-          return false; 
+            });
+            return false;
+          }
         });
       });
     </script>
   </head>
   <body>
     <h1 id="Login">Sign Up!</h1>
-    <!-- <form method="post" action="/signup"> -->
-      <label>Username<input id="username" type="text" name="username"><br></label>
-      <label>Password<input id="password" type="text" name="password"><br></label>
-      <p id="already">This username has already been chosen. Please choose another.</p>
+      <label>Username<input class="enter" id="username" type="text" name="username"></label>
+      <span class="warning" id="shortname" >Please enter a username!</span><br>
+      <label>Password<input class="enter" id="password" type="text" name="password"></label>
+      <span class="warning" id="shortpass" >Please enter a password!</span><br>
+      <p class="warning" id="already">This username has already been chosen. Please choose another.</p>
       <button id="post" type="button" value="Submit">Submit</button>
-    <!-- </form> -->
-      <!-- <button type="button" id="post">!</button> -->
     <p>Already signed up? Log in <a href="http://127.0.0.1:8080/login">here</a></p>
   </body>
 </html>
