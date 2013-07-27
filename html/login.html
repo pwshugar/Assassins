@@ -24,17 +24,49 @@
 <!doctype html>
 <html>
   <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"> </script>
-    <script>
+    <link href="./css/style.css" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $(".enter").on('keypress',function(e) {
+          if(e.which === 13) {
+            $('#post').click();
+          }
+        });
+        $("#post").on('click',function() {
+          $.ajax({  
+              url:"/login",
+              type: "post",
+              data: {
+                username: $('#username')[0].value,
+                password: $('#password')[0].value
+              },
+              success: function(data){
+                if (data === 'false'){
+                  $('#username')[0].value = '';
+                  $('#password')[0].value = '';
+                  $(".warning").css("display", "none");
+                  $("#incorrect").css("display", "block");
+                } else {
+                  window.location.href = 'http://127.0.0.1:8080/';
+                }
+              },
+              error:function(data){
+                console.log(data);
+                console.log('failed')
+              }
+          });
+          return false;
+        });
+      });
     </script>
   </head>
   <body>
     <h1 id="Login">Login</h1>
-    <form method="post" action="/login">
-      Username<input type="text" name="username"><br>
-      Password<input type="text" name="password"><br>
-      <input type="submit" value="Submit">
-    </form>
+      <label>Username<input class="enter" id="username" type="text" name="username"></label><br>
+      <label>Password<input class="enter" id="password" type="text" name="password"></label><br>
+      <button id="post" type="button" value="Submit">Submit</button>
+      <p class="warning" id="incorrect">Incorrect username/password.</p>
     <p>First time? Sign up <a href="http://127.0.0.1:8080/signup">here</a></p>
   </body>
 </html>

@@ -25,12 +25,12 @@ exports.login = function(req, res){
   console.log('Retrieving user: ' + username);
   var check = function(item){
     if (item === null){
-      res.redirect('/login');
+      res.send('false');
     } else if (item.password !== req.body.password){
-      res.redirect('/login')
+      res.send('false');
     } else {
       req.session.username = req.body.username;
-      res.redirect('/');
+      res.redirect('true');
     }
   };
   db.collection('users', function(err, collection) {
