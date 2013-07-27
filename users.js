@@ -40,24 +40,46 @@ exports.login = function(req, res){
   });
 };
 
+
 exports.signup = function(req, res){
   var username = req.body.username.toLowerCase();
   console.log('Retrieving user: ' + username);
   var check = function(item){
     if (item === null){
       addUser(req, res);
-      req.session.username = req.body.username;    
-      res.redirect('/');
+      req.session.username = req.body.username; 
+      console.log('send this')   
+      res.end('true');
     } else {
-      res.redirect('/login')
+      res.end('false');
     }
   };
-  db.collection('users', function(err, collection) {
-    collection.findOne({'username':username}, function(err, item) {
-      check(item);
+    db.collection('users', function(err, collection) {
+      collection.findOne({'username':username}, function(err, item) {
+        check(item);
+      });
     });
-  });
 };
+
+
+// exports.signup = function(req, res){
+//   var username = req.body.username.toLowerCase();
+//   console.log('Retrieving user: ' + username);
+//   var check = function(item){
+//     if (item === null){
+//       addUser(req, res);
+//       req.session.username = req.body.username;    
+//       res.redirect('/');
+//     } else {
+//       res.redirect('/login')
+//     }
+//   };
+//     db.collection('users', function(err, collection) {
+//       collection.findOne({'username':username}, function(err, item) {
+//         check(item);
+//       });
+//     });
+// };
  
 // var findByUsername = function(req, res) {
 //     var username = req.body.username;
@@ -91,7 +113,7 @@ var populateDB = function() {
     var users = [
     {
         username: "shugardude",
-        password: "foo"
+        password: "f00min"
     },
     {
         username: "peter",

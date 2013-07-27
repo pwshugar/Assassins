@@ -13,11 +13,11 @@ app.use(express.session({
 app.use(express.bodyParser());
 
 app.post('/login', function(req, res){
-	users.login(req, res);
+  users.login(req, res);
 });
 
 app.post('/signup', function(req, res){
-    users.signup(req, res);
+  users.signup(req, res);
 });
 
 app.get('/', function(req, res){
@@ -30,11 +30,16 @@ app.get('/home', function(req, res){
 });
 
 app.get('/login', function(req, res) {
-  res.sendfile('./login.html');
+  res.sendfile('./html/login.html');
 });
 
 app.get('/signup', function(req, res) {
-  res.sendfile('./signup.html');
+  res.sendfile('./html/signup.html');
+});
+
+app.get('/css/style.css', function(req, res){
+	res.setHeader('Content-Type', 'text/css');
+	res.sendfile('./css/style.css')
 });
 
 app.get('/*', function(req, res) {

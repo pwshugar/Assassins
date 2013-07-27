@@ -1,0 +1,72 @@
+<!-- <!doctype html>
+<html ng-app>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  </head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    var socket = io.connect('http://localhost');
+    socket.on('news', function (data) {
+      console.log(data);
+      socket.emit('my other event', { my: 'data' });
+    });
+    </script>
+  <body>
+    <div>
+      <label>Name:</label>
+      <input type="text" ng-model="name" placeholder="Enter a name here">
+      <hr>
+      <h1>Helloq {{name}}!</h1>
+    </div>
+  </body>
+</html> -->
+
+<!doctype html>
+<html>
+  <head>
+    <link href="./css/style.css" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"> </script>
+    <script type="text/javascript">
+      $(function() { 
+        $("#post").on('click',function() { 
+          // $('.fail').hide();
+          console.log('submitted');
+          console.log($('#username')[0].value);
+          $.ajax({  
+              url:"/signup",
+              type: "post",  
+              data: {
+                username: $('#username')[0].value,
+                password: $('#password')[0].value
+              },
+              success: function(data){
+                if (data === 'false'){
+                  $('#username')[0].value = '';
+                  $('#password')[0].value = '';
+                  $("#already").css("display", "block");
+                } else {
+                  window.location.href = 'http://127.0.0.1:8080/';
+                }
+              },
+              error:function(data){
+                console.log(data);
+                console.log('failed')
+              }
+          });
+          return false; 
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1 id="Login">Sign Up!</h1>
+    <!-- <form method="post" action="/signup"> -->
+      <label>Username<input id="username" type="text" name="username"><br></label>
+      <label>Password<input id="password" type="text" name="password"><br></label>
+      <p id="already">This username has already been chosen. Please choose another.</p>
+      <button id="post" type="button" value="Submit">Submit</button>
+    <!-- </form> -->
+      <!-- <button type="button" id="post">!</button> -->
+    <p>Already signed up? Log in <a href="http://127.0.0.1:8080/login">here</a></p>
+  </body>
+</html>
