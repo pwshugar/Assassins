@@ -24,7 +24,7 @@
 <!doctype html>
 <html>
   <head>
-    <link href="./css/style.css" rel="stylesheet" type="text/css">
+    <link href="./css/login.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript">
       $(function() {
@@ -58,11 +58,13 @@
     </script>
   </head>
   <body>
-    <h1 id="Login">Login</h1>
+    <div>
+      <h1 id="Login">Login</h1>
       <label>Username<input class="enter" id="username" type="text" name="username"></label><br>
       <label>Password<input class="enter" id="password" type="password" name="password"></label><br>
       <button id="post" type="button" value="Submit">Submit</button>
+      <p id="here" >First time? Sign up <a href="http://127.0.0.1:8080/signup">here</a></p>
       <p class="warning" id="incorrect">Incorrect username/password.</p>
-    <p>First time? Sign up <a href="http://127.0.0.1:8080/signup">here</a></p>
+  </div>
   </body>
 </html>

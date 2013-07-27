@@ -22,7 +22,7 @@ app.post('/signup', function(req, res){
 
 app.get('/', function(req, res){
   if(!req.session.username) { res.redirect('/login'); }
-  else { res.end("You're Logged In"); }
+  else { res.sendfile("./html/home.html"); }
 });
 
 app.get('/home', function(req, res){
@@ -37,9 +37,14 @@ app.get('/signup', function(req, res) {
   res.sendfile('./html/signup.html');
 });
 
-app.get('/css/style.css', function(req, res){
+app.get('/css/login.css', function(req, res){
 	res.setHeader('Content-Type', 'text/css');
-	res.sendfile('./css/style.css')
+	res.sendfile('./css/login.css')
+});
+
+app.get('/css/home.css', function(req, res){
+	res.setHeader('Content-Type', 'text/css');
+	res.sendfile('./css/home.css')
 });
 
 app.get('/*', function(req, res) {

@@ -24,7 +24,7 @@
 <!doctype html>
 <html>
   <head>
-    <link href="./css/style.css" rel="stylesheet" type="text/css">
+    <link href="./css/login.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"> </script>
     <script type="text/javascript">
       $(function() {
@@ -71,15 +71,17 @@
     </script>
   </head>
   <body>
-    <h1 id="Login">Sign Up!</h1>
+    <div>
+      <h1 id="Login">Sign Up!</h1>
       <label>Username<input class="enter" id="username" type="text" name="username"></label>
-      <span class="warning" id="shortname" >Please enter a username!</span><br>
       <label>Password<input class="enter" id="password" type="password" name="password"></label>
-      <span class="warning" id="shortpass" >Please enter a password!</span><br>
       <label>Retype password<input class="enter" id="retype" type="password" name="password"></label>
-      <span class="warning" id="badretype" >Please retype password!</span><br>
-      <p class="warning" id="already">This username has already been chosen. Please choose another.</p>
       <button id="post" type="button" value="Submit">Submit</button>
-    <p>Already signed up? Log in <a href="http://127.0.0.1:8080/login">here</a></p>
+      <p id="here" >Already signed up? Log in <a href="http://127.0.0.1:8080/login">here</a></p>
+      <p class="warning" id="shortname" >Please enter a username!</p>
+      <p class="warning" id="shortpass" >Please enter a password!</p>
+      <p class="warning" id="badretype" >Please retype password!</p>
+      <p class="warning" id="already">This username has already been chosen. Please choose another.</p>
+    </div>
   </body>
 </html>
