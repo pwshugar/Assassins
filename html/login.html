@@ -50,10 +50,6 @@
                 } else {
                   window.location.href = 'http://127.0.0.1:8080/';
                 }
-              },
-              error:function(data){
-                console.log(data);
-                console.log('failed')
               }
           });
           return false;
@@ -64,7 +60,7 @@
   <body>
     <h1 id="Login">Login</h1>
       <label>Username<input class="enter" id="username" type="text" name="username"></label><br>
-      <label>Password<input class="enter" id="password" type="text" name="password"></label><br>
+      <label>Password<input class="enter" id="password" type="password" name="password"></label><br>
       <button id="post" type="button" value="Submit">Submit</button>
       <p class="warning" id="incorrect">Incorrect username/password.</p>
     <p>First time? Sign up <a href="http://127.0.0.1:8080/signup">here</a></p>
