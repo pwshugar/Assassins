@@ -1,65 +1,111 @@
-var mongo = require('mongodb');
- 
-var Server = mongo.Server,
-    Db = mongo.Db,
-    BSON = mongo.BSONPure;
- 
-var server = new Server('localhost', 27017, {auto_reconnect: true});
-exports.sdb = new Db('assassinTest', server);
-var db = exports.sdb;
+exports.conn = require('mongoose');
+var mongoose = exports.conn;
+mongoose.connect('mongodb://127.0.0.1/assassinTest2');
 
-db.open(function(err, db) {
-    if(!err) {
-        console.log("Connected to 'assassinTest' database");
-        db.collection('users', {strict:true}, function(err, collection) {
-            if (err) {
-                console.log("The 'users' collection doesn't exist. Creating it with sample data...");
-                populateDB();
-            }
-        });
-    }
+// Mongoose schemas
+
+var Schema = mongoose.Schema, ObjectId = Schema.ObjectID;
+
+var User = new Schema({
+    username: { type: String, required: true, trim: true },
+    password: { type: String, required: true, trim: true }
 });
 
-exports.login = function(req, res){
-  var username = req.body.username.toLowerCase();
-  console.log('Retrieving user: ' + username);
-  var check = function(item){
-    if (item === null){
-      res.send('false');
-    } else if (item.password !== req.body.password){
-      res.send('false');
-    } else {
-      req.session.username = req.body.username;
-      res.redirect('true');
-    }
-  };
-  db.collection('users', function(err, collection) {
-    collection.findOne({'username':username}, function(err, item) {
-      check(item);
-    });
-  });
-};
+var UserModel = mongoose.model('users', User);
 
+// Router functions
 
 exports.signup = function(req, res){
-  var username = req.body.username.toLowerCase();
-  console.log('Retrieving user: ' + username);
-  var check = function(item){
-    if (item === null){
-      addUser(req, res);
-      req.session.username = req.body.username; 
-      console.log('send this')   
-      res.end('true');
-    } else {
-      res.end('false');
-    }
+  var user_data = {
+    username: req.body.username,
+    password: req.body.password
   };
-    db.collection('users', function(err, collection) {
-      collection.findOne({'username':username}, function(err, item) {
-        check(item);
-      });
-    });
+
+  var user = new UserModel(user_data);
+
+  user.save( function(error, data){
+      if(error){
+          res.json(error);
+      }
+      else{
+          res.json(data);
+      }
+  });
 };
+// var mongo = require('mongodb');
+ 
+// var Server = mongo.Server,
+//     Db = mongo.Db,
+//     BSON = mongo.BSONPure;
+ 
+// var server = new Server('localhost', 27017, {auto_reconnect: true});
+// exports.sdb = new Db('assassinTest', server);
+// var db = exports.sdb;
+// db.open(function(err, db) {
+//     if(!err) {
+//         console.log("Connected to 'assassinTest' database");
+//         db.collection('users', {strict:true}, function(err, collection) {
+//             if (err) {
+//                 console.log("The 'users' collection doesn't exist. Creating it with sample data...");
+//                 populateDB();
+//             }
+//         });
+//     }
+// });
+
+
+
+// var mongoose = require('mongoose');
+// mongoose.connect('mongodb://127.0.0.1/assassinTest2');
+
+// var Schema = mongoose.Schema
+//   , ObjectId = Schema.ObjectID;
+
+// var User = new Schema({
+//     username: { type: String, required: true, trim: true },
+//     password: { type: String, required: true, trim: true }
+// });
+
+
+
+// exports.login = function(req, res){
+//   var username = req.body.username.toLowerCase();
+//   console.log('Retrieving user: ' + username);
+//   var check = function(item){
+//     if (item === null){
+//       res.send('false');
+//     } else if (item.password !== req.body.password){
+//       res.send('false');
+//     } else {
+//       req.session.username = req.body.username;
+//       res.redirect('true');
+//     }
+//   };
+//   db.collection('users', function(err, collection) {
+//     collection.findOne({'username':username}, function(err, item) {
+//       check(item);
+//     });
+//   });
+// };
+
+
+// exports.signup = function(req, res){
+//     var person_data = {
+//       username: req.body.username,
+//       password: req.body.password
+//     };
+
+//     var person = new Person(person_data);
+
+//     person.save( function(error, data){
+//         if(error){
+//             res.json(error);
+//         }
+//         else{
+//             res.json(data);
+//         }
+//     });
+// };
 
 
 // exports.signup = function(req, res){
@@ -108,20 +154,20 @@ var addUser = function(req, res) {
 };
  
  
-var populateDB = function() {
+// var populateDB = function() {
  
-    var users = [
-    {
-        username: "shugardude",
-        password: "f00min"
-    },
-    {
-        username: "peter",
-        password: "foo"
-    }];
+//     var users = [
+//     {
+//         username: "shugardude",
+//         password: "f00min"
+//     },
+//     {
+//         username: "peter",
+//         password: "foo"
+//     }];
  
-    db.collection('users', function(err, collection) {
-        collection.insert(users, {safe:true}, function(err, result) {});
-    });
+//     db.collection('users', function(err, collection) {
+//         collection.insert(users, {safe:true}, function(err, result) {});
+//     });
  
-};
+// };
