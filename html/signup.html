@@ -1,27 +1,4 @@
-<!-- <!doctype html>
-<html ng-app>
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-  </head>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-    var socket = io.connect('http://localhost');
-    socket.on('news', function (data) {
-      console.log(data);
-      socket.emit('my other event', { my: 'data' });
-    });
-    </script>
-  <body>
-    <div>
-      <label>Name:</label>
-      <input type="text" ng-model="name" placeholder="Enter a name here">
-      <hr>
-      <h1>Helloq {{name}}!</h1>
-    </div>
-  </body>
-</html> -->
-
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <link href="./css/login.css" rel="stylesheet" type="text/css">
@@ -57,6 +34,7 @@
                   if (data === 'false'){
                     $('#username')[0].value = '';
                     $('#password')[0].value = '';
+                    $('#retype')[0].value = '';
                     $(".warning").css("display", "none");
                     $("#already").css("display", "block");
                   } else {
@@ -78,10 +56,10 @@
       <label>Retype password<input class="enter" id="retype" type="password" name="password"></label>
       <button id="post" type="button" value="Submit">Submit</button>
       <p id="here" >Already signed up? Log in <a href="http://127.0.0.1:8080/login">here</a></p>
+      <p class="warning" id="already">Username already taken.</p>
       <p class="warning" id="shortname" >Please enter a username!</p>
       <p class="warning" id="shortpass" >Please enter a password!</p>
       <p class="warning" id="badretype" >Please retype password!</p>
-      <p class="warning" id="already">This username has already been chosen. Please choose another.</p>
     </div>
   </body>
 </html>

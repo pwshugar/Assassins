@@ -21,7 +21,7 @@
   </body>
 </html> -->
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <link href="./css/login.css" rel="stylesheet" type="text/css">
@@ -42,6 +42,7 @@
                 password: $('#password')[0].value
               },
               success: function(data){
+                console.log('data', data);
                 if (data === 'false'){
                   $('#username')[0].value = '';
                   $('#password')[0].value = '';

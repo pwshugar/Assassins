@@ -24,21 +24,22 @@ app.post('/signup', function(req, res){
   users.signup(req, res);
 });
 
-app.get('/', function(req, res){
-  if(!req.session.username) { res.redirect('/login'); }
-  else { res.sendfile("./html/home.html"); }
-});
-
 app.get('/home', function(req, res){
   	res.end('home');
 });
 
 app.get('/login', function(req, res) {
+	console.log('got login')
   res.sendfile('./html/login.html');
 });
 
 app.get('/signup', function(req, res) {
   res.sendfile('./html/signup.html');
+});
+
+app.get('/', function(req, res){
+  if(!req.session.username) { res.redirect('/login'); }
+  else { res.sendfile("./html/home.html"); }
 });
 
 app.get('/css/login.css', function(req, res){
@@ -52,6 +53,7 @@ app.get('/css/home.css', function(req, res){
 });
 
 app.get('/*', function(req, res) {
+	console.log('got /*')
 	res.redirect('/');
 });
 
