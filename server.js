@@ -1,4 +1,4 @@
-var users = require('./users.js');
+var router = require('./router.js');
 var express = require('express');
 var app = express();
 var MongoStore = require('connect-mongo')(express);
@@ -9,7 +9,7 @@ app.use(express.cookieParser());
 app.use(express.session({
     secret: '1234567890QWERTY',
     store: new MongoStore({
-      db: users.conn.connection.db
+      db: router.conn.connection.db
     })
   }));
 app.use(express.bodyParser());
@@ -17,11 +17,15 @@ app.use(express.bodyParser());
 // Router functions are defined in users.js
 
 app.post('/login', function(req, res){
-  users.login(req, res);
+  router.login(req, res);
 });
 
 app.post('/signup', function(req, res){
-  users.signup(req, res);
+  router.signup(req, res);
+});
+
+app.post('/create', function(req, res){
+  router.create(req, res);
 });
 
 app.get('/home', function(req, res){
@@ -37,9 +41,13 @@ app.get('/signup', function(req, res) {
 });
 
 app.get('/', function(req, res){
-  if(!req.session.username) { res.redirect('/login'); }
-  else { res.sendfile("./html/home.html"); }
+  res.sendfile('./html/create.html');
 });
+
+// app.get('/', function(req, res){
+//   if(!req.session.username) { res.redirect('/login'); }
+//   else { res.sendfile("./html/home.html"); }
+// });
 
 app.get('/css/login.css', function(req, res){
 	res.setHeader('Content-Type', 'text/css');
@@ -50,6 +58,12 @@ app.get('/css/home.css', function(req, res){
 	res.setHeader('Content-Type', 'text/css');
 	res.sendfile('./css/home.css')
 });
+
+app.get('/css/create.css', function(req, res){
+	res.setHeader('Content-Type', 'text/css');
+	res.sendfile('./css/create.css')
+});
+
 
 app.get('/*', function(req, res) {
 	res.redirect('/');

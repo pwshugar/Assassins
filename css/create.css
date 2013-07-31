@@ -1,0 +1,40 @@
+/*Scheme ID: 3h11Tw0w0w0w0*/
+
+body {
+  background-color: #5ccdc9;
+}
+
+div {
+  float:left;
+  position: relative;
+  padding: 25px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  top:75px;
+  left: 20px;
+  height: 400px;
+  width: 400px;
+}
+
+#right {
+  float: right;
+  left: -20px;
+}
+
+label{
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 250px;
+  text-align: left;
+}
+input {
+  margin:5px;
+  display: inline-block;
+  float: right;
+}
+
+button {
+  float:left;
+}

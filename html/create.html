@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <link href="./css/create.css" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+      $(function(){
+
+        var updateGroups = function(){
+          $.ajax({  
+            url:"/groups",
+            type: "post",
+            data: {},
+            success: function(data){
+              console.log('data', data);
+              if (data === 'null'){
+                return;
+              } else {
+                return;
+              }
+            }
+          });
+        };
+
+        $(".enter").on('keypress',function(e) {
+          if(e.which === 13) {
+            $('#post').click();
+          }
+        });
+
+        $("#post").on('click',function() {
+          console.log('posted');
+          $.ajax({  
+            url:"/create",
+            type: "post",
+            data: {
+              groupname: $('#groupname')[0].value,
+              password: $('#password')[0].value
+            },
+            success: function(data){
+              console.log('data', data);
+              if (data === 'false'){
+                $('#groupname')[0].value = '';
+                $('#password')[0].value = '';
+              } else {
+                $('#groupname')[0].value = '';
+                $('#password')[0].value = '';
+                console.log('success');
+              }
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Welcome to Assassins!</h1>
+    <h3>The game where you learn people's names... by KILLING them!</h3>
+    <div>
+      <h2>Create a new game?</h2>
+      <label >Group Name<input class="enter" id="groupname" type="text" name="groupname" ></label>
+      <label>Password<input class="enter" id="password" type="password" name="password" ></label>
+      <button type="button" id="post" >Submit</button>
+    </div>
+    <div id="right">
+      <h2>Open Games</h2>
+      <ul></ul>
+    </div>
+  </body>
+</html>

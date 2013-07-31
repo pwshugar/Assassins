@@ -14,13 +14,14 @@ var User = new Schema({
   fname: { type: String, trim: true },
   lname: { type: String, trim: true },
   age: { type: String, trim: true },
-  question: { type: String, trim: true }
+  question: { type: String, trim: true },
+  contract: { type: String, trim: true, lowercase: true }
 });
 
 var Group = new Schema({
   groupname: { type: String, required: true, trim: true, lowercase: true, unique: true },
   password: { type: String, required: true, trim: true },
-  admin: { type: String, required: true, trim: true, lowercase: true }
+  admin: { type: String, trim: true, lowercase: true }
 });
 
 var UserModel = mongoose.model('users', User);
@@ -63,3 +64,38 @@ exports.login = function(req, res){
     }
   });
 };
+
+exports.create = function(req, res){
+  console.log('Retrieving groupname: ' + req.body.groupname);
+  var group_data = {
+    groupname: req.body.groupname,
+    password: req.body.password
+  };
+  var group = new GroupModel(group_data);
+
+  // GroupModel.findOne({'groupname': req.body.groupname}, function(err, data){
+    group.save(function(err, data){
+      if (err){
+        res.send('false');
+      } else {
+        res.send('true');
+      }
+    });
+  // });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
