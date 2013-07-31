@@ -37,7 +37,6 @@ exports.signup = function(req, res){
   };
   var user = new UserModel(user_data);
 
-  UserModel.findOne({'username': req.body.username}, function(err, data){
     user.save(function(error, data){
       if (error){
         res.send('false');
@@ -46,7 +45,6 @@ exports.signup = function(req, res){
         res.redirect('/');
       }
     });
-  });
 };
 
 exports.login = function(req, res){
@@ -66,14 +64,13 @@ exports.login = function(req, res){
 };
 
 exports.create = function(req, res){
-  console.log('Retrieving groupname: ' + req.body.groupname);
+  console.log('Retrieving group: ' + req.body.groupname);
   var group_data = {
     groupname: req.body.groupname,
     password: req.body.password
   };
   var group = new GroupModel(group_data);
 
-  // GroupModel.findOne({'groupname': req.body.groupname}, function(err, data){
     group.save(function(err, data){
       if (err){
         res.send('false');
@@ -81,10 +78,22 @@ exports.create = function(req, res){
         res.send('true');
       }
     });
-  // });
 };
 
+exports.groups = function(req, res){
+  GroupModel.find({}, function(err, data){
+    res.send(data);
+  });
+};
 
+exports.logcheck = function(req, res){
+  if (req.session){
+    console.log(req.session);
+    res.send(req.session.username);
+  } else {
+    res.end();
+  }
+};
 
 
 

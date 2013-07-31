@@ -1,31 +1,92 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <link href="./css/create.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1 class="head" >Welcome to Assassins!</h1>
+    <h3 class="head" >The game where you learn people's names... by KILLING them!</h3>
+    <div id="login">
+      <span class="loginEls" >You are not logged in</span>
+      <a href="http://127.0.0.1:8080/login" class="loginEls" >Login<a>
+      <a href="http://127.0.0.1:8080/signup" class="loginEls" >Sign Up<a>
+    </div>
+    <div id="logout">
+      <span id="welcome" class="loginEls" >Welcome</span>
+      <span id="fakeLink" class="loginEls" >Log Out?<span>
+    </div>
+    <div class="left" >
+      <h2>Create a new game?</h2>
+      <label >Group Name<input class="enter" id="groupname" type="text" name="groupname" ></label>
+      <label>Password<input class="enter" id="password" type="password" name="password" ></label>
+      <button type="button" id="post" >Submit</button>
+    </div>
+    <div class="left" id="right">
+      <h2>Open Games</h2>
+      <ul></ul>
+    </div>
     <script>
       $(function(){
 
-        var updateGroups = function(){
-          $.ajax({  
-            url:"/groups",
+        var logcheck = function(){
+          $.ajax({
+            url:"/logcheck",
             type: "post",
             data: {},
             success: function(data){
-              console.log('data', data);
-              if (data === 'null'){
-                return;
+              if (data){
+                $('#logout').css("display", "block");
+                $('#welcome').text("Welcome, " + data);
               } else {
-                return;
+                $('#login').css("display", "block");
               }
             }
           });
         };
 
+        var logout = function(){
+
+        };
+
+        var updateGroups = function(){
+          $.ajax({
+            url:"/groups",
+            type: "post",
+            data: {},
+            success: function(data){
+              if (data === 'null'){
+                return;
+              } else {
+                $('li').remove();
+                for (var i = 0; i < data.length; i++){
+                  $('ul').append('<li>' + data[i].groupname);
+                }
+              }
+            }
+          });
+        };
+
+        logcheck();
+        updateGroups();
+
         $(".enter").on('keypress',function(e) {
           if(e.which === 13) {
             $('#post').click();
           }
+        });
+
+        $("#fakeLink").on('click',function() {
+          $.ajax({
+            url:"/logout",
+            type: "post",
+            data: {},
+            success: function(data){
+              console.log('success')
+              $('#logout').css("display", "none");
+              $('#login').css("display", "block");
+            }
+          });
         });
 
         $("#post").on('click',function() {
@@ -46,25 +107,12 @@
                 $('#groupname')[0].value = '';
                 $('#password')[0].value = '';
                 console.log('success');
+                updateGroups();
               }
             }
           });
         });
       });
     </script>
-  </head>
-  <body>
-    <h1>Welcome to Assassins!</h1>
-    <h3>The game where you learn people's names... by KILLING them!</h3>
-    <div>
-      <h2>Create a new game?</h2>
-      <label >Group Name<input class="enter" id="groupname" type="text" name="groupname" ></label>
-      <label>Password<input class="enter" id="password" type="password" name="password" ></label>
-      <button type="button" id="post" >Submit</button>
-    </div>
-    <div id="right">
-      <h2>Open Games</h2>
-      <ul></ul>
-    </div>
   </body>
 </html>

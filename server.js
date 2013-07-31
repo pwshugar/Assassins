@@ -28,6 +28,19 @@ app.post('/create', function(req, res){
   router.create(req, res);
 });
 
+app.post('/groups', function(req, res){
+  router.groups(req, res);
+});
+
+app.post('/logcheck', function(req, res){
+  router.logcheck(req, res);
+});
+
+app.post('/logout', function(req, res){
+  req.session.username = null;
+  res.end();
+});
+
 app.get('/home', function(req, res){
   	res.end('home');
 });
