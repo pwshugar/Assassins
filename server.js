@@ -1,4 +1,4 @@
-var users = require('./users2.js');
+var users = require('./users.js');
 var express = require('express');
 var app = express();
 var MongoStore = require('connect-mongo')(express);

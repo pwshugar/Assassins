@@ -1,14 +1,15 @@
 exports.conn = require('mongoose');
 var mongoose = exports.conn;
 mongoose.connect('mongodb://127.0.0.1/assassinTest2');
+console.log("Connected to 'assassinTest' database");
 
 // Mongoose schemas
 
 var Schema = mongoose.Schema, ObjectId = Schema.ObjectID;
 
 var User = new Schema({
-    username: { type: String, required: true, trim: true },
-    password: { type: String, required: true, trim: true }
+  username: { type: String, required: true, trim: true },
+  password: { type: String, required: true, trim: true }
 });
 
 var UserModel = mongoose.model('users', User);
@@ -16,57 +17,42 @@ var UserModel = mongoose.model('users', User);
 // Router functions
 
 exports.signup = function(req, res){
+  console.log('Retrieving user: ' + req.body.username);
   var user_data = {
     username: req.body.username,
     password: req.body.password
   };
-
   var user = new UserModel(user_data);
 
-  user.save( function(error, data){
-      if(error){
-          res.json(error);
-      }
-      else{
-          res.json(data);
-      }
+  UserModel.findOne({'username': user_data.username}, function(err, data){
+    if (data === null){
+      user.save( function(error, data){});
+      req.session.username = req.body.username;    
+      res.redirect('/');
+    } else {
+      res.redirect('/login')
+    }
   });
 };
-// var mongo = require('mongodb');
- 
-// var Server = mongo.Server,
-//     Db = mongo.Db,
-//     BSON = mongo.BSONPure;
- 
-// var server = new Server('localhost', 27017, {auto_reconnect: true});
-// exports.sdb = new Db('assassinTest', server);
-// var db = exports.sdb;
-// db.open(function(err, db) {
-//     if(!err) {
-//         console.log("Connected to 'assassinTest' database");
-//         db.collection('users', {strict:true}, function(err, collection) {
-//             if (err) {
-//                 console.log("The 'users' collection doesn't exist. Creating it with sample data...");
-//                 populateDB();
-//             }
-//         });
-//     }
-// });
 
+exports.login = function(req, res){
+  // console.log('Retrieving user: ' + req.body.username);
+  // var user_data = {
+  //   username: req.body.username,
+  //   password: req.body.password
+  // };
+  // var user = new UserModel(user_data);
 
-
-// var mongoose = require('mongoose');
-// mongoose.connect('mongodb://127.0.0.1/assassinTest2');
-
-// var Schema = mongoose.Schema
-//   , ObjectId = Schema.ObjectID;
-
-// var User = new Schema({
-//     username: { type: String, required: true, trim: true },
-//     password: { type: String, required: true, trim: true }
-// });
-
-
+  // UserModel.findOne({'username': user_data.username}, function(err, data){
+  //   if (data === null){
+  //     user.save( function(error, data){});
+  //     req.session.username = req.body.username;    
+  //     res.redirect('/');
+  //   } else {
+  //     res.redirect('/login')
+  //   }
+  // });
+};
 
 // exports.login = function(req, res){
 //   var username = req.body.username.toLowerCase();
@@ -88,6 +74,30 @@ exports.signup = function(req, res){
 //   });
 // };
 
+// exports.signu = function(req, res){
+//   var username = req.body.username.toLowerCase();
+//   console.log('Retrieving user: ' + username);
+//   var check = function(item){
+//     if (item === null){
+//       addUser(req, res);
+//       req.session.username = req.body.username;    
+//       res.redirect('/');
+//     } else {
+//       res.redirect('/login')
+//     }
+//   };
+//     db.collection('users', function(err, collection) {
+//       collection.findOne({'username':username}, function(err, item) {
+//         check(item);
+//       });
+//     });
+// };
+
+
+
+
+
+
 
 // exports.signup = function(req, res){
 //     var person_data = {
@@ -108,24 +118,6 @@ exports.signup = function(req, res){
 // };
 
 
-// exports.signup = function(req, res){
-//   var username = req.body.username.toLowerCase();
-//   console.log('Retrieving user: ' + username);
-//   var check = function(item){
-//     if (item === null){
-//       addUser(req, res);
-//       req.session.username = req.body.username;    
-//       res.redirect('/');
-//     } else {
-//       res.redirect('/login')
-//     }
-//   };
-//     db.collection('users', function(err, collection) {
-//       collection.findOne({'username':username}, function(err, item) {
-//         check(item);
-//       });
-//     });
-// };
  
 // var findByUsername = function(req, res) {
 //     var username = req.body.username;
@@ -138,20 +130,20 @@ exports.signup = function(req, res){
 //     });
 // };
  
-var addUser = function(req, res) {
-    var user = req.body;
-    console.log('Adding user: ' + JSON.stringify(user));
-    db.collection('users', function(err, collection) {
-        collection.insert(user, {safe:true}, function(err, result) {
-            if (err) {
-                res.send({'error':'An error has occurred'});
-            } else {
-                console.log('Success: ' + JSON.stringify(result[0]));
-                res.send(result[0]);
-            }
-        });
-    });
-};
+// var addUser = function(req, res) {
+//     var user = req.body;
+//     console.log('Adding user: ' + JSON.stringify(user));
+//     db.collection('users', function(err, collection) {
+//         collection.insert(user, {safe:true}, function(err, result) {
+//             if (err) {
+//                 res.send({'error':'An error has occurred'});
+//             } else {
+//                 console.log('Success: ' + JSON.stringify(result[0]));
+//                 res.send(result[0]);
+//             }
+//         });
+//     });
+// };
  
  
 // var populateDB = function() {
