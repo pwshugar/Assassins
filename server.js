@@ -29,7 +29,6 @@ app.get('/home', function(req, res){
 });
 
 app.get('/login', function(req, res) {
-	console.log('got login')
   res.sendfile('./html/login.html');
 });
 
@@ -53,7 +52,6 @@ app.get('/css/home.css', function(req, res){
 });
 
 app.get('/*', function(req, res) {
-	console.log('got /*')
 	res.redirect('/');
 });
 

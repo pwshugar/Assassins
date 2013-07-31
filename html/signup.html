@@ -14,9 +14,21 @@
           if ($('#username')[0].value.length < 1){
             $(".warning").css("display", "none");
             $("#shortname").css("display", "block");
+          } else if ($('#username')[0].value.length > 20){
+            $(".warning").css("display", "none");
+            $("#longname").css("display", "block");
+            $('#username')[0].value = '';
+            $('#password')[0].value = '';
+            $('#retype')[0].value = ''
           } else if ($('#password')[0].value.length < 1){
             $(".warning").css("display", "none");
-            $("#shortpass").css("display", "block");
+            $("#shortname").css("display", "block");
+          } else if ($('#password')[0].value.length > 20){
+            $(".warning").css("display", "none");
+            $("#longpass").css("display", "block");
+            $('#username')[0].value = '';
+            $('#password')[0].value = '';
+            $('#retype')[0].value = ''
           } else if($('#password')[0].value !== $('#retype')[0].value) {
             $(".warning").css("display", "none");
             $("#badretype").css("display", "block");
@@ -59,6 +71,8 @@
       <p class="warning" id="already">Username already taken.</p>
       <p class="warning" id="shortname" >Please enter a username!</p>
       <p class="warning" id="shortpass" >Please enter a password!</p>
+      <p class="warning" id="longname" >Username length exceeds limit!</p>
+      <p class="warning" id="longpass" >Password length exceeds limit!</p>
       <p class="warning" id="badretype" >Please retype password!</p>
     </div>
   </body>

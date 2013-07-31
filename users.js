@@ -1,39 +1,50 @@
 exports.conn = require('mongoose');
 var mongoose = exports.conn;
 mongoose.connect('mongodb://127.0.0.1/assassinTest2');
-console.log("Connected to 'assassinTest' database");
+console.log("Connected to 'assassinTest2' database");
 
 // Mongoose schemas
 
 var Schema = mongoose.Schema, ObjectId = Schema.ObjectID;
 
 var User = new Schema({
-  username: { type: String, required: true, trim: true },
-  password: { type: String, required: true, trim: true }
+  username: { type: String, required: true, trim: true, lowercase: true, unique: true },
+  password: { type: String, required: true, trim: true },
+  groupname: { type: String, trim: true, lowercase: true },
+  fname: { type: String, trim: true },
+  lname: { type: String, trim: true },
+  age: { type: String, trim: true },
+  question: { type: String, trim: true }
+});
+
+var Group = new Schema({
+  groupname: { type: String, required: true, trim: true, lowercase: true, unique: true },
+  password: { type: String, required: true, trim: true },
+  admin: { type: String, required: true, trim: true, lowercase: true }
 });
 
 var UserModel = mongoose.model('users', User);
+var GroupModel = mongoose.model('groups', Group);
 
 // Router functions
 
 exports.signup = function(req, res){
-  var username = req.body.username.toLowerCase();
-  console.log('Retrieving user: ' + username);
+  console.log('Retrieving user: ' + req.body.username);
   var user_data = {
-    username: username,
+    username: req.body.username,
     password: req.body.password
   };
   var user = new UserModel(user_data);
 
-  UserModel.findOne({'username': username}, function(err, data){
-    console.log(data);
-    if (data === null){
-      user.save( function(error, data){});
-      req.session.username = username;    
-      res.redirect('/');
-    } else {
-      res.send('false');
-    }
+  UserModel.findOne({'username': req.body.username}, function(err, data){
+    user.save(function(error, data){
+      if (error){
+        res.send('false');
+      } else {
+        req.session.username = req.body.username;    
+        res.redirect('/');
+      }
+    });
   });
 };
 
