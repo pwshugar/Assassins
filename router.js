@@ -50,7 +50,6 @@ exports.signup = function(req, res){
 exports.login = function(req, res){
   var username = req.body.username.toLowerCase();
   console.log('Retrieving user: ' + username);
-
   UserModel.findOne({'username': username}, function(err, data){
     if (data === null){
       res.send('false');
@@ -70,23 +69,36 @@ exports.create = function(req, res){
     password: req.body.password
   };
   var group = new GroupModel(group_data);
-
-    group.save(function(err, data){
-      if (err){
-        res.send('false');
-      } else {
-        res.send('true');
-      }
-    });
+  group.save(function(err, data){
+    if (err){
+      res.send('false');
+    } else {
+      res.send('true');
+    }
+  });
 };
 
 exports.logcheck = function(req, res){
-  if (req.session){
-    console.log(req.session);
+  if (req.session.username){
     res.send(req.session.username);
   } else {
     res.end();
   }
+};
+
+exports.joingroup = function(req, res){
+  var groupname = req.body.groupname.toLowerCase();
+  console.log('Retrieving group: ' + groupname);
+  GroupModel.findOne({'groupname': groupname}, function(err, data){
+    if (data === null){
+      res.send('false');
+    } else if (data.password !== req.body.password){
+      res.send('false');
+    } else {
+      req.session.groupname = req.body.groupname;
+      res.send('true');
+    }
+  });
 };
 
 

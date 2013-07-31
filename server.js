@@ -28,29 +28,49 @@ app.post('/create', function(req, res){
   router.create(req, res);
 });
 
+app.post('/joingroup', function(req, res){
+  router.joingroup(req, res);
+});
+
 app.post('/logcheck', function(req, res){
   router.logcheck(req, res);
 });
 
 app.post('/logout', function(req, res){
-  req.session.username = null;
+  req.session.destroy();
   res.end();
 });
 
 app.get('/home', function(req, res){
-    res.sendfile('./html/home.html');
+  if (req.session.username && req.session.groupname){
+	res.sendfile('./html/home.html');
+  } else {
+	res.redirect('/');
+  }
 });
 
-app.get('/login', function(req, res) {
-  res.sendfile('./html/login.html');
+app.get('/login', function(req, res){
+  if (req.session.username && req.session.groupname){
+	res.redirect('/home');
+  } else {
+    res.sendfile('./html/login.html');
+  }
 });
 
-app.get('/signup', function(req, res) {
-  res.sendfile('./html/signup.html');
+app.get('/signup', function(req, res){
+  if (req.session.username && req.session.groupname){
+	res.redirect('/home');
+  } else {
+    res.sendfile('./html/signup.html');
+  }
 });
 
 app.get('/', function(req, res){
-  res.sendfile('./html/create.html');
+  if (req.session.username && req.session.groupname){
+	res.redirect('/home');
+  } else {
+    res.sendfile('./html/create.html');
+  }
 });
 
 // app.get('/', function(req, res){
@@ -74,7 +94,7 @@ app.get('/css/create.css', function(req, res){
 });
 
 app.get('/*', function(req, res) {
-  res.redirect('/');
+  res.redirect('/home');
 });
 
 

@@ -5,5 +5,37 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <body>
     <h1>Home</h1>
+     <div id="logout">
+      <span id="welcome" class="loginEls" >Welcome</span>
+      <span id="fakeLink" class="loginEls" >Log Out?<span>
+    </div>
+    <script>
+      $(function(){
+        var logcheck = function(){
+          $.ajax({
+            url:"/logcheck",
+            type: "post",
+            data: {},
+            success: function(data){
+              $('#welcome').text("Welcome, " + data[0].toUpperCase() + data.slice(1));
+            }
+          });
+        };
+
+        logcheck();
+
+        $("#fakeLink").on('click',function() {
+          $.ajax({
+            url:"/logout",
+            type: "post",
+            data: {},
+            success: function(data){
+              window.location.href = 'http://127.0.0.1:8080/';
+            }
+          });
+        });
+
+      });
+    </script>
   </body>
 </html>

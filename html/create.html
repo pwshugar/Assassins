@@ -23,13 +23,15 @@
       <button type="button" id="post" >Submit</button>
     </div>
     <div class="left" id="right">
-      <h2>Join a Game?</h2>
-      <label >Group Name<input class="enter" id="joingroupname" type="text" name="joingroupname" ></label>
-      <label>Password<input class="enter" id="joinpassword" type="password" name="joinpassword" ></label>
+      <h2>Join a game?</h2>
+      <label >Group Name<input class="joinenter" id="joingroupname" type="text" name="joingroupname" ></label>
+      <label>Password<input class="joinenter" id="joinpassword" type="password" name="joinpassword" ></label>
       <button type="button" id="joinpost" >Submit</button>
     </div>
     <script>
       $(function(){
+
+        var loggedIn = false;
 
         var logcheck = function(){
           $.ajax({
@@ -39,7 +41,8 @@
             success: function(data){
               if (data){
                 $('#logout').css("display", "block");
-                $('#welcome').text("Welcome, " + data);
+                $('#welcome').text("Welcome, " + data[0].toUpperCase() + data.slice(1));
+                loggedIn = true;
               } else {
                 $('#login').css("display", "block");
               }
@@ -85,13 +88,10 @@
               } else {
                 $('#groupname')[0].value = '';
                 $('#password')[0].value = '';
-                console.log('success');
-                updateGroups();
               }
             }
           });
         });
-      });
 
       $(".joinenter").on('keypress',function(e) {
         if(e.which === 13) {
@@ -100,23 +100,29 @@
       });
 
       $("#joinpost").on('click',function() {
-        console.log('joined');
-        $.ajax({  
-          url:"/join",
-          type: "post",
-          data: {
-            groupname: $('#groupname')[0].value,
-            password: $('#password')[0].value
-          },
-          success: function(data){
-            if (data === 'false'){
-              console.log('wrong password');
-            } else {
-              window.location.href = 'http://127.0.0.1:8080/home';
+        if (!loggedIn){
+          console.log('worked');
+        } else {
+          $.ajax({  
+            url:"/joingroup",
+            type: "post",
+            data: {
+              groupname: $('#joingroupname')[0].value,
+              password: $('#joinpassword')[0].value
+            },
+            success: function(data){
+              if (data === 'false'){
+                console.log('wrong password');
+                $('#joingroupname')[0].value = '';
+                $('#joinpassword')[0].value = '';
+              } else {
+                window.location.href = 'http://127.0.0.1:8080/home';
+              }
             }
-          }
-        });
+          });
+        }
       });
+
     });
     </script>
   </body>

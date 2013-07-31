@@ -3,3 +3,20 @@
 body {
   background-color: #5ccdc9;
 }
+
+#logout {
+  position:absolute;
+  right: 30px;
+  top: 20px;
+}
+
+.loginEls {
+  font-size: 18px;
+  padding-left: 10px;
+}
+
+#fakeLink {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
