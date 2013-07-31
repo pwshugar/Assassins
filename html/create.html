@@ -23,8 +23,10 @@
       <button type="button" id="post" >Submit</button>
     </div>
     <div class="left" id="right">
-      <h2>Open Games</h2>
-      <ul></ul>
+      <h2>Join a Game?</h2>
+      <label >Group Name<input class="enter" id="joingroupname" type="text" name="joingroupname" ></label>
+      <label>Password<input class="enter" id="joinpassword" type="password" name="joinpassword" ></label>
+      <button type="button" id="joinpost" >Submit</button>
     </div>
     <script>
       $(function(){
@@ -45,36 +47,7 @@
           });
         };
 
-        var logout = function(){
-
-        };
-
-        var updateGroups = function(){
-          $.ajax({
-            url:"/groups",
-            type: "post",
-            data: {},
-            success: function(data){
-              if (data === 'null'){
-                return;
-              } else {
-                $('li').remove();
-                for (var i = 0; i < data.length; i++){
-                  $('ul').append('<li>' + data[i].groupname);
-                }
-              }
-            }
-          });
-        };
-
         logcheck();
-        updateGroups();
-
-        $(".enter").on('keypress',function(e) {
-          if(e.which === 13) {
-            $('#post').click();
-          }
-        });
 
         $("#fakeLink").on('click',function() {
           $.ajax({
@@ -87,6 +60,12 @@
               $('#login').css("display", "block");
             }
           });
+        });
+
+        $(".enter").on('keypress',function(e) {
+          if(e.which === 13) {
+            $('#post').click();
+          }
         });
 
         $("#post").on('click',function() {
@@ -113,6 +92,32 @@
           });
         });
       });
+
+      $(".joinenter").on('keypress',function(e) {
+        if(e.which === 13) {
+          $('#joinpost').click();
+        }
+      });
+
+      $("#joinpost").on('click',function() {
+        console.log('joined');
+        $.ajax({  
+          url:"/join",
+          type: "post",
+          data: {
+            groupname: $('#groupname')[0].value,
+            password: $('#password')[0].value
+          },
+          success: function(data){
+            if (data === 'false'){
+              console.log('wrong password');
+            } else {
+              window.location.href = 'http://127.0.0.1:8080/home';
+            }
+          }
+        });
+      });
+    });
     </script>
   </body>
 </html>

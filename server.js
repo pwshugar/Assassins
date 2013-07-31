@@ -7,11 +7,11 @@ var MongoStore = require('connect-mongo')(express);
 
 app.use(express.cookieParser());
 app.use(express.session({
-    secret: '1234567890QWERTY',
-    store: new MongoStore({
-      db: router.conn.connection.db
-    })
-  }));
+  secret: '1234567890QWERTY',
+  store: new MongoStore({
+    db: router.conn.connection.db
+  })
+}));
 app.use(express.bodyParser());
 
 // Router functions are defined in users.js
@@ -28,10 +28,6 @@ app.post('/create', function(req, res){
   router.create(req, res);
 });
 
-app.post('/groups', function(req, res){
-  router.groups(req, res);
-});
-
 app.post('/logcheck', function(req, res){
   router.logcheck(req, res);
 });
@@ -42,7 +38,7 @@ app.post('/logout', function(req, res){
 });
 
 app.get('/home', function(req, res){
-  	res.end('home');
+    res.sendfile('./html/home.html');
 });
 
 app.get('/login', function(req, res) {
@@ -62,24 +58,23 @@ app.get('/', function(req, res){
 //   else { res.sendfile("./html/home.html"); }
 // });
 
-app.get('/css/login.css', function(req, res){
-	res.setHeader('Content-Type', 'text/css');
-	res.sendfile('./css/login.css')
+app.get('/css/home.css', function(req, res){
+  res.setHeader('Content-Type', 'text/css');
+  res.sendfile('./css/home.css')
 });
 
-app.get('/css/home.css', function(req, res){
-	res.setHeader('Content-Type', 'text/css');
-	res.sendfile('./css/home.css')
+app.get('/css/login.css', function(req, res){
+  res.setHeader('Content-Type', 'text/css');
+  res.sendfile('./css/login.css')
 });
 
 app.get('/css/create.css', function(req, res){
-	res.setHeader('Content-Type', 'text/css');
-	res.sendfile('./css/create.css')
+  res.setHeader('Content-Type', 'text/css');
+  res.sendfile('./css/create.css')
 });
 
-
 app.get('/*', function(req, res) {
-	res.redirect('/');
+  res.redirect('/');
 });
 
 

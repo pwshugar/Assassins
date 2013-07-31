@@ -80,12 +80,6 @@ exports.create = function(req, res){
     });
 };
 
-exports.groups = function(req, res){
-  GroupModel.find({}, function(err, data){
-    res.send(data);
-  });
-};
-
 exports.logcheck = function(req, res){
   if (req.session){
     console.log(req.session);
