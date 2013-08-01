@@ -4,15 +4,18 @@
     <link href="./css/home.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <body>
-    <h1>''</h1>
-     <div id="logout">
-      <span id="welcome" class="loginEls" ></span>
-      <span id="fakeLink" class="loginEls" >Log Out?<span>
+  	<div id="topbar">
+      <span id='roomname'>''</span>
+      <div id="logout">
+        <span id="welcome" class="loginEls" ></span>
+        <span id="fakeLink" class="loginEls" >Log Out?<span>
+      </div>
     </div>
-    <div>
+    <div id='sidebar'>
+      <span class="title" >Links</span>
 	</div>
     <div id="list">
-      <h2>List of players</h2>
+      <span class="title" >List of players</span>
     </div>
     <script>
       $(function(){
@@ -49,16 +52,16 @@
             data: {},
             success: function(data){
               $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-              $('h1').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+              $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
             }
           });
         };
 
         logcheck();
         checklist();
-        setInterval(function(){
-          checklist();
-        }, 3000);
+        // setInterval(function(){
+        //   checklist();
+        // }, 3000);
 
       });
     </script>
