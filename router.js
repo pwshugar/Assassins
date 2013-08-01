@@ -127,17 +127,9 @@ exports.joingroup = function(req, res){
 };
 
 exports.checksession = function(req, res){
-  SessionModel.find({}, function(err, data){
-    if (err){
-      console.log('error');
-    } else {
-      var arr = [];
-      for (var i = 0; i < data.length; i++){
-        // if (data.session.groupname)
-        console.log(data[i].expires);
-      }
-    }
-  });
+  UserModel.find({groupname: 'hack', login: true}, 'username', function (err, data) {
+    res.send(data);
+  })
 };
 
 

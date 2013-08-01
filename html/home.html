@@ -9,24 +9,38 @@
       <span id="welcome" class="loginEls" ></span>
       <span id="fakeLink" class="loginEls" >Log Out?<span>
     </div>
+    <div>
+	</div>
     <div id="list">
       <h2>List of players</h2>
-      <button type='button'>Check</button>
     </div>
     <script>
       $(function(){
 
-      	$('button').on('click', function(){
+        $("#fakeLink").on('click',function() {
+          $.ajax({
+            url:"/logout",
+            type: "post",
+            data: {},
+            success: function(data){
+              window.location.href = 'http://127.0.0.1:8080/';
+            }
+          });
+        });
+
+      	var checklist = function(){
       	  $.ajax({
             url:"/checksession",
             type: "post",
             data: {},
             success: function(data){
-              $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-              $('h1').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+              $('li').remove();
+              for (var i = 0; i < data.length; i++){
+              	$('#list').append('<li>' + data[i].username);
+              }
             }
           });
-      	});
+      	};
 
         var logcheck = function(){
           $.ajax({
@@ -41,17 +55,10 @@
         };
 
         logcheck();
-
-        $("#fakeLink").on('click',function() {
-          $.ajax({
-            url:"/logout",
-            type: "post",
-            data: {},
-            success: function(data){
-              window.location.href = 'http://127.0.0.1:8080/';
-            }
-          });
-        });
+        checklist();
+        setInterval(function(){
+          checklist();
+        }, 3000);
 
       });
     </script>
