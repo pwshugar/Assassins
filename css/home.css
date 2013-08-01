@@ -16,7 +16,18 @@ body {
 }
 
 #fakeLink {
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#list {
+  padding: 25px;
+  position: relative;
+  width: 400px;
+  height: 550px;
+  border-style: solid;
+  border-width: 1px;
+  left: 50px;
+  top: 0px;
 }

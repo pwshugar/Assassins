@@ -1,23 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <link href="./css/home.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <body>
-    <h1>Home</h1>
+    <h1>''</h1>
      <div id="logout">
-      <span id="welcome" class="loginEls" >Welcome</span>
+      <span id="welcome" class="loginEls" ></span>
       <span id="fakeLink" class="loginEls" >Log Out?<span>
+    </div>
+    <div id="list">
+      <h2>List of players</h2>
+      <button type='button'>Check</button>
     </div>
     <script>
       $(function(){
+
+      	$('button').on('click', function(){
+      	  $.ajax({
+            url:"/checksession",
+            type: "post",
+            data: {},
+            success: function(data){
+              $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
+              $('h1').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+            }
+          });
+      	});
+
         var logcheck = function(){
           $.ajax({
             url:"/logcheck",
             type: "post",
             data: {},
             success: function(data){
-              $('#welcome').text("Welcome, " + data[0].toUpperCase() + data.slice(1));
+              $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
+              $('h1').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
             }
           });
         };

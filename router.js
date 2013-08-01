@@ -15,7 +15,8 @@ var User = new Schema({
   lname: { type: String, trim: true },
   age: { type: String, trim: true },
   question: { type: String, trim: true },
-  contract: { type: String, trim: true, lowercase: true }
+  contract: { type: String, trim: true, lowercase: true },
+  login: { type: Boolean, 'default': true }
 });
 
 var Group = new Schema({
@@ -24,8 +25,14 @@ var Group = new Schema({
   admin: { type: String, trim: true, lowercase: true }
 });
 
+var Session = new Schema({
+  username: { type: String, required: true, trim: true },
+  groupname: { type: String, required: true, trim: true }
+});
+
 var UserModel = mongoose.model('users', User);
 var GroupModel = mongoose.model('groups', Group);
+var SessionModel = mongoose.model('sessions', Session)
 
 // Router functions
 
@@ -33,7 +40,7 @@ exports.signup = function(req, res){
   console.log('Retrieving user: ' + req.body.username);
   var user_data = {
     username: req.body.username,
-    password: req.body.password
+    password: req.body.password,
   };
   var user = new UserModel(user_data);
 
@@ -41,7 +48,7 @@ exports.signup = function(req, res){
       if (error){
         res.send('false');
       } else {
-        req.session.username = req.body.username;    
+        req.session.username = req.body.username; 
         res.redirect('/');
       }
     });
@@ -57,9 +64,20 @@ exports.login = function(req, res){
       res.send('false');
     } else {
       req.session.username = username;
+      data.login = true;
+      data.save();
       res.send('true');
     }
   });
+};
+
+exports.logout = function(req, res){
+  UserModel.findOne({ 'username': req.session.username }, function(err, data){
+    data.login = false;
+    data.save();
+  });
+  req.session.destroy();
+  res.end();
 };
 
 exports.create = function(req, res){
@@ -80,7 +98,10 @@ exports.create = function(req, res){
 
 exports.logcheck = function(req, res){
   if (req.session.username){
-    res.send(req.session.username);
+    res.send({
+      username: req.session.username, 
+      groupname: req.session.groupname
+    });
   } else {
     res.end();
   }
@@ -95,8 +116,26 @@ exports.joingroup = function(req, res){
     } else if (data.password !== req.body.password){
       res.send('false');
     } else {
+      UserModel.findOne({ 'username': req.session.username }, function(err, data){
+        data.groupname = groupname;
+        data.save();
+      });
       req.session.groupname = req.body.groupname;
       res.send('true');
+    }
+  });
+};
+
+exports.checksession = function(req, res){
+  SessionModel.find({}, function(err, data){
+    if (err){
+      console.log('error');
+    } else {
+      var arr = [];
+      for (var i = 0; i < data.length; i++){
+        // if (data.session.groupname)
+        console.log(data[i].expires);
+      }
     }
   });
 };

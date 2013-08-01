@@ -41,7 +41,7 @@
             success: function(data){
               if (data){
                 $('#logout').css("display", "block");
-                $('#welcome').text("Welcome, " + data[0].toUpperCase() + data.slice(1));
+                $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
                 loggedIn = true;
               } else {
                 $('#login').css("display", "block");

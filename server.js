@@ -37,8 +37,11 @@ app.post('/logcheck', function(req, res){
 });
 
 app.post('/logout', function(req, res){
-  req.session.destroy();
-  res.end();
+  router.logout(req, res);
+});
+
+app.post('/checksession', function(req, res){
+  router.checksession(req, res);
 });
 
 app.get('/home', function(req, res){
