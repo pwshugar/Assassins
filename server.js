@@ -1,7 +1,12 @@
-var router = require('./router.js');
-var express = require('express');
-var app = express();
-var MongoStore = require('connect-mongo')(express);
+var router = require('./router.js')
+  , express = require('express')
+  , app = express()
+  , MongoStore = require('connect-mongo')(express)
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server);
+
+server.listen(8080);
+console.log('Listening on port 8080...');
 
 // Sessions with connext-mongo to store users cookie info in case server goes down
 
@@ -48,6 +53,8 @@ app.post('/startgame', function(req, res){
   router.startgame(req, res);
 });
 
+// get requests
+
 app.get('/home', function(req, res){
   router.home(req, res);
 });
@@ -76,10 +83,11 @@ app.get('/', function(req, res){
   }
 });
 
-// app.get('/', function(req, res){
-//   if(!req.session.username) { res.redirect('/login'); }
-//   else { res.sendfile("./html/home.html"); }
-// });
+// css get requests
+app.get('/socket.js', function(req, res){
+  res.setHeader('Content-Type', 'text/script');
+  res.sendfile('./socket.js')
+});
 
 app.get('/css/home.css', function(req, res){
   res.setHeader('Content-Type', 'text/css');
@@ -100,9 +108,14 @@ app.get('/*', function(req, res) {
   res.redirect('/home');
 });
 
+// socket io events
 
-app.listen(process.env.PORT || 8080);
-console.log('Listening on port 8080...');
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('set username', function (data) {
+    console.log(data);
+  });
+});
 
 
 
