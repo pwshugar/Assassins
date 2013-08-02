@@ -14,13 +14,13 @@
     <div class="longDiv" id='sidebar'>
       <h2>Links</h2>
       <a href='/contracts' ></a>
-	</div>
+    </div>
+    <div class="longDiv" id="contract">
+      <h2>Contract</h2>
+      <p>Game hasn't started yet.</p>
+    </div>
     <div class="longDiv" id="list">
       <h2 class="title" >List of players</h2>
-    </div>
-    <div class="longDiv" id="settings">
-      <h2>Game Settings</h2>
-      <button type="button">Start Game</button>
     </div>
     <script>
       $(function(){
@@ -38,7 +38,7 @@
 
       	var checklist = function(){
       	  $.ajax({
-            url:"/checksession",
+            url:"/checklist",
             type: "post",
             data: {},
             success: function(data){
@@ -64,9 +64,9 @@
 
         logcheck();
         checklist();
-        // setInterval(function(){
-        //   checklist();
-        // }, 3000);
+        setInterval(function(){
+          checklist();
+        }, 3000);
 
       });
     </script>

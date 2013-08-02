@@ -16,13 +16,16 @@ var User = new Schema({
   age: { type: String, trim: true },
   question: { type: String, trim: true },
   contract: { type: String, trim: true, lowercase: true },
-  login: { type: Boolean, 'default': true }
+  login: { type: Boolean, 'default': true },
+  alive: { type: Boolean, 'default': false }
 });
 
 var Group = new Schema({
   groupname: { type: String, required: true, trim: true, lowercase: true, unique: true },
   password: { type: String, required: true, trim: true },
-  admin: { type: String, trim: true, lowercase: true }
+  admin: { type: String, trim: true, lowercase: true },
+  started: { type: Boolean, 'default': false },
+  ended: { type: Boolean, 'default': false }
 });
 
 var Session = new Schema({
@@ -57,7 +60,6 @@ exports.signup = function(req, res){
 
 exports.login = function(req, res){
   var username = req.body.username;
-  console.log('Retrieving user: ' + username);
   UserModel.findOne({'username': username}, function(err, data){
     if (data === null){
       res.send('false');
@@ -83,7 +85,6 @@ exports.logout = function(req, res){
 };
 
 exports.create = function(req, res){
-  console.log('Retrieving group: ' + req.body.groupname);
   var group_data = {
     admin: req.session.username,
     groupname: req.body.groupname,
@@ -112,7 +113,6 @@ exports.logcheck = function(req, res){
 
 exports.joingroup = function(req, res){
   var groupname = req.body.groupname;
-  console.log('Retrieving group: ' + groupname);
   GroupModel.findOne({'groupname': groupname}, function(err, data){
     if (data === null){
       res.send('false');
@@ -132,8 +132,8 @@ exports.joingroup = function(req, res){
   });
 };
 
-exports.checksession = function(req, res){
-  UserModel.find({groupname: 'hack', login: true}, 'username', function (err, data) {
+exports.checklist = function(req, res){
+  UserModel.find({groupname: req.session.groupname, login: true}, function (err, data){
     res.send(data);
   })
 };
@@ -148,6 +148,28 @@ exports.home = function(req, res){
   } else {
     res.redirect('/');
   }
+};
+
+// gets a list of users, assigns each user an assassination contract from the next user in the array
+exports.startgame = function(req, res){
+  GroupModel.findOne({ groupname: req.session.groupname }, function(err, data){
+    data.started = true;
+  });
+  UserModel.find({ groupname: req.session.groupname, login: true }, 'username', function(err, data){
+    var names = data;
+    for (var i = 0; i < names.length; i++){ 
+      setTimeout(function(i){
+        var j = i + 1;
+        if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
+        UserModel.findOne({ username: names[i].username }, function(err, data){
+          data.alive = true;
+          data.contract = names[j].username;
+          data.save();
+        });   
+      }, 0, i);
+    }
+  });
+  res.send('true');
 };
 
 
