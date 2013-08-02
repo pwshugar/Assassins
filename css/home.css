@@ -2,6 +2,7 @@
 
 body {
   background-color: #5ccdc9;
+  margin: 0px;
 }
 
 #logout {
@@ -32,14 +33,10 @@ body {
   border-width: 1px;
 }
 
-.title {
-  font-size: 20px;
-}
-
-#list {
-  display:inline-block;
+.longDiv {
+  float:left;
+  display:block;
   padding: 25px;
-  width: 400px;
   height: 550px;
   border-style: solid;
   border-width: 1px;
@@ -48,12 +45,25 @@ body {
 }
 
 #sidebar {
-  display:inline-block;
-  padding: 25px;
-  width: 200px;
-  height: 550px;
-  border-style: solid;
-  border-width: 1px;
-  left: 0px;
-  top: 0px;
+  width: 100px;
 }
+
+#settings {
+  height:200px;
+}
+
+#settings span {
+  display:block;
+}
+
+
+
+
+
+
+
+
+
+
+
+

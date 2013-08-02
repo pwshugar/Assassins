@@ -57,7 +57,7 @@
             data: {},
             success: function(data){
               $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-              $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+              $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1) + " - Admin");
             }
           });
         };

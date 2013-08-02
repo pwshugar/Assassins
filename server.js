@@ -45,11 +45,7 @@ app.post('/checksession', function(req, res){
 });
 
 app.get('/home', function(req, res){
-  if (req.session.username && req.session.groupname){
-	res.sendfile('./html/home.html');
-  } else {
-	res.redirect('/');
-  }
+  router.home(req, res);
 });
 
 app.get('/login', function(req, res){

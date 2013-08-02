@@ -39,7 +39,7 @@
                 url:"/signup",
                 type: "post",  
                 data: {
-                  username: $('#username')[0].value,
+                  username: $('#username')[0].value.toLowerCase(),
                   password: $('#password')[0].value
                 },
                 success: function(data){
@@ -50,7 +50,7 @@
                     $(".warning").css("display", "none");
                     $("#already").css("display", "block");
                   } else {
-                    window.location.href = 'http://127.0.0.1:8080/';
+                    window.location.href = '/';
                   }
                 }
             });
@@ -67,7 +67,7 @@
       <label>Password<input class="enter" id="password" type="password" name="password"></label>
       <label>Retype password<input class="enter" id="retype" type="password" name="password"></label>
       <button id="post" type="button" value="Submit">Submit</button>
-      <p id="here" >Already signed up? Log in <a href="http://127.0.0.1:8080/login">here</a></p>
+      <p id="here" >Already signed up? Log in <a href="/login">here</a></p>
       <p class="warning" id="already">Username already taken.</p>
       <p class="warning" id="shortname" >Please enter a username!</p>
       <p class="warning" id="shortpass" >Please enter a password!</p>

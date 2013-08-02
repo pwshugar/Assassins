@@ -48,14 +48,15 @@ exports.signup = function(req, res){
       if (error){
         res.send('false');
       } else {
-        req.session.username = req.body.username; 
+        req.session.username = req.body.username;
+        req.session.admin = false;
         res.redirect('/');
       }
     });
 };
 
 exports.login = function(req, res){
-  var username = req.body.username.toLowerCase();
+  var username = req.body.username;
   console.log('Retrieving user: ' + username);
   UserModel.findOne({'username': username}, function(err, data){
     if (data === null){
@@ -64,6 +65,7 @@ exports.login = function(req, res){
       res.send('false');
     } else {
       req.session.username = username;
+      req.session.admin = false;
       data.login = true;
       data.save();
       res.send('true');
@@ -83,6 +85,7 @@ exports.logout = function(req, res){
 exports.create = function(req, res){
   console.log('Retrieving group: ' + req.body.groupname);
   var group_data = {
+    admin: req.session.username,
     groupname: req.body.groupname,
     password: req.body.password
   };
@@ -108,7 +111,7 @@ exports.logcheck = function(req, res){
 };
 
 exports.joingroup = function(req, res){
-  var groupname = req.body.groupname.toLowerCase();
+  var groupname = req.body.groupname;
   console.log('Retrieving group: ' + groupname);
   GroupModel.findOne({'groupname': groupname}, function(err, data){
     if (data === null){
@@ -116,6 +119,9 @@ exports.joingroup = function(req, res){
     } else if (data.password !== req.body.password){
       res.send('false');
     } else {
+      if (req.session.username === data.admin){
+        req.session.admin = true;
+      }
       UserModel.findOne({ 'username': req.session.username }, function(err, data){
         data.groupname = groupname;
         data.save();
@@ -132,6 +138,17 @@ exports.checksession = function(req, res){
   })
 };
 
+exports.home = function(req, res){
+  if (req.session.username && req.session.groupname){
+    if (req.session.admin){
+      res.sendfile('./html/admin.html');
+    } else {
+      res.sendfile('./html/home.html');
+    }
+  } else {
+    res.redirect('/');
+  }
+};
 
 
 

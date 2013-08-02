@@ -38,7 +38,7 @@
             url:"/login",
             type: "post",
             data: {
-              username: $('#username')[0].value,
+              username: $('#username')[0].value.toLowerCase(),
               password: $('#password')[0].value
             },
             success: function(data){
@@ -49,7 +49,7 @@
                 $(".warning").css("display", "none");
                 $("#incorrect").css("display", "block");
               } else {
-                window.location.href = 'http://127.0.0.1:8080/';
+                window.location.href = '/';
               }
             }
           });
@@ -64,7 +64,7 @@
       <label>Username<input class="enter" id="username" type="text" name="username"></label>
       <label>Password<input class="enter" id="password" type="password" name="password"></label>
       <button id="post" type="button" value="Submit">Submit</button>
-      <p id="here" >First time? Sign up <a href="http://127.0.0.1:8080/signup">here</a></p>
+      <p id="here" >First time? Sign up <a href="/signup">here</a></p>
       <p class="warning" id="incorrect">Incorrect username/password.</p>
   </div>
   </body>

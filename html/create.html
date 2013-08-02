@@ -9,8 +9,8 @@
     <h3 class="head" >The game where you learn people's names... by KILLING them!</h3>
     <div id="login">
       <span class="loginEls" >You are not logged in</span>
-      <a href="http://127.0.0.1:8080/login" class="loginEls" >Login<a>
-      <a href="http://127.0.0.1:8080/signup" class="loginEls" >Sign Up<a>
+      <a href="/login" class="loginEls" >Login<a>
+      <a href="/signup" class="loginEls" >Sign Up<a>
     </div>
     <div id="logout">
       <span id="welcome" class="loginEls" >Welcome</span>
@@ -77,7 +77,7 @@
             url:"/create",
             type: "post",
             data: {
-              groupname: $('#groupname')[0].value,
+              groupname: $('#groupname')[0].value.toLowerCase(),
               password: $('#password')[0].value
             },
             success: function(data){
@@ -101,22 +101,22 @@
 
       $("#joinpost").on('click',function() {
         if (!loggedIn){
-          console.log('worked');
+          return
+          // need to make fail message
         } else {
           $.ajax({  
             url:"/joingroup",
             type: "post",
             data: {
-              groupname: $('#joingroupname')[0].value,
+              groupname: $('#joingroupname')[0].value.toLowerCase(),
               password: $('#joinpassword')[0].value
             },
             success: function(data){
               if (data === 'false'){
-                console.log('wrong password');
                 $('#joingroupname')[0].value = '';
                 $('#joinpassword')[0].value = '';
               } else {
-                window.location.href = 'http://127.0.0.1:8080/home';
+                window.location.href = '/home';
               }
             }
           });
