@@ -1,6 +1,4 @@
 var mongoose = require('mongoose');
-// mongoose.connect('mongodb://127.0.0.1/assassinTest2');
-// console.log("Connected to 'assassinTest2' database");
 
 // Mongoose schemas
 
@@ -13,7 +11,8 @@ var User = new Schema({
   fname: { type: String, trim: true },
   lname: { type: String, trim: true },
   age: { type: String, trim: true },
-  question: { type: String, trim: true },
+  weapon: { type: String, trim: true },
+  fact:{ type: String, trim: true },
   contract: { type: String, trim: true, lowercase: true },
   login: { type: Boolean, 'default': true },
   alive: { type: Boolean, 'default': false }
@@ -33,8 +32,8 @@ var Session = new Schema({
 });
 
 var UserModel = exports.UM = mongoose.model('users', User);
-var GroupModel = mongoose.model('groups', Group);
-var SessionModel = mongoose.model('sessions', Session)
+var GroupModel = exports.GM = mongoose.model('groups', Group);
+var SessionModel = exports.SM = mongoose.model('sessions', Session)
 
 // Router functions
 
@@ -43,6 +42,11 @@ exports.signup = function(req, res){
   var user_data = {
     username: req.body.username,
     password: req.body.password,
+    fname: req.body.fname,
+    lname: req.body.lname,
+    age: req.body.age,
+    weapon: req.body.weapon,
+    fact: req.body.fact
   };
   var user = new UserModel(user_data);
 

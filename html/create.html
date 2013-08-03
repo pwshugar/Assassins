@@ -4,12 +4,6 @@
     <link href="./css/create.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io.connect('/');
-      socket.on('news', function (data){
-        console.log(data);
-      });
-    </script>
   </head>
   <body>
     <h1 class="head" >Welcome to Assassins!</h1>
@@ -36,16 +30,21 @@
       <button type="button" id="joinpost" >Submit</button>
     </div>
     <script>
-      $(function(){
+      $(function (){
+
+        var socket = io.connect('/');
+        socket.on('news', function (data){
+          console.log(data);
+        });
 
         var loggedIn = false;
 
-        var logcheck = function(){
+        var logcheck = function (){
           $.ajax({
             url:"/logcheck",
             type: "post",
             data: {},
-            success: function(data){
+            success: function (data){
               if (data){
                 $('#logout').css("display", "block");
                 $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
@@ -59,12 +58,12 @@
 
         logcheck();
 
-        $("#fakeLink").on('click',function() {
+        $("#fakeLink").on('click',function (){
           $.ajax({
             url:"/logout",
             type: "post",
             data: {},
-            success: function(data){
+            success: function (data){
               socket.emit('roomUpdate');
               $('#logout').css("display", "none");
               $('#login').css("display", "block");
@@ -72,13 +71,13 @@
           });
         });
 
-        $(".enter").on('keypress',function(e) {
+        $(".enter").on('keypress',function (e){
           if(e.which === 13) {
             $('#post').click();
           }
         });
 
-        $("#post").on('click',function() {
+        $("#post").on('click',function (){
           console.log('posted');
           $.ajax({  
             url:"/create",
@@ -87,7 +86,7 @@
               groupname: $('#groupname')[0].value.toLowerCase(),
               password: $('#password')[0].value
             },
-            success: function(data){
+            success: function (data){
               console.log('data', data);
               if (data === 'false'){
                 $('#groupname')[0].value = '';
@@ -100,13 +99,13 @@
           });
         });
 
-      $(".joinenter").on('keypress',function(e) {
+      $(".joinenter").on('keypress',function (e){
         if(e.which === 13) {
           $('#joinpost').click();
         }
       });
 
-      $("#joinpost").on('click',function() {
+      $("#joinpost").on('click',function (){
         if (!loggedIn){
           return
           // need to make fail message
@@ -118,7 +117,7 @@
               groupname: $('#joingroupname')[0].value.toLowerCase(),
               password: $('#joinpassword')[0].value
             },
-            success: function(data){
+            success: function (data){
               if (data === 'false'){
                 $('#joingroupname')[0].value = '';
                 $('#joinpassword')[0].value = '';

@@ -3,8 +3,30 @@
   <head>
     <link href="./css/login.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"> </script>
+    <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       $(function (){
+
+        var socket = io.connect('/');
+        socket.on('news', function (data){
+          console.log(data);
+        });
+        
+        var infoStore = {}
+        socket.on('checkUsernameRes', function (data){
+          if (data){
+            $('#username')[0].value = '';
+            $('#password')[0].value = '';
+            $('#retype')[0].value = '';
+            $(".warning").css("display", "none");
+            $("#already").css("display", "block");
+          } else {
+            infoStore.username = $('#username')[0].value.toLowerCase();
+            infoStore.password = $('#password')[0].value;
+            $("#signup").css("display", "none");
+            $("#info").css("display", "block");
+          }
+        });
 
         $(".enter").on('keypress',function (e){
           if(e.which === 13) {
@@ -36,30 +58,39 @@
             $("#badretype").css("display", "block");
             $('#password')[0].value = '';
             $('#retype')[0].value = '';
-          } else {
-            
+          } else { socket.emit('checkUsername', $('#username')[0].value); }
+        });
 
-            // $.ajax({  
-            //   url:"/signup",
-            //   type: "post",  
-            //   data: {
-            //     username: $('#username')[0].value.toLowerCase(),
-            //     password: $('#password')[0].value
-            //   },
-            //   success: function(data){
-            //     if (data === 'false'){
-            //       $('#username')[0].value = '';
-            //       $('#password')[0].value = '';
-            //       $('#retype')[0].value = '';
-            //       $(".warning").css("display", "none");
-            //       $("#already").css("display", "block");
-            //     } else {
-            //       window.location.href = '/';
-            //     }
-            //   }
-            // });
-
+        $(".infoenter").on('keypress',function (e){
+          if(e.which === 13) {
+            $('#infopost').click();
           }
+        });
+
+        $("#infopost").on('click',function (){
+          for (var i = 0; i < $(".infoenter").length; i++){
+            if ($(".infoenter")[i].value = ''){
+              $(".warning").css("display", "none");
+              $("#noinfo").css("display", "block");
+              return;
+            }
+          }
+          $.ajax({  
+            url:"/signup",
+            type: "post",  
+            data: {
+              username: infoStore.username,
+              password: infoStore.password,
+              fname: $('#fname')[0].value,
+              lname: $('#lname')[0].value,
+              age: $('#age')[0].value,
+              weapon: $('#weapon')[0].value,
+              fact: $('#fact')[0].value
+            },
+            success: function (data){
+              window.location.href = '/';
+            }
+          });
         });
 
       });
@@ -87,6 +118,7 @@
       <label>Weapon of Choice<input class="infoenter" id="weapon" name="weapon"></label>
       <label>Interesting Fact About Yourself<input class="infoenter" id="fact" name="fact"></label>
       <button id="infopost" type="button" value="Submit">Submit</button>
+      <p class="warning" id="noinfo">Please fill out all info.</p>
     </div>
   </body>
 </html>

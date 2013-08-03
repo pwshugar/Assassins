@@ -116,9 +116,17 @@ app.get('/*', function (req, res){
 
 io.sockets.on('connection', function (socket){
   socket.emit('news', 'hello world');
+
   socket.on('roomUpdate', function (socket){
     io.sockets.emit('roomUpdate');
   });
+
+  socket.on('checkUsername', function (data){
+    UserModel.findOne({ 'username': data }, function (err, data){
+      socket.emit('checkUsernameRes', data);
+    });
+  });
+
 });
 
 
