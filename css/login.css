@@ -21,6 +21,14 @@ div {
   box-shadow: 10px 10px 5px #006561;
 }
 
+#signup {
+  display: block;
+}
+
+#info {
+  display: none; 
+}
+
 #here {
   float:left;
 }

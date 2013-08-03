@@ -1,9 +1,15 @@
 var router = require('./router.js')
+  , mongoose = require('mongoose')
   , express = require('express')
   , app = express()
   , MongoStore = require('connect-mongo')(express)
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
+
+var UserModel = router.UM;
+
+mongoose.connect('mongodb://127.0.0.1/assassinTest2');
+console.log("Connected to 'assassinTest2' database");
 
 server.listen(8080);
 console.log('Listening on port 8080...');
@@ -13,11 +19,11 @@ console.log('Listening on port 8080...');
 app.use(express.cookieParser());
 app.use(express.session({
   secret: '1234567890QWERTY',
-  store: new MongoStore({ db: router.conn.connection.db })
+  store: new MongoStore({ db: mongoose.connection.db })
 }));
 app.use(express.bodyParser());
 
-// Router functions are defined in users.js
+// Router functions are defined in router.js
 
 app.post('/login', function(req, res){
   router.login(req, res);

@@ -1,7 +1,6 @@
-exports.conn = require('mongoose');
-var mongoose = exports.conn;
-mongoose.connect('mongodb://127.0.0.1/assassinTest2');
-console.log("Connected to 'assassinTest2' database");
+var mongoose = require('mongoose');
+// mongoose.connect('mongodb://127.0.0.1/assassinTest2');
+// console.log("Connected to 'assassinTest2' database");
 
 // Mongoose schemas
 
@@ -33,7 +32,7 @@ var Session = new Schema({
   groupname: { type: String, required: true, trim: true }
 });
 
-var UserModel = mongoose.model('users', User);
+var UserModel = exports.UM = mongoose.model('users', User);
 var GroupModel = mongoose.model('groups', Group);
 var SessionModel = mongoose.model('sessions', Session)
 
