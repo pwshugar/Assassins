@@ -4,30 +4,8 @@
     <link href="./css/home.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-
-    </script>
-  <body>
-  	<div id="topbar">
-      <span id='roomname'>''</span>
-      <div id="logout">
-        <span id="welcome" class="loginEls" ></span>
-        <span id="fakeLink" class="loginEls" >Log Out?<span>
-      </div>
-    </div>
-    <div class="longDiv" id='sidebar'>
-      <h2>Links</h2>
-      <a href='/contracts' ></a>
-    </div>
-    <div class="longDiv" id="contract">
-      <h2>Contract</h2>
-      <p>Game hasn't started yet.</p>
-    </div>
-    <div class="longDiv" id="list">
-      <h2 class="title" >List of players</h2>
-    </div>
-    <script>
-      $(function (){
+    <script type="text/javascript">
+      $(document).ready(function (){
 
         var socket = io.connect('/');
         socket.on('news', function (data){
@@ -35,8 +13,13 @@
         });
 
         socket.on('roomUpdate', function (data){
-          checklist();
           console.log('room update');
+          logchecklist();
+        });
+
+        socket.on('gamestart', function (data){
+          console.log('game started');
+          contractUpdate();
         });
 
         $("#fakeLink").on('click',function (){
@@ -51,36 +34,67 @@
           });
         });
 
-      	var checklist = function (){
-      	  $.ajax({
-            url:"/checklist",
-            type: "post",
-            data: {},
-            success: function (data){
-              $('li').remove();
-              for (var i = 0; i < data.length; i++){
-              	$('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
-              }
-            }
-          });
-      	};
-
-        var logcheck = function (){
+        var contractUpdate = function (){
           $.ajax({
-            url:"/logcheck",
+            url:"/contractUpdate",
             type: "post",
             data: {},
             success: function (data){
-              $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-              $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+              if (data){
+                return;
+              }
             }
           });
         };
 
-        logcheck();
-        checklist();
+        var logchecklist = function (){
+          $.ajax({
+            url:"/logchecklist",
+            type: "post",
+            data: {},
+            success: function (data){
+              console.log('checklist success');
+              var d = data.pop();
+              $('#welcome').text("Welcome, " + d.username[0].toUpperCase() + d.username.slice(1));
+              $('#roomname').text(d.groupname[0].toUpperCase() + d.groupname.slice(1));
+              $('li').remove();
+              for (var i = 0; i < data.length; i++){
+                $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
+              }
+            }
+          });
+        };
+
+        logchecklist();
+        contractUpdate();
 
       });
     </script>
+  </heac>
+  <body>
+    <div id="topbar">
+      <span id='roomname'>''</span>
+      <div id="logout">
+        <span id="welcome" class="loginEls" ></span>
+        <span id="fakeLink" class="loginEls" >Log Out?<span>
+      </div>
+    </div>
+    <div class="longDiv" id='sidebar'>
+      <h2>Links</h2>
+      <a href='/contracts' ></a>
+    </div>
+    <div class="longDiv" id="contract">
+      <h2>Contract</h2>
+      <p id="nocontract" >Game hasn't started yet.</p>
+      <p class="info" id="username" ></p>
+      <p class="info" id="fname" ></p>
+      <p class="info" id="lname" ></p>
+      <p class="info" id="age" ></p>
+      <p class="info" id="weapon" ></p>
+      <p class="info" id="fact" ></p>
+    </div>
+    <div class="longDiv" id="list">
+      <h2 class="title" >List of players</h2>
+    </div>
   </body>
 </html>

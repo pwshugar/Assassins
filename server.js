@@ -25,45 +25,49 @@ app.use(express.bodyParser());
 
 // Router functions are defined in router.js
 
-app.post('/login', function(req, res){
+app.post('/login', function (req, res){
   router.login(req, res);
 });
 
-app.post('/signup', function(req, res){
+app.post('/signup', function (req, res){
   router.signup(req, res);
 });
 
-app.post('/create', function(req, res){
+app.post('/create', function (req, res){
   router.create(req, res);
 });
 
-app.post('/joingroup', function(req, res){
+app.post('/joingroup', function (req, res){
   router.joingroup(req, res);
 });
 
-app.post('/logcheck', function(req, res){
+app.post('/logcheck', function (req, res){
   router.logcheck(req, res);
 });
 
-app.post('/logout', function(req, res){
+app.post('/logout', function (req, res){
   router.logout(req, res);
 });
 
-app.post('/checklist', function(req, res){
+app.post('/logchecklist', function (req, res){
   router.checklist(req, res);
 });
 
-app.post('/startgame', function(req, res){
+app.post('/startgame', function (req, res){
   router.startgame(req, res);
+});
+
+app.post('/contractUpdate', function (req, res){
+  router.contractUpdate(req, res);
 });
 
 // get requests
 
-app.get('/home', function(req, res){
+app.get('/home', function (req, res){
   router.home(req, res);
 });
 
-app.get('/login', function(req, res){
+app.get('/login', function (req, res){
   if (req.session.username && req.session.groupname){
 	res.redirect('/home');
   } else {
@@ -71,7 +75,7 @@ app.get('/login', function(req, res){
   }
 });
 
-app.get('/signup', function(req, res){
+app.get('/signup', function (req, res){
   if (req.session.username && req.session.groupname){
 	res.redirect('/home');
   } else {
@@ -79,7 +83,7 @@ app.get('/signup', function(req, res){
   }
 });
 
-app.get('/', function(req, res){
+app.get('/', function (req, res){
   if (req.session.username && req.session.groupname){
 	res.redirect('/home');
   } else {
@@ -115,16 +119,20 @@ app.get('/*', function (req, res){
 // socket io events
 
 io.sockets.on('connection', function (socket){
-  socket.emit('news', 'hello world');
+  socket.volatile.emit('news', 'hello world');
 
-  socket.on('roomUpdate', function (socket){
-    io.sockets.emit('roomUpdate');
+  socket.on('roomUpdate', function (data){
+    io.sockets.volatile.emit('roomUpdate');
   });
 
   socket.on('checkUsername', function (data){
     UserModel.findOne({ 'username': data }, function (err, data){
       socket.emit('checkUsernameRes', data);
     });
+  });
+
+  socket.on('gamestart', function (data){
+    io.sockets.emit('gamestart');
   });
 
 });

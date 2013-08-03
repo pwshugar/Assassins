@@ -1,26 +1,3 @@
-<!-- <!doctype html>
-<html ng-app>
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-  </head>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-    var socket = io.connect('http://localhost');
-    socket.on('news', function (data) {
-      console.log(data);
-      socket.emit('my other event', { my: 'data' });
-    });
-    </script>
-  <body>
-    <div>
-      <label>Name:</label>
-      <input type="text" ng-model="name" placeholder="Enter a name here">
-      <hr>
-      <h1>Helloq {{name}}!</h1>
-    </div>
-  </body>
-</html> -->
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -28,14 +5,14 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      $(function() {
+      $(function (){
 
         var socket = io.connect('/');
         socket.on('news', function (data){
           console.log(data);
         });
       
-        $(".enter").on('keypress',function(e) {
+        $(".enter").on('keypress',function (e){
           if(e.which === 13) {
             $('#post').click();
           }

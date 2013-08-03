@@ -139,7 +139,14 @@ exports.joingroup = function(req, res){
 };
 
 exports.checklist = function(req, res){
-  UserModel.find({groupname: req.session.groupname, login: true}, function (err, data){
+  console.log()
+  UserModel.find({groupname: req.session.groupname, login: true}, 'username', function (err, data){
+    var obj = {  
+      username: req.session.username, 
+      groupname: req.session.groupname
+    };
+    data.push(obj);
+    console.log('THIS IS DATA', data);
     res.send(data);
   })
 };
@@ -176,6 +183,18 @@ exports.startgame = function(req, res){
     }
   });
   res.send('true');
+};
+
+exports.contractUpdate = function (req, res){
+  UserModel.findOne({ 'username': req.session.username }, 'contract', function(err, data){
+    if (data.contract){
+      UserModel.findOne({ 'username': data.contract }, function(err, data){
+        res.send(data);
+      });
+    } else {
+      res.send(false);
+    }
+  });
 };
 
 
