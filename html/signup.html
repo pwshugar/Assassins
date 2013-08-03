@@ -85,7 +85,8 @@
               lname: $('#lname')[0].value,
               age: $('#age')[0].value,
               weapon: $('#weapon')[0].value,
-              fact: $('#fact')[0].value
+              fact: $('#fact')[0].value,
+              born: $('#born')[0].value
             },
             success: function (data){
               window.location.href = '/';
@@ -112,11 +113,13 @@
       <p class="warning" id="badretype" >Please retype password!</p>
     </div>
     <div id="info">
+      <h1>Profile</h1>
       <label>First Name<input class="infoenter" id="fname" type="text" name="fname"></label>
       <label>Last Name<input class="infoenter" id="lname" name="lname"></label>
       <label>Age<input class="infoenter" id="age" name="age"></label>
       <label>Weapon of Choice<input class="infoenter" id="weapon" name="weapon"></label>
       <label>Interesting Fact About Yourself<input class="infoenter" id="fact" name="fact"></label>
+      <label>City Where You Were Born<input class="infoenter" id="born" name="born"></label>
       <button id="infopost" type="button" value="Submit">Submit</button>
       <p class="warning" id="noinfo">Please fill out all info.</p>
     </div>

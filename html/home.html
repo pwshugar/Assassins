@@ -22,6 +22,24 @@
           contractUpdate();
         });
 
+
+        $("#kill").on('click',function (){
+          $.ajax({
+            url:"/contractUpdate",
+            type: "post",
+            data: {},
+            success: function (data){
+              var city = prompt("What city was " + data.fname + ' ' + data.lname + ' born in?');
+              console.log(data.born);
+              if (city.toLowerCase() === data.born){
+                console.log('You killed');
+              } else {
+                console.log('You fail');
+              }
+            }
+          });
+        });
+
         $("#fakeLink").on('click',function (){
           $.ajax({
             url:"/logout",
@@ -41,7 +59,14 @@
             data: {},
             success: function (data){
               if (data){
-                return;
+                $('#nocontract').remove();
+                $('.info').css('display', "block");
+                $('#username').text("Assassin Name: " + data.username[0].toUpperCase() + data.username.slice(1));
+                $('#fname').text("First Name: " + data.fname);
+                $('#lname').text("Last Name: " + data.lname);
+                $('#age').text("Age: " + data.age);
+                $('#weapon').text("Weapon of Choice: " + data.weapon);
+                $('#fact').text("Interesting Fact: " + data.fact);
               }
             }
           });
@@ -79,10 +104,6 @@
         <span id="fakeLink" class="loginEls" >Log Out?<span>
       </div>
     </div>
-    <div class="longDiv" id='sidebar'>
-      <h2>Links</h2>
-      <a href='/contracts' ></a>
-    </div>
     <div class="longDiv" id="contract">
       <h2>Contract</h2>
       <p id="nocontract" >Game hasn't started yet.</p>
@@ -92,6 +113,7 @@
       <p class="info" id="age" ></p>
       <p class="info" id="weapon" ></p>
       <p class="info" id="fact" ></p>
+      <button class="info" id='kill' type="button">Killed Target</button>
     </div>
     <div class="longDiv" id="list">
       <h2 class="title" >List of players</h2>

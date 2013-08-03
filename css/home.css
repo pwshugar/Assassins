@@ -44,6 +44,10 @@ body {
   top: 0px;
 }
 
+#contract {
+  width:200px;
+}
+
 #sidebar {
   width: 100px;
 }
@@ -54,6 +58,10 @@ body {
 
 #settings span {
   display:block;
+}
+
+.info {
+  display:none;
 }
 
 

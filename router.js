@@ -13,6 +13,7 @@ var User = new Schema({
   age: { type: String, trim: true },
   weapon: { type: String, trim: true },
   fact:{ type: String, trim: true },
+  born: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
   login: { type: Boolean, 'default': true },
   alive: { type: Boolean, 'default': false }
@@ -46,7 +47,8 @@ exports.signup = function(req, res){
     lname: req.body.lname,
     age: req.body.age,
     weapon: req.body.weapon,
-    fact: req.body.fact
+    fact: req.body.fact,
+    born: req.body.born
   };
   var user = new UserModel(user_data);
   console.log('USER DATA',user_data);

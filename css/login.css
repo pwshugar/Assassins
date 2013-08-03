@@ -21,6 +21,10 @@ div {
   box-shadow: 10px 10px 5px #006561;
 }
 
+#info {
+  height:330px;
+}
+
 #signup {
   display: block;
 }
