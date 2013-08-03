@@ -4,7 +4,12 @@
     <link href="./css/create.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/socket.js"></script>
+    <script>
+      var socket = io.connect('/');
+      socket.on('news', function (data){
+        console.log(data);
+      });
+    </script>
   </head>
   <body>
     <h1 class="head" >Welcome to Assassins!</h1>
@@ -60,7 +65,7 @@
             type: "post",
             data: {},
             success: function(data){
-              console.log('success')
+              socket.emit('roomUpdate');
               $('#logout').css("display", "none");
               $('#login').css("display", "block");
             }
@@ -118,7 +123,7 @@
                 $('#joingroupname')[0].value = '';
                 $('#joinpassword')[0].value = '';
               } else {
-                socket.emit('joinRoom', { groupname: $('#joingroupname')[0].value});
+                socket.emit('roomUpdate');
                 window.location.href = '/home';
               }
             }

@@ -4,7 +4,9 @@
     <link href="./css/home.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/socket.js"></script>
+    <script>
+
+    </script>
   <body>
   	<div id="topbar">
       <span id='roomname'>''</span>
@@ -25,25 +27,34 @@
       <h2 class="title" >List of players</h2>
     </div>
     <script>
-      $(function(){
+      $(function (){
+        var socket = io.connect('/');
+        socket.on('news', function (data){
+          console.log(data);
+        });
+        socket.on('roomUpdate', function (data){
+          checklist();
+          console.log('room update');
+        });
 
-        $("#fakeLink").on('click',function() {
+        $("#fakeLink").on('click',function (){
           $.ajax({
             url:"/logout",
             type: "post",
             data: {},
-            success: function(data){
+            success: function (data){
+              socket.emit('roomUpdate');
               window.location.href = '/';
             }
           });
         });
 
-      	var checklist = function(){
+      	var checklist = function (){
       	  $.ajax({
             url:"/checklist",
             type: "post",
             data: {},
-            success: function(data){
+            success: function (data){
               $('li').remove();
               for (var i = 0; i < data.length; i++){
               	$('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
@@ -52,12 +63,12 @@
           });
       	};
 
-        var logcheck = function(){
+        var logcheck = function (){
           $.ajax({
             url:"/logcheck",
             type: "post",
             data: {},
-            success: function(data){
+            success: function (data){
               $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
               $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
             }

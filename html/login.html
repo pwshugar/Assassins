@@ -26,8 +26,15 @@
   <head>
     <link href="./css/login.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
       $(function() {
+
+        var socket = io.connect('/');
+        socket.on('news', function (data){
+          console.log(data);
+        });
+      
         $(".enter").on('keypress',function(e) {
           if(e.which === 13) {
             $('#post').click();
@@ -49,11 +56,11 @@
                 $(".warning").css("display", "none");
                 $("#incorrect").css("display", "block");
               } else {
+                socket.emit('roomUpdate');
                 window.location.href = '/';
               }
             }
           });
-          return false;
         });
       });
     </script>

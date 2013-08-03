@@ -4,7 +4,9 @@
     <link href="./css/home.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/socket.js"></script>  <body>
+    <script>
+
+    </script>
   	<div id="topbar">
       <span id='roomname'>''</span>
       <div id="logout">
@@ -28,36 +30,47 @@
       <button type="button" id="startgame" >Start Game</button>
     </div>
     <script>
-      $(function(){
+      $(function (){
 
-      	 $("#startgame").on('click',function() {
+        var socket = io.connect('/');
+          socket.on('news', function (data){
+            console.log(data);
+          });
+          socket.on('roomUpdate', function (data){
+            console.log('room update');
+            checklist();
+          });
+
+      	 $("#startgame").on('click',function (){
           $.ajax({
             url:"/startgame",
             type: "post",
             data: {},
-            success: function(data){
-
+            success: function (data){
+              return;
+              // need to do something
             }
           });
         });
 
-        $("#fakeLink").on('click',function() {
+        $("#fakeLink").on('click',function (){
           $.ajax({
             url:"/logout",
             type: "post",
             data: {},
-            success: function(data){
+            success: function (data){
+              socket.emit('roomUpdate');
               window.location.href = '/';
             }
           });
         });
 
-      	var checklist = function(){
+      	var checklist = function (){
       	  $.ajax({
             url:"/checklist",
             type: "post",
             data: {},
-            success: function(data){
+            success: function (data){
               if (data[0].alive) {
               	// do something
               }
@@ -69,12 +82,12 @@
           });
       	};
 
-        var logcheck = function(){
+        var logcheck = function (){
           $.ajax({
             url:"/logcheck",
             type: "post",
             data: {},
-            success: function(data){
+            success: function (data){
               $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
               $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1) + " - Admin");
             }

@@ -109,11 +109,12 @@ app.get('/*', function (req, res){
 // socket io events
 
 io.sockets.on('connection', function (socket){
-  socket.emit('news', { hello: 'world' });
-  socket.on('joinRoom', function (data){
-    console.log('HEARD JOIN!!!');
+  socket.emit('news', 'hello world');
+  socket.on('roomUpdate', function (socket){
+    io.sockets.emit('roomUpdate');
   });
 });
+
 
 
 
