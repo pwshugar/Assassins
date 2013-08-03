@@ -88,9 +88,9 @@ app.get('/', function(req, res){
 });
 
 // css get requests
-app.get('/socket.js', function (req, res){
-  res.setHeader('Content-Type', 'text/script');
-  res.sendfile('./socket.js')
+app.get('/js/admin.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('./js/admin.js')
 });
 
 app.get('/css/home.css', function (req, res){

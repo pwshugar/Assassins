@@ -69,7 +69,7 @@
 
         $("#infopost").on('click',function (){
           for (var i = 0; i < $(".infoenter").length; i++){
-            if ($(".infoenter")[i].value = ''){
+            if ($(".infoenter")[i].value === ''){
               $(".warning").css("display", "none");
               $("#noinfo").css("display", "block");
               return;
@@ -112,7 +112,7 @@
       <p class="warning" id="badretype" >Please retype password!</p>
     </div>
     <div id="info">
-      <label>First Name<input class="infoenter" id="fname" name="fname"></label>
+      <label>First Name<input class="infoenter" id="fname" type="text" name="fname"></label>
       <label>Last Name<input class="infoenter" id="lname" name="lname"></label>
       <label>Age<input class="infoenter" id="age" name="age"></label>
       <label>Weapon of Choice<input class="infoenter" id="weapon" name="weapon"></label>

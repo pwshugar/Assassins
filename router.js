@@ -13,7 +13,7 @@ var User = new Schema({
   age: { type: String, trim: true },
   weapon: { type: String, trim: true },
   fact:{ type: String, trim: true },
-  contract: { type: String, trim: true, lowercase: true },
+  contract: { type: String, trim: true },
   login: { type: Boolean, 'default': true },
   alive: { type: Boolean, 'default': false }
 });
@@ -49,11 +49,14 @@ exports.signup = function(req, res){
     fact: req.body.fact
   };
   var user = new UserModel(user_data);
+  console.log('USER DATA',user_data);
 
     user.save(function(error, data){
       if (error){
+        console.log('ERROR');
         res.send('false');
       } else {
+        console.log('sent');
         req.session.username = req.body.username;
         req.session.admin = false;
         res.redirect('/');
