@@ -13,9 +13,7 @@ console.log('Listening on port 8080...');
 app.use(express.cookieParser());
 app.use(express.session({
   secret: '1234567890QWERTY',
-  store: new MongoStore({
-    db: router.conn.connection.db
-  })
+  store: new MongoStore({ db: router.conn.connection.db })
 }));
 app.use(express.bodyParser());
 
@@ -84,38 +82,39 @@ app.get('/', function(req, res){
 });
 
 // css get requests
-app.get('/socket.js', function(req, res){
+app.get('/socket.js', function (req, res){
   res.setHeader('Content-Type', 'text/script');
   res.sendfile('./socket.js')
 });
 
-app.get('/css/home.css', function(req, res){
+app.get('/css/home.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
   res.sendfile('./css/home.css')
 });
 
-app.get('/css/login.css', function(req, res){
+app.get('/css/login.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
   res.sendfile('./css/login.css')
 });
 
-app.get('/css/create.css', function(req, res){
+app.get('/css/create.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
   res.sendfile('./css/create.css')
 });
 
-app.get('/*', function(req, res) {
+app.get('/*', function (req, res){
   res.redirect('/home');
 });
 
 // socket io events
 
-io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', function (socket){
   socket.emit('news', { hello: 'world' });
-  socket.on('set username', function (data) {
-    console.log(data);
+  socket.on('joinRoom', function (data){
+    console.log('HEARD JOIN!!!');
   });
 });
+
 
 
 
