@@ -64,6 +64,7 @@
             data: { flag: false },
             success: function (data){
               if (data){
+                  console.log(data);
                 if (data === 'dead'){
                   $('.info').css('display', "none");
                   $('#nocontract').css('display', 'block');
@@ -72,6 +73,7 @@
                   $('.info').css('display', "none");
                   $('#nocontract').css('display', 'block');
                   $('#nocontract').text('You Win!');
+                  // emit a win
                 } else {
                   $('#nocontract').css('display', 'none');
                   $('.info').css('display', "block");

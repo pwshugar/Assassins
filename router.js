@@ -17,8 +17,6 @@ var User = new Schema({
   contract: { type: String, trim: true },
   login: { type: Boolean, 'default': true },
   alive: { type: Boolean, 'default': false },
-  ingame: {type: Boolean, 'default': false },
-  switchStatus: { type: Boolean, 'default': true }
 });
 
 var Group = new Schema({
@@ -105,14 +103,9 @@ exports.signup = function(req, res){
   var user = new UserModel(user_data);
 
   user.save(function (error, data){
-    if (error){
-      res.send('false');
-    } else {
-      console.log('sent');
-      req.session.username = req.body.username;
-      req.session.admin = false;
-      res.redirect('/');
-    }
+    req.session.username = req.body.username;
+    req.session.admin = false;
+    res.redirect('/');
   });
 };
 
@@ -150,11 +143,7 @@ exports.create = function (req, res){
   };
   var group = new GroupModel(group_data);
   group.save(function (err, data){
-    if (err){
-      res.send('false');
-    } else {
-      res.send('true');
-    }
+    res.send('true');
   });
 };
 
@@ -224,13 +213,12 @@ exports.startgame = function (req, res){
   });
   UserModel.find({ groupname: req.session.groupname, login: true }, 'username', function (err, data){
     var names = data;
-    for (var i = 0; i < names.length; i++){ 
+    for (var i = 0; i < names.length; i++){
       setTimeout(function (i){
         var j = i + 1;
         if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
         UserModel.findOne({ username: names[i].username }, function (err, data){
           data.alive = true;
-          data.ingame = true;
           data.contract = names[j].username;
           data.save();
         });   
@@ -245,13 +233,9 @@ exports.contractUpdate = function (req, res){
     if (data.contract){
       if (data.contract === 'dead'){
         res.send('dead');
-      } else if (data.contract === 'win'){
+      } else if (data.contract === req.session.username){
         res.send('win');
       } else {
-        if (req.body.flag){
-          data.switchStatus = false;
-          data.save();
-        }
         UserModel.findOne({ 'username': data.contract }, function (err, data){
           res.send(data);
         });
