@@ -99,38 +99,38 @@
           });
         });
 
-      $(".joinenter").on('keypress',function (e){
-        if(e.which === 13) {
-          $('#joinpost').click();
-        }
-      });
+        $(".joinenter").on('keypress',function (e){
+          if(e.which === 13) {
+            $('#joinpost').click();
+          }
+        });
 
-      $("#joinpost").on('click',function (){
-        if (!loggedIn){
-          return
-          // need to make fail message
-        } else {
-          $.ajax({  
-            url:"/joingroup",
-            type: "post",
-            data: {
-              groupname: $('#joingroupname')[0].value.toLowerCase(),
-              password: $('#joinpassword')[0].value
-            },
-            success: function (data){
-              if (data === 'false'){
-                $('#joingroupname')[0].value = '';
-                $('#joinpassword')[0].value = '';
-              } else {
-                socket.emit('roomUpdate');
-                window.location.href = '/home';
+        $("#joinpost").on('click',function (){
+          if (!loggedIn){
+            return
+            // need to make fail message
+          } else {
+            $.ajax({  
+              url:"/joingroup",
+              type: "post",
+              data: {
+                groupname: $('#joingroupname')[0].value.toLowerCase(),
+                password: $('#joinpassword')[0].value
+              },
+              success: function (data){
+                if (data === 'false'){
+                  $('#joingroupname')[0].value = '';
+                  $('#joinpassword')[0].value = '';
+                } else {
+                  socket.emit('roomUpdate');
+                  window.location.href = '/home';
+                }
               }
-            }
-          });
-        }
-      });
+            });
+          }
+        });
 
-    });
+      });
     </script>
   </body>
 </html>

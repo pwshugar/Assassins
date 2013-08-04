@@ -159,21 +159,25 @@ exports.logcheck = function (req, res){
 
 exports.joingroup = function (req, res){
   var groupname = req.body.groupname;
-  GroupModel.findOne({ 'groupname': groupname }, function (err, data){
-    if (data === null){
-      res.send('false');
-    } else if (data.password !== req.body.password){
-      res.send('false');
+  GroupModel.findOne({ 'groupname': groupname }, function (err, groupdata){
+    if (groupdata === null){
+      res.send(false);
+    } else if (groupdata.password !== req.body.password){
+      res.send(false);
     } else {
-      if (req.session.username === data.admin && !data.started){
-        req.session.admin = true;
-      }
-      UserModel.findOne({ 'username': req.session.username }, function (err, data){
-        data.groupname = groupname;
-        data.save();
+      UserModel.findOne({ 'username': req.session.username }, function (err, userdata){
+        if (userdata.groupname !== groupname && userdata.started){
+          res.send(null);
+        } else {
+          if (req.session.username === groupdata.admin && !groupdata.started){
+            req.session.admin = true;
+          }
+          userdata.groupname = groupname;
+          userdata.save();
+          req.session.groupname = req.body.groupname;
+          res.send('true');
+        }
       });
-      req.session.groupname = req.body.groupname;
-      res.send('true');
     }
   });
 };
