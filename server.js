@@ -135,6 +135,14 @@ io.sockets.on('connection', function (socket){
     io.sockets.emit('gamestart');
   });
 
+  socket.on('switchStatusBack', function (data){
+    UserModel.findOne({username: data}, function (err, data){
+      console.log('HEARD');
+      data.switchStatus = true;
+      data.save();
+    });
+  });
+
 });
 
 

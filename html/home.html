@@ -7,6 +7,8 @@
     <script type="text/javascript">
       $(document).ready(function (){
 
+        var roomUsername = '';
+
         var socket = io.connect('/');
         socket.on('news', function (data){
           console.log(data);
@@ -22,7 +24,6 @@
           contractUpdate();
         });
 
-
         $("#kill").on('click',function (){
           $.ajax({
             url:"/contractUpdate",
@@ -30,7 +31,7 @@
             data: { flag: true },
             success: function (data){
               var city = prompt("What city was " + data.fname + ' ' + data.lname + ' born in?');
-              console.log(city);
+              socket.emit('switchStatusBack', roomUsername);
               if (city !== null && city !== ""){
                 if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
                   console.log('You killed');
@@ -82,6 +83,7 @@
             success: function (data){
               console.log('checklist success');
               var d = data.pop();
+              roomUsername = d.username;
               $('#welcome').text("Welcome, " + d.username[0].toUpperCase() + d.username.slice(1));
               $('#roomname').text(d.groupname[0].toUpperCase() + d.groupname.slice(1));
               $('li').remove();
