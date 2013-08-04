@@ -27,14 +27,16 @@
           $.ajax({
             url:"/contractUpdate",
             type: "post",
-            data: {},
+            data: { flag: true },
             success: function (data){
               var city = prompt("What city was " + data.fname + ' ' + data.lname + ' born in?');
-              console.log(data.born);
-              if (city.toLowerCase() === data.born){
-                console.log('You killed');
-              } else {
-                console.log('You fail');
+              console.log(city);
+              if (city !== null && city !== ""){
+                if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
+                  console.log('You killed');
+                } else {
+                  console.log('You fail');
+                }
               }
             }
           });
@@ -56,7 +58,7 @@
           $.ajax({
             url:"/contractUpdate",
             type: "post",
-            data: {},
+            data: { flag: false },
             success: function (data){
               if (data){
                 $('#nocontract').remove();
