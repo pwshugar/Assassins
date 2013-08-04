@@ -8,6 +8,7 @@
       $(document).ready(function (){
 
         var roomUsername = '';
+        var roomName = '';
 
         var socket = io.connect('/');
         socket.on('news', function (data){
@@ -35,7 +36,7 @@
               socket.emit('switchStatusBack', roomUsername);
               if (city !== null && city !== ""){
                 if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
-                  socket.emit('killPlayer', { username: roomUsername, contract: data.username });
+                  socket.emit('killPlayer', { username: roomUsername, contract: data.username, groupname: roomName });
                 } else {
                   console.log('You fail');
                 }
@@ -63,18 +64,24 @@
             data: { flag: false },
             success: function (data){
               if (data){
-                $('#nocontract').css('display', 'none');
-                $('.info').css('display', "block");
-                $('#username').text("Assassin Name: " + data.username[0].toUpperCase() + data.username.slice(1));
-                $('#fname').text("First Name: " + data.fname);
-                $('#lname').text("Last Name: " + data.lname);
-                $('#age').text("Age: " + data.age);
-                $('#weapon').text("Weapon of Choice: " + data.weapon);
-                $('#fact').text("Interesting Fact: " + data.fact);
-              } else if (data === false){
-                $('.info').css('display', "none");
-                $('#nocontract').css('display', 'block');
-                $('#nocontract').text('You were assassinated. Game Over.');
+                if (data === 'dead'){
+                  $('.info').css('display', "none");
+                  $('#nocontract').css('display', 'block');
+                  $('#nocontract').text('You were assassinated. Game Over.');
+                } else if (data === 'win'){
+                  $('.info').css('display', "none");
+                  $('#nocontract').css('display', 'block');
+                  $('#nocontract').text('You Win!');
+                } else {
+                  $('#nocontract').css('display', 'none');
+                  $('.info').css('display', "block");
+                  $('#username').text("Assassin Name: " + data.username[0].toUpperCase() + data.username.slice(1));
+                  $('#fname').text("First Name: " + data.fname);
+                  $('#lname').text("Last Name: " + data.lname);
+                  $('#age').text("Age: " + data.age);
+                  $('#weapon').text("Weapon of Choice: " + data.weapon);
+                  $('#fact').text("Interesting Fact: " + data.fact);
+                }
               }
             }
           });
@@ -89,6 +96,7 @@
               console.log('checklist success');
               var d = data.pop();
               roomUsername = d.username;
+              roomName = d.groupname;
               $('#welcome').text("Welcome, " + d.username[0].toUpperCase() + d.username.slice(1));
               $('#roomname').text(d.groupname[0].toUpperCase() + d.groupname.slice(1));
               $('li').remove();

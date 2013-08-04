@@ -17,6 +17,7 @@ var User = new Schema({
   contract: { type: String, trim: true },
   login: { type: Boolean, 'default': true },
   alive: { type: Boolean, 'default': false },
+  ingame: {type: Boolean, 'default': false },
   switchStatus: { type: Boolean, 'default': true }
 });
 
@@ -68,6 +69,11 @@ var fakeUsers = function (){
   user_data.fname = 'pullo';
   var user4 = new UserModel(user_data);
   user4.save(function (error, data){
+  });
+  user_data.username = 'david';
+  user_data.fname = 'david';
+  var user5 = new UserModel(user_data);
+  user5.save(function (error, data){
   });
 
   var group_data = {
@@ -224,6 +230,7 @@ exports.startgame = function (req, res){
         if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
         UserModel.findOne({ username: names[i].username }, function (err, data){
           data.alive = true;
+          data.ingame = true;
           data.contract = names[j].username;
           data.save();
         });   
@@ -237,7 +244,9 @@ exports.contractUpdate = function (req, res){
   UserModel.findOne({ 'username': req.session.username }, 'contract', function (err, data){
     if (data.contract){
       if (data.contract === 'dead'){
-        res.send(false);
+        res.send('dead');
+      } else if (data.contract === 'win'){
+        res.send('win');
       } else {
         if (req.body.flag){
           data.switchStatus = false;

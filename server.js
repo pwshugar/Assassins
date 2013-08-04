@@ -143,22 +143,34 @@ io.sockets.on('connection', function (socket){
   });
 
   socket.on('killPlayer', function (data){
-    UserModel.findOne({ username: data.contract }, function (err, contractdata){
-      UserModel.findOne({ username: data.username }, function (err, userdata){
-        if (userdata.contract === data.contract){
-          userdata.contract = contractdata.contract;
-          userdata.save();
-          contractdata.contract = 'dead';
-          contractdata.alive = false;
-          contractdata.save();
-          io.sockets.emit('roomUpdate');
-        } else {
-          socket.emit('failedKillPlayer');
-        }
-      // setTimeout(function(){io.sockets.emit('roomUpdate');}, 0);
+    UserModel.find({ groupname: data.groupname, ingame: true, alive: true }, 'username', function (err, groupdata){
+      UserModel.findOne({ username: data.contract }, function (err, contractdata){
+        UserModel.findOne({ username: data.username }, function (err, userdata){
+          if (userdata.contract === data.contract){
+            if (groupdata.length === 2){
+              userdata.contract = 'win';
+              userdata.save();
+              contractdata.contract = 'dead';
+              contractdata.alive = false;
+              contractdata.save();
+              io.sockets.emit('roomUpdate')
+            } else if (userdata.username !== contractdata.contract){
+              userdata.contract = contractdata.contract;
+              userdata.save();
+              contractdata.contract = 'dead';
+              contractdata.alive = false;
+              contractdata.save();
+              io.sockets.emit('roomUpdate');
+            } else {
+              // do conflict ress
+            }
+          } else {
+            socket.emit('failedKillPlayer');
+          }
+        });
       });
     });
-  })
+  });
 
 });
 
