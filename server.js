@@ -137,11 +137,28 @@ io.sockets.on('connection', function (socket){
 
   socket.on('switchStatusBack', function (data){
     UserModel.findOne({username: data}, function (err, data){
-      console.log('HEARD');
       data.switchStatus = true;
       data.save();
     });
   });
+
+  socket.on('killPlayer', function (data){
+    UserModel.findOne({ username: data.contract }, function (err, contractdata){
+      UserModel.findOne({ username: data.username }, function (err, userdata){
+        if (userdata.contract === data.contract){
+          userdata.contract = contractdata.contract;
+          userdata.save();
+          contractdata.contract = 'dead';
+          contractdata.alive = false;
+          contractdata.save();
+          io.sockets.emit('roomUpdate');
+        } else {
+          socket.emit('failedKillPlayer');
+        }
+      // setTimeout(function(){io.sockets.emit('roomUpdate');}, 0);
+      });
+    });
+  })
 
 });
 

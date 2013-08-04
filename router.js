@@ -37,6 +37,51 @@ var UserModel = exports.UM = mongoose.model('users', User);
 var GroupModel = exports.GM = mongoose.model('groups', Group);
 var SessionModel = exports.SM = mongoose.model('sessions', Session)
 
+// fake database
+
+var fakeUsers = function (){
+  var user_data = {
+    username: 'peter',
+    password: 'm',
+    groupname: 'hack',
+    fname: 'Peter',
+    lname: 'Shugar',
+    age: '28',
+    weapon: 'gun',
+    fact: 'blah',
+    born: 'ca'
+  };
+  var user = new UserModel(user_data);
+  user.save(function (error, data){
+  });
+  user_data.username = 'nams';
+  user_data.fname = 'nams';
+  var user2 = new UserModel(user_data);
+  user2.save(function (error, data){
+  });
+  user_data.username = 'puck';
+  user_data.fname = 'puck';
+  var user3 = new UserModel(user_data);
+  user3.save(function (error, data){
+  });
+  user_data.username = 'pullo';
+  user_data.fname = 'pullo';
+  var user4 = new UserModel(user_data);
+  user4.save(function (error, data){
+  });
+
+  var group_data = {
+    admin: 'peter',
+    groupname: 'hack',
+    password: 'm'
+  };
+  var group = new GroupModel(group_data);
+  group.save(function (err, data){
+  });
+};
+
+// fakeUsers();
+
 // Router functions
 
 exports.signup = function(req, res){
@@ -53,21 +98,21 @@ exports.signup = function(req, res){
   };
   var user = new UserModel(user_data);
 
-    user.save(function(error, data){
-      if (error){
-        res.send('false');
-      } else {
-        console.log('sent');
-        req.session.username = req.body.username;
-        req.session.admin = false;
-        res.redirect('/');
-      }
-    });
+  user.save(function (error, data){
+    if (error){
+      res.send('false');
+    } else {
+      console.log('sent');
+      req.session.username = req.body.username;
+      req.session.admin = false;
+      res.redirect('/');
+    }
+  });
 };
 
-exports.login = function(req, res){
+exports.login = function (req, res){
   var username = req.body.username;
-  UserModel.findOne({'username': username}, function(err, data){
+  UserModel.findOne({'username': username}, function (err, data){
     if (data === null){
       res.send('false');
     } else if (data.password !== req.body.password){
@@ -82,8 +127,8 @@ exports.login = function(req, res){
   });
 };
 
-exports.logout = function(req, res){
-  UserModel.findOne({ 'username': req.session.username }, function(err, data){
+exports.logout = function (req, res){
+  UserModel.findOne({ 'username': req.session.username }, function (err, data){
     data.login = false;
     data.save();
   });
@@ -91,14 +136,14 @@ exports.logout = function(req, res){
   res.end();
 };
 
-exports.create = function(req, res){
+exports.create = function (req, res){
   var group_data = {
     admin: req.session.username,
     groupname: req.body.groupname,
     password: req.body.password
   };
   var group = new GroupModel(group_data);
-  group.save(function(err, data){
+  group.save(function (err, data){
     if (err){
       res.send('false');
     } else {
@@ -191,15 +236,19 @@ exports.startgame = function (req, res){
 exports.contractUpdate = function (req, res){
   UserModel.findOne({ 'username': req.session.username }, 'contract', function (err, data){
     if (data.contract){
-      if (req.body.flag){
-        data.switchStatus = false;
-        data.save();
+      if (data.contract === 'dead'){
+        res.send(false);
+      } else {
+        if (req.body.flag){
+          data.switchStatus = false;
+          data.save();
+        }
+        UserModel.findOne({ 'username': data.contract }, function (err, data){
+          res.send(data);
+        });
       }
-      UserModel.findOne({ 'username': data.contract }, function (err, data){
-        res.send(data);
-      });
     } else {
-      res.send(false);
+      res.send(null);
     }
   });
 };

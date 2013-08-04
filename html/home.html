@@ -17,6 +17,7 @@
         socket.on('roomUpdate', function (data){
           console.log('room update');
           logchecklist();
+          contractUpdate();
         });
 
         socket.on('gamestart', function (data){
@@ -34,7 +35,7 @@
               socket.emit('switchStatusBack', roomUsername);
               if (city !== null && city !== ""){
                 if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
-                  console.log('You killed');
+                  socket.emit('killPlayer', { username: roomUsername, contract: data.username });
                 } else {
                   console.log('You fail');
                 }
@@ -62,7 +63,7 @@
             data: { flag: false },
             success: function (data){
               if (data){
-                $('#nocontract').remove();
+                $('#nocontract').css('display', 'none');
                 $('.info').css('display', "block");
                 $('#username').text("Assassin Name: " + data.username[0].toUpperCase() + data.username.slice(1));
                 $('#fname').text("First Name: " + data.fname);
@@ -70,6 +71,10 @@
                 $('#age').text("Age: " + data.age);
                 $('#weapon').text("Weapon of Choice: " + data.weapon);
                 $('#fact').text("Interesting Fact: " + data.fact);
+              } else if (data === false){
+                $('.info').css('display', "none");
+                $('#nocontract').css('display', 'block');
+                $('#nocontract').text('You were assassinated. Game Over.');
               }
             }
           });
