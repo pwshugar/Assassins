@@ -5,58 +5,14 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-		$(document).ready(function (){
+	  $(document).ready(function (){
 
-		  var socket = io.connect('/');
-		    socket.on('news', function (data){
-		      console.log(data);
-		    });
-
-		    socket.on('roomUpdate', function (data){
-		      console.log('room update');
-		      logchecklist();
-		    });
-
-
-		    socket.on('gamestart', function (data){
-		      console.log('game started');
-		 	  contractUpdate();
-		    });
-
-		  $("#startgame").on('click',function (){
-		    $.ajax({
-		      url:"/startgame",
-		      type: "post",
-		      data: {},
-		      success: function (data){
-		      	socket.emit('gamestart');
-		        window.location.href = '/';
-		      }
-		    });
-		  });
-
-		  $("#fakeLink").on('click',function (){
-		    $.ajax({
-		      url:"/logout",
-		      type: "post",
-		      data: {},
-		      success: function (data){
-		        socket.emit('roomUpdate');
-		        window.location.href = '/';
-		      }
-		    });
-		  });
-
-        var logchecklist = function (){
+        var checklist = function (){
           $.ajax({
-            url:"/logchecklist",
+            url:"/checklist",
             type: "post",
             data: {},
             success: function (data){
-              console.log('checklist success');
-              var d = data.pop();
-              $('#welcome').text("Welcome, " + d.username[0].toUpperCase() + d.username.slice(1));
-              $('#roomname').text(d.groupname[0].toUpperCase() + d.groupname.slice(1)  + " - Admin");
               $('li').remove();
               for (var i = 0; i < data.length; i++){
                 $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
@@ -65,9 +21,68 @@
           });
         };
 
-        logchecklist();
+        checklist();
 
-		});
+        var logcheck = function (){
+          $.ajax({
+            url:"/logcheck",
+            type: "post",
+            data: {},
+            success: function (data){
+              if (data){
+                $('#logout').css("display", "block");
+                $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
+                $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1) + ' - Admin');
+              } else {
+                $('#login').css("display", "block");
+              }
+            }
+          });
+        };
+
+        logcheck();
+
+	    var socket = io.connect('/');
+	    socket.on('news', function (data){
+	      console.log(data);
+	    });
+
+	    socket.on('roomUpdate', function (data){
+	      console.log('room update');
+	      checklist();
+	    });
+
+
+	    socket.on('gamestart', function (data){
+	      console.log('game started');
+	 	  contractUpdate();
+	    });
+
+	    $("#startgame").on('click',function (){
+	      $.ajax({
+	        url:"/startgame",
+	        type: "post",
+	        data: {},
+	        success: function (data){
+	          socket.emit('gamestart');
+	          window.location.href = '/';
+	        }
+	      });
+	    });
+
+	    $("#fakeLink").on('click',function (){
+	      $.ajax({
+	        url:"/logout",
+	        type: "post",
+	        data: {},
+	        success: function (data){
+	          socket.emit('roomUpdate');
+	          window.location.href = '/';
+	        }
+	      });
+	    });
+
+	  });
     </script>
   </head>
   <body>

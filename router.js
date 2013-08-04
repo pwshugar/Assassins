@@ -15,8 +15,7 @@ var User = new Schema({
   fact:{ type: String, trim: true },
   born: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
-  login: { type: Boolean, 'default': true },
-  alive: { type: Boolean, 'default': false },
+  login: { type: Boolean, 'default': true }
 });
 
 var Group = new Schema({
@@ -166,10 +165,8 @@ exports.joingroup = function (req, res){
     } else if (data.password !== req.body.password){
       res.send('false');
     } else {
-      if (req.session.username === data.admin){
-        if (!data.started){
-          req.session.admin = true;
-        }
+      if (req.session.username === data.admin && !data.started){
+        req.session.admin = true;
       }
       UserModel.findOne({ 'username': req.session.username }, function (err, data){
         data.groupname = groupname;
@@ -183,11 +180,6 @@ exports.joingroup = function (req, res){
 
 exports.checklist = function (req, res){
   UserModel.find({groupname: req.session.groupname, login: true}, 'username', function (err, data){
-    var obj = {  
-      username: req.session.username,
-      groupname: req.session.groupname
-    };
-    data.push(obj);
     res.send(data);
   })
 };
@@ -218,7 +210,6 @@ exports.startgame = function (req, res){
         var j = i + 1;
         if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
         UserModel.findOne({ username: names[i].username }, function (err, data){
-          data.alive = true;
           data.contract = names[j].username;
           data.save();
         });   

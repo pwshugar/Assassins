@@ -49,7 +49,7 @@ app.post('/logout', function (req, res){
   router.logout(req, res);
 });
 
-app.post('/logchecklist', function (req, res){
+app.post('/checklist', function (req, res){
   router.checklist(req, res);
 });
 
@@ -135,13 +135,18 @@ io.sockets.on('connection', function (socket){
     io.sockets.emit('gamestart');
   });
 
+  socket.on('gameover', function (data){
+    UserModel.findOne({ username: data }, function (err, data){
+      io.sockets.emit(data);
+    });
+  });
+
   socket.on('killPlayer', function (data){
     UserModel.findOne({ username: data.contract }, function (err, contractdata){
       UserModel.findOne({ username: data.username }, function (err, userdata){
         userdata.contract = contractdata.contract;
         userdata.save();
         contractdata.contract = 'dead';
-        contractdata.alive = false;
         contractdata.save();
         io.sockets.emit('roomUpdate');
       });

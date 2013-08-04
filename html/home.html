@@ -6,9 +6,31 @@
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       $(document).ready(function (){
-
+        
         var roomUsername = '';
         var roomName = '';
+        
+        var logcheck = function (){
+          $.ajax({
+            url:"/logcheck",
+            type: "post",
+            data: {},
+            success: function (data){
+              if (data){
+                roomUsername = data.username;
+                roomName = data.groupname;
+                $('#logout').css("display", "block");
+                $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
+                $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+              } else {
+                $('#login').css("display", "block");
+              }
+            }
+          });
+        };
+
+        logcheck();
+
 
         var socket = io.connect('/');
         socket.on('news', function (data){
@@ -17,13 +39,16 @@
 
         socket.on('roomUpdate', function (data){
           console.log('room update');
-          logchecklist();
           contractUpdate();
         });
 
         socket.on('gamestart', function (data){
           console.log('game started');
           contractUpdate();
+        });
+
+        socket.on('gameover', function (data){
+          console.log(data.fname);
         });
 
         $("#kill").on('click',function (){
@@ -73,7 +98,7 @@
                   $('.info').css('display', "none");
                   $('#nocontract').css('display', 'block');
                   $('#nocontract').text('You Win!');
-                  // emit a win
+                  socket.emit('gameover', roomUsername);
                 } else {
                   $('#nocontract').css('display', 'none');
                   $('.info').css('display', "block");
@@ -89,27 +114,6 @@
           });
         };
 
-        var logchecklist = function (){
-          $.ajax({
-            url:"/logchecklist",
-            type: "post",
-            data: {},
-            success: function (data){
-              console.log('checklist success');
-              var d = data.pop();
-              roomUsername = d.username;
-              roomName = d.groupname;
-              $('#welcome').text("Welcome, " + d.username[0].toUpperCase() + d.username.slice(1));
-              $('#roomname').text(d.groupname[0].toUpperCase() + d.groupname.slice(1));
-              $('li').remove();
-              for (var i = 0; i < data.length; i++){
-                $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
-              }
-            }
-          });
-        };
-
-        logchecklist();
         contractUpdate();
 
       });
@@ -133,9 +137,6 @@
       <p class="info" id="weapon" ></p>
       <p class="info" id="fact" ></p>
       <button class="info" id='kill' type="button">Killed Target</button>
-    </div>
-    <div class="longDiv" id="list">
-      <h2 class="title" >List of players</h2>
     </div>
   </body>
 </html>
