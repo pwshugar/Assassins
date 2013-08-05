@@ -93,8 +93,11 @@
               if (data){
                 socket.emit('roomUpdate');
                 // window.location.href = '/'; // changed for HR
-                // window.location.href = 'home';
+                window.location.href = 'home';
               } else {
+                for (var i = 0; i < $(".infoenter").length; i++){
+                  $(".infoenter")[i].value = '';
+                }
                 $(".warning").css("display", "none");
                 $("#toolate").css("display", "block");
               }

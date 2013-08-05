@@ -51,18 +51,15 @@ var fakeUsers = function (){
     born: 'santa monica',
   };
   var user = new UserModel(user_data);
-  user.save(function (error, data){
-  });
+  user.save(function (error, data){});
   user_data.username = 'nams';
   user_data.fname = 'nams';
   var user2 = new UserModel(user_data);
-  user2.save(function (error, data){
-  });
+  user2.save(function (error, data){});
   user_data.username = 'puck';
   user_data.fname = 'puck';
   var user3 = new UserModel(user_data);
-  user3.save(function (error, data){
-  });
+  user3.save(function (error, data){});
   // user_data.username = 'pullo';
   // user_data.fname = 'pullo';
   // var user4 = new UserModel(user_data);
@@ -109,19 +106,21 @@ var fakeUsers = function (){
     groupname: 'hackreactor',
     password: 'm'
   };
+
   var group = new GroupModel(group_data);
-    group.save(function (err, data){
+  group.save(function (err, data){ 
+    if(err){
+      console.log("ERROR");
+    }
+    console.log('hi');
   });
+
 };
 
-// mongoose.connection.collections['users'].drop( function(err) {
-// });
-
-// mongoose.connection.collections['groups'].drop( function(err) {
-// });
-
-// fakeUsers();
-
+// mongoose.connection.collections['groups'].drop(function (err){});
+// mongoose.connection.collections['users'].drop(function (err){});
+// fakeUsers(); 
+ 
 // Router functions
 
 exports.signup = function(req, res){
