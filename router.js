@@ -15,6 +15,9 @@ var User = new Schema({
   fact:{ type: String, trim: true },
   born: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
+  // lat: { type: Number },
+  // long: { type: Number },
+  // minutes: { type: Number },
   login: { type: Boolean, 'default': true },
   started:{ type: Boolean, 'default': false } // changed for HR
 });
@@ -40,24 +43,24 @@ var SessionModel = exports.SM = mongoose.model('sessions', Session)
 
 var fakeUsers = function (){
   var user_data = {
-    username: 'peter',
-    password: 'm',
+    username: 'master assassin',
+    password: 'puck5',
     groupname: 'hackreactor',
     fname: 'Peter',
     lname: 'Shugar',
     age: '28',
-    weapon: 'gun',
-    fact: 'i love my wife',
-    born: 'santa monica',
+    weapon: 'Zombies',
+    fact: 'I have a hairless cat',
+    born: 'Santa Monica'
   };
   var user = new UserModel(user_data);
   user.save(function (error, data){});
-  user_data.username = 'nams';
-  user_data.fname = 'nams';
+  user_data.username = 'win';
+  user_data.login = false;
+  user_data.groupname = '';
   var user2 = new UserModel(user_data);
   user2.save(function (error, data){});
-  user_data.username = 'puck';
-  user_data.fname = 'puck';
+  user_data.username = 'dead';
   var user3 = new UserModel(user_data);
   user3.save(function (error, data){});
   // user_data.username = 'pullo';
@@ -102,9 +105,9 @@ var fakeUsers = function (){
   // });
 
   var group_data = {
-    admin: 'peter',
+    admin: 'master assassin',
     groupname: 'hackreactor',
-    password: 'm'
+    password: 'plantknife'
   };
 
   var group = new GroupModel(group_data);
@@ -135,7 +138,10 @@ exports.signup = function(req, res){
         age: req.body.age,
         weapon: req.body.weapon,
         fact: req.body.fact,
-        born: req.body.born
+        born: req.body.born,
+        // lat: req.body.lat,
+        // long: req.body.long,
+        // minutes: req.body.minutes
       };
       var user = new UserModel(user_data);
 
@@ -166,7 +172,10 @@ exports.login = function (req, res){
         req.session.admin = false;
         req.session.username = username;
         req.session.groupname = 'hackreactor'; // changed for HR
-        if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
+        if (username === 'master assassin' && !data.started){ req.session.admin = true; } // changed for HR
+        // data.lat = req.body.lat;
+        // data.long = req.body.long;
+        // data.minutes = req.body.minutes;
         data.login = true;
         data.save();
         res.send(true);

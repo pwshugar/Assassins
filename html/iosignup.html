@@ -10,6 +10,24 @@
     <script type="text/javascript">
       $(function (){
 
+        // var locObj = {
+        //   lat: 0,
+        //   long: 0,
+        //   minutes: 0
+        // };
+
+        // var foundLocation = function(){
+        //   navigator.geolocation.getCurrentPosition(foundLocation);
+        //   function locfind (position){
+        //     locObj.lat = position.coords.latitude;
+        //     locObj.long = position.coords.longitude;
+        //     locObj.minutes = new Date().getTime() / 60000;
+        //     console.log(locObj);
+        //   };
+        // };
+
+        // foundLocation();
+
         var socket = io.connect('/');
         socket.on('news', function (data){
           console.log(data);
@@ -59,7 +77,12 @@
             $("#warning").text("Please retype password!");
             $('#password')[0].value = '';
             $('#retype')[0].value = '';
-          } else { socket.emit('checkUsername', $('#username')[0].value); }
+          } else if ($('#username')[0].value.match(/</i) || $('#password')[0].value.match(/</i)){
+            $("#warning").text("Stop trying to hack my game!");
+            $('#username')[0].value = '';
+            $('#password')[0].value = '';
+            $('#retype')[0].value = '';
+          } else { socket.emit('checkUsername', $('#username')[0].value.toLowerCase()); }
         });
 
         $(".infoenterIn").on('keypress',function (e){
@@ -70,8 +93,21 @@
 
         $("#infobutton").on('click',function (){
           for (var i = 0; i < $(".infoenterIn").length; i++){
+              console.log($(".infoenterIn")[i].value);
             if ($(".infoenterIn")[i].value === ''){
               $("#infowarning").text("Please fill out all info.");
+              return;
+            } else if ($(".infoenterIn")[i].value.match(/</i)){
+              $("#infowarning").text("Stop trying to hack my game!");
+              for (var i = 0; i < $(".infoenterIn").length; i++){
+                $(".infoenterIn")[i].value = '';
+              }
+              return;
+            } else if ($(".infoenterIn")[i].value.length > 100){
+              $("#infowarning").text("Your answers are too long!");
+              for (var i = 0; i < $(".infoenterIn").length; i++){
+                $(".infoenterIn")[i].value = '';
+              }
               return;
             }
           }
@@ -87,6 +123,9 @@
               weapon: $('#weapon')[0].value,
               fact: $('#fact')[0].value,
               born: $('#born')[0].value
+              // lat: locObj.lat,
+              // long: locObj.long,
+              // minutes: locObj.minutes
             },
             success: function (data){
               if (data){
@@ -129,11 +168,11 @@
 			<input id="fname" class="infoenterIn" type="text" placeholder="First Name">
             <input id="lname" class="infoenterIn" type="text" placeholder="Last Name">
             <input id="age" class="infoenterIn" type="text" placeholder="Age">
-            <p class="infoenterIn" >Weapon of Choice:</p>
+            <p class="infoenter" >Weapon of Choice:</p>
             <input id="weapon" class="infoenterIn" type="text" placeholder="Weapon">
-            <p class="infoenterIn" >Interesting Fact About Yourself:</p>
+            <p class="infoenter" >Interesting Fact About Yourself:</p>
             <input id="fact" class="infoenterIn" type="text" placeholder="Interesting Fact">
-            <p class="infoenterIn" >City Where You Were Born:</p>
+            <p class="infoenter" >City Where You Were Born:</p>
             <input id="born" class="infoenterIn" type="text" placeholder="City">
             <p id="infowarning" > </p><br>
             <button id="infobutton" type="button" >Update Profile</button>
@@ -143,30 +182,3 @@
 	</div>
   </body>
 </html>
-
-<!--     <div id="signup">
-      <h1 id="Login">Sign Up!</h1>
-      <label>Username<input class="enter" id="username" type="text" name="username"></label>
-      <label>Password<input class="enter" id="password" type="password" name="password"></label>
-      <label>Retype password<input class="enter" id="retype" type="password" name="password"></label>
-      <button id="post" type="button" value="Submit">Submit</button>
-      <p id="here" >Already signed up? Log in <a href="/login">here</a></p>
-      <p class="warning" id="already">Username already taken.</p>
-      <p class="warning" id="shortname" >Please enter a username!</p>
-      <p class="warning" id="shortpass" >Please enter a password!</p>
-      <p class="warning" id="longname" >Username length exceeds limit!</p>
-      <p class="warning" id="longpass" >Password length exceeds limit!</p>
-      <p class="warning" id="badretype" >Please retype password!</p>
-    </div>
-    <div id="info">
-      <h1>Profile</h1>
-      <label>First Name<input class="infoenter" id="fname" type="text" name="fname"></label>
-      <label>Last Name<input class="infoenter" id="lname" name="lname"></label>
-      <label>Age<input class="infoenter" id="age" name="age"></label>
-      <label>Weapon of Choice<input class="infoenter" id="weapon" name="weapon"></label>
-      <label>Interesting Fact About Yourself<input class="infoenter" id="fact" name="fact"></label>
-      <label>City Where You Were Born<input class="infoenter" id="born" name="born"></label>
-      <button id="infopost" type="button" value="Submit">Submit</button>
-      <p class="warning" id="noinfo">Please fill out all info.</p>
-      <p class="warning" id="toolate">Game already has started.</p>
-    </div> -->

@@ -35,6 +35,37 @@
 
         logcheck();
 
+        // var locObj = {
+        //   lat: 0,
+        //   long: 0,
+        //   minutes: 0
+        // };
+
+        // var foundLocation = function(){
+        //   navigator.geolocation.getCurrentPosition(foundLocation);
+        //   function locfind (position){
+        //     locObj.lat = position.coords.latitude;
+        //     locObj.long = position.coords.longitude;
+        //     locObj.minutes = new Date().getTime() / 60000;
+        //     console.log(locObj);
+        //   };
+        // };
+
+        // var directionCompare = function (data){
+        //   var obj = {};
+        //   if (data.lat === 0 || data.long === 0 || data.minutes === 0){
+        //     return false;
+        //   } else if (locObj.lat === 0 || locObj.long === 0 || locObj.minutes === 0){
+        //     return false
+        //   } else {
+        //     obj.latComp = data.lat - locObj.lat;
+        //     obj.longComp = Math.abs(data.long) - Math.abs(locObj.long);
+        //     obj.angle = obj.latComp/obj.longComp;
+        //     obj.minComp = Math.floor(data.minutes - locObj.minutes)
+        //     console.log(obj);
+        //     return obj;
+        //   }
+        // };
 
         var socket = io.connect('/');
         socket.on('news', function (data){
@@ -56,6 +87,7 @@
         // });
 
         $("#killbutton").on('click',function (){
+          // foundLocation();
           $.ajax({
             url:"/contractUpdate",
             type: "post",
@@ -64,10 +96,14 @@
               var city = prompt("What city was " + data.fname + ' ' + data.lname + ' born in?');
               if (city !== null && city !== ""){
                 if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
-                  socket.emit('killPlayer', { username: roomUsername, contract: data.username, groupname: roomName });
+                  socket.emit('killPlayer', {
+                    username: roomUsername,
+                    contract: data.username,
+                    groupname: roomName
+                    // location: locObj
+                  });
                 } else {
                   alert('Assassination Fail. Wrong information.');
-                  // need to do something
                 }
               }
             }
@@ -88,6 +124,7 @@
         });
 
         var contractUpdate = function (){
+          // foundLocation();
           $.ajax({
             url:"/contractUpdate",
             type: "post",
@@ -106,6 +143,7 @@
                   $('#nocontract').text('You Win!');
                   socket.emit('gameover', roomUsername);
                 } else {
+                  // var dobj = directionCompare(data);
                   $('#nocontract').css('display', 'none');
                   $('.info').css('display', "block");
                   $('#killbutton').css('display', "block");

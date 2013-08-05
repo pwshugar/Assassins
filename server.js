@@ -170,6 +170,9 @@ io.sockets.on('connection', function (socket){
       UserModel.findOne({ username: data.username }, function (err, userdata){
         if (userdata.contract !== 'dead'){
           userdata.contract = contractdata.contract;
+          // userdata.lat = data.location.lat,
+          // userdata.long = data.location.long,
+          // userdata.minutes = data.location.minutes,
           userdata.save();
           contractdata.contract = 'dead';
           contractdata.save();

@@ -10,6 +10,24 @@
     <script type="text/javascript">
       $(function (){
 
+        // var locObj = {
+        //   lat: 0,
+        //   long: 0,
+        //   minutes: 0
+        // };
+
+        // var foundLocation = function(){
+        //   navigator.geolocation.getCurrentPosition(foundLocation);
+        //   function locfind (position){
+        //     locObj.lat = position.coords.latitude;
+        //     locObj.long = position.coords.longitude;
+        //     locObj.minutes = new Date().getTime() / 60000;
+        //     console.log(locObj);
+        //   };
+        // };
+
+        // foundLocation();
+
         var socket = io.connect('/');
         socket.on('news', function (data){
           console.log(data);
@@ -32,6 +50,9 @@
             data: {
               username: $('#username')[0].value.toLowerCase(),
               password: $('#password')[0].value
+              // lat: locObj.lat,
+              // long: locObj.long,
+              // minutes: locObj.minutes
             },
             success: function(data){
               if (data === 'false'){
