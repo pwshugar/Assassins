@@ -83,15 +83,17 @@ app.get('/signup', function (req, res){
   }
 });
 
-app.get('/', function (req, res){
-  if (req.session.username && req.session.groupname){
-	res.redirect('/home');
-  } else {
-    res.sendfile('./html/create.html');
-  }
-});
+// app.get('/', function (req, res){ // changed for HR
+//   if (req.session.username && req.session.groupname){
+// 	  res.redirect('/home');
+//   } else {
+//     res.sendfile('./html/create.html');
+//   }
+// });
 
-// css get requests
+
+// css/js get requests
+
 app.get('/js/admin.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
   res.sendfile('./js/admin.js')
@@ -111,6 +113,8 @@ app.get('/css/create.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
   res.sendfile('./css/create.css')
 });
+
+// all other requests redirect to home
 
 app.get('/*', function (req, res){
   res.redirect('/home');

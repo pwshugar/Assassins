@@ -34,7 +34,8 @@
                 $("#incorrect").css("display", "block");
               } else {
                 socket.emit('roomUpdate');
-                window.location.href = '/';
+                // window.location.href = '/';
+                window.location.href = '/home'; //changed for HR
               }
             }
           });

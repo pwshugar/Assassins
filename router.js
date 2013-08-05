@@ -15,7 +15,8 @@ var User = new Schema({
   fact:{ type: String, trim: true },
   born: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
-  login: { type: Boolean, 'default': true }
+  login: { type: Boolean, 'default': true },
+  started:{ type: Boolean, 'default': false }
 });
 
 var Group = new Schema({
@@ -41,13 +42,13 @@ var fakeUsers = function (){
   var user_data = {
     username: 'peter',
     password: 'm',
-    groupname: 'hack',
+    groupname: 'hackreactor',
     fname: 'Peter',
     lname: 'Shugar',
     age: '28',
     weapon: 'gun',
     fact: 'blah',
-    born: 'ca'
+    born: 'ca',
   };
   var user = new UserModel(user_data);
   user.save(function (error, data){
@@ -75,7 +76,7 @@ var fakeUsers = function (){
 
   var group_data = {
     admin: 'peter',
-    groupname: 'hack',
+    groupname: 'hackreactor',
     password: 'm'
   };
   var group = new GroupModel(group_data);
@@ -103,8 +104,10 @@ exports.signup = function(req, res){
 
   user.save(function (error, data){
     req.session.username = req.body.username;
+    req.session.groupname = 'hackreactor'; // changed for HR
     req.session.admin = false;
-    res.redirect('/');
+    // res.redirect('/');  // changed for HR
+    res.redirect('/home')
   });
 };
 
@@ -116,8 +119,11 @@ exports.login = function (req, res){
     } else if (data.password !== req.body.password){
       res.send('false');
     } else {
-      req.session.username = username;
       req.session.admin = false;
+      req.session.username = username;
+      console.log('this is username',req.session.username);
+      req.session.groupname = 'hackreactor'; // changed for HR
+      if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
       data.login = true;
       data.save();
       res.send('true');
@@ -190,13 +196,15 @@ exports.checklist = function (req, res){
 
 exports.home = function (req, res){
   if (req.session.username && req.session.groupname){
+      console.log(req.session.admin);
     if (req.session.admin){
       res.sendfile('./html/admin.html');
     } else {
       res.sendfile('./html/home.html');
     }
   } else {
-    res.redirect('/');
+    // res.redirect('/');
+    res.redirect('/login'); // changed for HR
   }
 };
 
@@ -214,6 +222,7 @@ exports.startgame = function (req, res){
         var j = i + 1;
         if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
         UserModel.findOne({ username: names[i].username }, function (err, data){
+          if (data.username = 'peter'){ data.started = true; } // changed for HR
           data.contract = names[j].username;
           data.save();
         });   
@@ -225,18 +234,22 @@ exports.startgame = function (req, res){
 
 exports.contractUpdate = function (req, res){
   UserModel.findOne({ 'username': req.session.username }, 'contract', function (err, data){
-    if (data.contract){
-      if (data.contract === 'dead'){
-        res.send('dead');
-      } else if (data.contract === req.session.username){
-        res.send('win');
-      } else {
-        UserModel.findOne({ 'username': data.contract }, function (err, data){
-          res.send(data);
-        });
-      }
-    } else {
+    if (data === null) {
       res.send(null);
+    } else {
+      if (data.contract){
+        if (data.contract === 'dead'){
+          res.send('dead');
+        } else if (data.contract === req.session.username){
+          res.send('win');
+        } else {
+          UserModel.findOne({ 'username': data.contract }, function (err, data){
+            res.send(data);
+          });
+        }
+      } else {
+        res.send(null);
+      }
     }
   });
 };
