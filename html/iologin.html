@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="./css/io.css">
+  	<link rel="stylesheet" type="text/css" href="./css/iologin.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      $(function (){
+
+        var socket = io.connect('/');
+        socket.on('news', function (data){
+          console.log(data);
+        });
+      
+        $("#stuff input").on('keypress',function (e){
+          if(e.which === 13) {
+            $('#gobutton').click();
+          }
+        });
+
+        $("#backbutton").on('click',function (){
+          window.location.href = '/signup';
+        });
+
+        $("#gobutton").on('click',function (){
+          $.ajax({  
+            url:"/login",
+            type: "post",
+            data: {
+              username: $('#username')[0].value.toLowerCase(),
+              password: $('#password')[0].value
+            },
+            success: function(data){
+              if (data === 'false'){
+                $('#username')[0].value = '';
+                $('#password')[0].value = '';
+                $("#warning").text('Incorrect username/password.');
+              } else if (data === 'late'){
+                $('#username')[0].value = '';
+                $('#password')[0].value = '';
+                $("#warning").text('Game already started.');
+              } else {
+                socket.emit('roomUpdate');
+                // window.location.href = '/';
+                window.location.href = '/home'; //changed for HR
+              }
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+  <body class="iOCSS">
+	<div class="frame">
+	  <div class="header">
+	    <h1>Assassins</h1>
+  	  </div>
+	  <div class="scrollable">
+	    <div id="panel-about">
+	      <div id="usernamePassword" class="well">
+	          <h2>Welcome to Assassins!</h2><br>
+	          <input id="username" class="enterIn" type="text" placeholder="Username">
+	          <input id="password" class="enterIn" type="password" placeholder="Password">
+	          <p id="warning" > </p><br>
+	          <button id="gobutton" class="enterIn" type="button" >Log In</button>
+	          <p class="enter" >Don't have a username?</p><br>
+	          <button id="backbutton" class="enterIn" type="button" >Sign Up</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+  </body>
+</html>

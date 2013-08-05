@@ -1,0 +1,24 @@
+.enterIn {
+  display:block;
+  font-size: 17px;
+}
+
+#usernamePassword button {
+  width:250px;
+}
+
+#usernamePassword input {
+  width:235px;
+}
+
+#gobutton {
+  background: #1975D1;
+}
+
+#backbutton {
+  background:#5C8533;
+}
+
+#warning {
+  color:red;
+}

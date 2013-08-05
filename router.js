@@ -156,22 +156,20 @@ exports.login = function (req, res){
   var username = req.body.username;
   GroupModel.findOne({ groupname: 'hackreactor' }, function (err, gdata){
     UserModel.findOne({'username': username}, function (err, data){
-      if (gdata.started === data.started){
-        if (data === null){
-          res.send('false');
-        } else if (data.password !== req.body.password){
-          res.send('false');
-        } else {
-          req.session.admin = false;
-          req.session.username = username;
-          req.session.groupname = 'hackreactor'; // changed for HR
-          if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
-          data.login = true;
-          data.save();
-          res.send(true);
-        }
-      } else {
+      if (data === null){
+        res.send('false');
+      } else if (data.password !== req.body.password){
+        res.send('false');
+      } else if (gdata.started !== data.started){
         res.send('late');
+      } else {
+        req.session.admin = false;
+        req.session.username = username;
+        req.session.groupname = 'hackreactor'; // changed for HR
+        if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
+        data.login = true;
+        data.save();
+        res.send(true);
       }
     });
   });

@@ -64,6 +64,10 @@ app.post('/contractUpdate', function (req, res){
 
 // get requests
 
+app.get('/io', function (req, res){
+  res.sendfile('./html/iologin.html');
+});
+
 app.get('/home', function (req, res){
   router.home(req, res);
 });
@@ -72,7 +76,7 @@ app.get('/login', function (req, res){
   if (req.session.username && req.session.groupname){
 	res.redirect('/home');
   } else {
-    res.sendfile('./html/login.html');
+    res.sendfile('./html/iologin.html');
   }
 });
 
@@ -80,7 +84,7 @@ app.get('/signup', function (req, res){
   if (req.session.username && req.session.groupname){
 	res.redirect('/home');
   } else {
-    res.sendfile('./html/signup.html');
+    res.sendfile('./html/iosignup.html');
   }
 });
 
@@ -113,6 +117,16 @@ app.get('/css/login.css', function (req, res){
 app.get('/css/create.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
   res.sendfile('./css/create.css')
+});
+
+app.get('/css/io.css', function (req, res){
+  res.setHeader('Content-Type', 'text/css');
+  res.sendfile('./css/io.css')
+});
+
+app.get('/css/iologin.css', function (req, res){
+  res.setHeader('Content-Type', 'text/css');
+  res.sendfile('./css/iologin.css')
 });
 
 // all other requests redirect to home
