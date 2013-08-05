@@ -101,12 +101,12 @@ app.get('/signup', function (req, res){
 
 app.get('/js/admin.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('./js/admin.js')
+  res.sendfile('./js/admin.js');
 });
 
 app.get('/css/home.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/home.css')
+  res.sendfile('./css/home.css');
 });
 
 app.get('/css/login.css', function (req, res){
@@ -116,17 +116,22 @@ app.get('/css/login.css', function (req, res){
 
 app.get('/css/create.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/create.css')
+  res.sendfile('./css/create.css');
 });
 
 app.get('/css/io.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/io.css')
+  res.sendfile('./css/io.css');
 });
 
 app.get('/css/iologin.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/iologin.css')
+  res.sendfile('./css/iologin.css');
+});
+
+app.get('/css/iohome.css', function (req, res){
+  res.setHeader('Content-Type', 'text/css');
+  res.sendfile('./css/iohome.css');
 });
 
 // all other requests redirect to home

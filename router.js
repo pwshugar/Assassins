@@ -244,7 +244,7 @@ exports.home = function (req, res){
     if (req.session.admin){
       res.sendfile('./html/admin.html');
     } else {
-      res.sendfile('./html/home.html');
+      res.sendfile('./html/iohome.html');
     }
   } else {
     // res.redirect('/');
