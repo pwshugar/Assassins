@@ -3,11 +3,28 @@
   font-size: 17px;
 }
 
+.infoenterIn {
+  display:block;
+  font-size: 17px;
+}
+
 #usernamePassword button {
   width:250px;
 }
 
 #usernamePassword input {
+  width:235px;
+}
+
+#info {
+  display:none;
+}
+
+#info button {
+  width:250px;
+}
+
+#info input {
   width:235px;
 }
 
@@ -19,6 +36,14 @@
   background:#5C8533;
 }
 
+#infobutton {
+  background: #1975D1;
+}
+
 #warning {
+  color:red;
+}
+
+#infowarning {
   color:red;
 }

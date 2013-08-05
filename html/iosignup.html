@@ -21,12 +21,11 @@
             $('#username')[0].value = '';
             $('#password')[0].value = '';
             $('#retype')[0].value = '';
-            $(".warning").css("display", "none");
-            $("#already").css("display", "block");
+            $("#warning").text("Username already taken.");
           } else {
             infoStore.username = $('#username')[0].value.toLowerCase();
             infoStore.password = $('#password')[0].value;
-            $("#signup").css("display", "none");
+            $("#usernamePassword").css("display", "none");
             $("#info").css("display", "block");
           }
         });
@@ -35,50 +34,44 @@
           window.location.href = '/login';
         });
 
-        $(".enter").on('keypress',function (e){
+        $("#usernamePassword input").on('keypress',function (e){
           if(e.which === 13) {
-            $('#post').click();
+            $('#gobutton').click();
           }
         });
 
-        $("#post").on('click',function (){
+        $("#gobutton").on('click',function (){
           if ($('#username')[0].value.length < 1){
-            $(".warning").css("display", "none");
-            $("#shortname").css("display", "block");
+            $("#warning").text("Please enter a username!");
           } else if ($('#username')[0].value.length > 20){
-            $(".warning").css("display", "none");
-            $("#longname").css("display", "block");
+            $("#warning").text("Username length exceeds limit!");
             $('#username')[0].value = '';
             $('#password')[0].value = '';
             $('#retype')[0].value = ''
           } else if ($('#password')[0].value.length < 1){
-            $(".warning").css("display", "none");
-            $("#shortname").css("display", "block");
+            $("#warning").text("Please enter a password!");
           } else if ($('#password')[0].value.length > 20){
-            $(".warning").css("display", "none");
-            $("#longpass").css("display", "block");
+            $("#warning").text("Password length exceeds limit!");
             $('#username')[0].value = '';
             $('#password')[0].value = '';
             $('#retype')[0].value = ''
           } else if($('#password')[0].value !== $('#retype')[0].value) {
-            $(".warning").css("display", "none");
-            $("#badretype").css("display", "block");
+            $("#warning").text("Please retype password!");
             $('#password')[0].value = '';
             $('#retype')[0].value = '';
           } else { socket.emit('checkUsername', $('#username')[0].value); }
         });
 
-        $(".infoenter").on('keypress',function (e){
+        $(".infoenterIn").on('keypress',function (e){
           if(e.which === 13) {
-            $('#infopost').click();
+            $('#infobutton').click();
           }
         });
 
-        $("#infopost").on('click',function (){
-          for (var i = 0; i < $(".infoenter").length; i++){
-            if ($(".infoenter")[i].value === ''){
-              $(".warning").css("display", "none");
-              $("#noinfo").css("display", "block");
+        $("#infobutton").on('click',function (){
+          for (var i = 0; i < $(".infoenterIn").length; i++){
+            if ($(".infoenterIn")[i].value === ''){
+              $("#infowarning").text("Please fill out all info.");
               return;
             }
           }
@@ -96,17 +89,15 @@
               born: $('#born')[0].value
             },
             success: function (data){
-              console.log(data);
               if (data){
                 socket.emit('roomUpdate');
                 // window.location.href = '/'; // changed for HR
                 window.location.href = 'home';
               } else {
-                for (var i = 0; i < $(".infoenter").length; i++){
-                  $(".infoenter")[i].value = '';
+                for (var i = 0; i < $(".infoenterIn").length; i++){
+                  $(".infoenterIn")[i].value = '';
                 }
-                $(".warning").css("display", "none");
-                $("#toolate").css("display", "block");
+                $("#infowarning").text("Game already has started.");
               }
             }
           });
@@ -124,17 +115,58 @@
 	  <div class="scrollable">
 	    <div id="panel-about">
 	      <div id="usernamePassword" class="well">
-	          <h2>Welcome to Assassins!</h2><br>
-	          <input id="username" class="enterIn" type="text" placeholder="Username">
-	          <input id="password" class="enterIn" type="password" placeholder="Password">
-	          <input id="retype" class="enterIn" type="password" placeholder="Retype Password">
-	          <p id="warning" > </p><br>
-	          <button id="gobutton" class="enterIn" type="button" >Sign Up</button>
-	          <p class="enter" >Already have a username?</p><br>
-	          <button id="backbutton" class="enterIn" type="button" >Log In</button>
+            <h2>Sign Up for Assassins!</h2><br>
+            <input id="username" class="enterIn" type="text" placeholder="Username">
+            <input id="password" class="enterIn" type="password" placeholder="Password">
+            <input id="retype" class="enterIn" type="password" placeholder="Retype Password">
+            <p id="warning" > </p><br>
+            <button id="gobutton" class="enterIn" type="button" >Sign Up</button>
+            <p class="enter" >Already have a username?</p><br>
+            <button id="backbutton" class="enterIn" type="button" >Log In</button>
 	      </div>
+	      <div id="info" class="well">
+		    <h2>Profile:</h2><br>
+			<input id="fname" class="infoenterIn" type="text" placeholder="First Name">
+            <input id="lname" class="infoenterIn" type="text" placeholder="Last Name">
+            <input id="age" class="infoenterIn" type="text" placeholder="Age">
+            <p class="infoenterIn" >Weapon of Choice:</p>
+            <input id="weapon" class="infoenterIn" type="text" placeholder="Weapon">
+            <p class="infoenterIn" >Interesting Fact About Yourself:</p>
+            <input id="fact" class="infoenterIn" type="text" placeholder="Interesting Fact">
+            <p class="infoenterIn" >City Where You Were Born:</p>
+            <input id="born" class="infoenterIn" type="text" placeholder="City">
+            <p id="infowarning" > </p><br>
+            <button id="infobutton" type="button" >Update Profile</button>
+		  </div>
 	    </div>
 	  </div>
 	</div>
   </body>
 </html>
+
+<!--     <div id="signup">
+      <h1 id="Login">Sign Up!</h1>
+      <label>Username<input class="enter" id="username" type="text" name="username"></label>
+      <label>Password<input class="enter" id="password" type="password" name="password"></label>
+      <label>Retype password<input class="enter" id="retype" type="password" name="password"></label>
+      <button id="post" type="button" value="Submit">Submit</button>
+      <p id="here" >Already signed up? Log in <a href="/login">here</a></p>
+      <p class="warning" id="already">Username already taken.</p>
+      <p class="warning" id="shortname" >Please enter a username!</p>
+      <p class="warning" id="shortpass" >Please enter a password!</p>
+      <p class="warning" id="longname" >Username length exceeds limit!</p>
+      <p class="warning" id="longpass" >Password length exceeds limit!</p>
+      <p class="warning" id="badretype" >Please retype password!</p>
+    </div>
+    <div id="info">
+      <h1>Profile</h1>
+      <label>First Name<input class="infoenter" id="fname" type="text" name="fname"></label>
+      <label>Last Name<input class="infoenter" id="lname" name="lname"></label>
+      <label>Age<input class="infoenter" id="age" name="age"></label>
+      <label>Weapon of Choice<input class="infoenter" id="weapon" name="weapon"></label>
+      <label>Interesting Fact About Yourself<input class="infoenter" id="fact" name="fact"></label>
+      <label>City Where You Were Born<input class="infoenter" id="born" name="born"></label>
+      <button id="infopost" type="button" value="Submit">Submit</button>
+      <p class="warning" id="noinfo">Please fill out all info.</p>
+      <p class="warning" id="toolate">Game already has started.</p>
+    </div> -->
