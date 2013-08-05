@@ -149,10 +149,12 @@ io.sockets.on('connection', function (socket){
   socket.on('killPlayer', function (data){
     UserModel.findOne({ username: data.contract }, function (err, contractdata){
       UserModel.findOne({ username: data.username }, function (err, userdata){
-        userdata.contract = contractdata.contract;
-        userdata.save();
-        contractdata.contract = 'dead';
-        contractdata.save();
+        if (userdata.contract !== 'dead'){
+          userdata.contract = contractdata.contract;
+          userdata.save();
+          contractdata.contract = 'dead';
+          contractdata.save();
+        }
         io.sockets.emit('roomUpdate');
       });
     });

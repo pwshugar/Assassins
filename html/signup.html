@@ -89,8 +89,15 @@
               born: $('#born')[0].value
             },
             success: function (data){
-              socket.emit('roomUpdate');
-              window.location.href = '/';
+              console.log(data);
+              if (data){
+                socket.emit('roomUpdate');
+                // window.location.href = '/'; // changed for HR
+                // window.location.href = 'home';
+              } else {
+                $(".warning").css("display", "none");
+                $("#toolate").css("display", "block");
+              }
             }
           });
         });
@@ -123,6 +130,7 @@
       <label>City Where You Were Born<input class="infoenter" id="born" name="born"></label>
       <button id="infopost" type="button" value="Submit">Submit</button>
       <p class="warning" id="noinfo">Please fill out all info.</p>
+      <p class="warning" id="toolate">Game already has started.</p>
     </div>
   </body>
 </html>

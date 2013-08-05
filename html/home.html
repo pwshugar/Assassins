@@ -61,7 +61,6 @@
             data: { flag: true },
             success: function (data){
               var city = prompt("What city was " + data.fname + ' ' + data.lname + ' born in?');
-              socket.emit('switchStatusBack', roomUsername);
               if (city !== null && city !== ""){
                 if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
                   socket.emit('killPlayer', { username: roomUsername, contract: data.username, groupname: roomName });
@@ -93,7 +92,6 @@
             data: { flag: false },
             success: function (data){
               if (data){
-                  console.log(data);
                 if (data === 'dead'){
                   $('.info').css('display', "none");
                   $('#nocontract').css('display', 'block');
@@ -113,6 +111,8 @@
                   $('#weapon').text("Weapon of Choice: " + data.weapon);
                   $('#fact').text("Interesting Fact: " + data.fact);
                 }
+              } else {
+                $('#nocontract').text("Game hasn't started yet.");
               }
             }
           });
@@ -133,7 +133,7 @@
     </div>
     <div class="longDiv" id="contract">
       <h2>Contract</h2>
-      <p id="nocontract" >Game hasn't started yet.</p>
+      <p id="nocontract" ></p>
       <p class="info" id="username" ></p>
       <p class="info" id="fname" ></p>
       <p class="info" id="lname" ></p>

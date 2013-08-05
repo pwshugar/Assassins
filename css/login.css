@@ -22,7 +22,7 @@ div {
 }
 
 #info {
-  height:330px;
+  height:370px;
 }
 
 #signup {
@@ -30,7 +30,8 @@ div {
 }
 
 #info {
-  display: none; 
+  display: none;
+  height: 370px;
 }
 
 #here {

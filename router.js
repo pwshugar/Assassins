@@ -16,7 +16,7 @@ var User = new Schema({
   born: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
   login: { type: Boolean, 'default': true },
-  started:{ type: Boolean, 'default': false }
+  started:{ type: Boolean, 'default': false } // changed for HR
 });
 
 var Group = new Schema({
@@ -53,16 +53,16 @@ var fakeUsers = function (){
   var user = new UserModel(user_data);
   user.save(function (error, data){
   });
-  // user_data.username = 'nams';
-  // user_data.fname = 'nams';
-  // var user2 = new UserModel(user_data);
-  // user2.save(function (error, data){
-  // });
-  // user_data.username = 'puck';
-  // user_data.fname = 'puck';
-  // var user3 = new UserModel(user_data);
-  // user3.save(function (error, data){
-  // });
+  user_data.username = 'nams';
+  user_data.fname = 'nams';
+  var user2 = new UserModel(user_data);
+  user2.save(function (error, data){
+  });
+  user_data.username = 'puck';
+  user_data.fname = 'puck';
+  var user3 = new UserModel(user_data);
+  user3.save(function (error, data){
+  });
   // user_data.username = 'pullo';
   // user_data.fname = 'pullo';
   // var user4 = new UserModel(user_data);
@@ -72,6 +72,36 @@ var fakeUsers = function (){
   // user_data.fname = 'david';
   // var user5 = new UserModel(user_data);
   // user5.save(function (error, data){
+  // });
+  // user_data.username = 'kathleen';
+  // user_data.fname = 'kathleen';
+  // var user6 = new UserModel(user_data);
+  // user6.save(function (error, data){
+  // });
+  // user_data.username = 'dan';
+  // user_data.fname = 'dan';
+  // var user7 = new UserModel(user_data);
+  // user7.save(function (error, data){
+  // });
+  // user_data.username = 'nisha';
+  // user_data.fname = 'nisha';
+  // var user8 = new UserModel(user_data);
+  // user8.save(function (error, data){
+  // });
+  // user_data.username = 'sid';
+  // user_data.fname = 'sid';
+  // var user9 = new UserModel(user_data);
+  // user9.save(function (error, data){
+  // });
+  // user_data.username = 'raj';
+  // user_data.fname = 'raj';
+  // var user10 = new UserModel(user_data);
+  // user10.save(function (error, data){
+  // });
+  // user_data.username = 'praveena';
+  // user_data.fname = 'praveena';
+  // var user11 = new UserModel(user_data);
+  // user11.save(function (error, data){
   // });
 
   var group_data = {
@@ -95,46 +125,56 @@ var fakeUsers = function (){
 // Router functions
 
 exports.signup = function(req, res){
-  console.log('Retrieving user: ' + req.body.username);
-  var user_data = {
-    username: req.body.username,
-    password: req.body.password,
-    groupname: 'hackreactor', // changed for HR
-    fname: req.body.fname,
-    lname: req.body.lname,
-    age: req.body.age,
-    weapon: req.body.weapon,
-    fact: req.body.fact,
-    born: req.body.born
-  };
-  var user = new UserModel(user_data);
+  GroupModel.findOne({ groupname: 'hackreactor' }, function (err, data){
+    if (!data.started){
+      var user_data = {
+        username: req.body.username,
+        password: req.body.password,
+        groupname: 'hackreactor', // changed for HR
+        fname: req.body.fname,
+        lname: req.body.lname,
+        age: req.body.age,
+        weapon: req.body.weapon,
+        fact: req.body.fact,
+        born: req.body.born
+      };
+      var user = new UserModel(user_data);
 
-  user.save(function (error, data){
-    req.session.username = req.body.username;
-    req.session.groupname = 'hackreactor'; // changed for HR
-    req.session.admin = false;
-    // res.redirect('/');  // changed for HR
-    res.redirect('/home')
+      user.save(function (error, data){
+        req.session.username = req.body.username;
+        req.session.groupname = 'hackreactor'; // changed for HR
+        req.session.admin = false;
+        // res.redirect('/');  // changed for HR
+        res.send(true)
+      });
+    } else {
+      res.send(false);
+    }
   });
 };
 
 exports.login = function (req, res){
   var username = req.body.username;
-  UserModel.findOne({'username': username}, function (err, data){
-    if (data === null){
-      res.send('false');
-    } else if (data.password !== req.body.password){
-      res.send('false');
-    } else {
-      req.session.admin = false;
-      req.session.username = username;
-      console.log('this is username',req.session.username);
-      req.session.groupname = 'hackreactor'; // changed for HR
-      if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
-      data.login = true;
-      data.save();
-      res.send('true');
-    }
+  GroupModel.findOne({ groupname: 'hackreactor' }, function (err, gdata){
+    UserModel.findOne({'username': username}, function (err, data){
+      if (gdata.started === data.started){
+        if (data === null){
+          res.send('false');
+        } else if (data.password !== req.body.password){
+          res.send('false');
+        } else {
+          req.session.admin = false;
+          req.session.username = username;
+          req.session.groupname = 'hackreactor'; // changed for HR
+          if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
+          data.login = true;
+          data.save();
+          res.send(true);
+        }
+      } else {
+        res.send('late');
+      }
+    });
   });
 };
 
@@ -229,7 +269,7 @@ exports.startgame = function (req, res){
         var j = i + 1;
         if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
         UserModel.findOne({ username: names[i].username }, function (err, data){
-          if (data.username === 'peter'){ data.started = true; } // changed for HR
+          data.started = true; // changed for HR
           data.contract = names[j].username;
           data.save();
         });   

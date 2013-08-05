@@ -32,6 +32,11 @@
                 $('#password')[0].value = '';
                 $(".warning").css("display", "none");
                 $("#incorrect").css("display", "block");
+              } else if (data === 'late'){
+                $('#username')[0].value = '';
+                $('#password')[0].value = '';
+                $(".warning").css("display", "none");
+                $("#toolate").css("display", "block");
               } else {
                 socket.emit('roomUpdate');
                 // window.location.href = '/';
@@ -51,6 +56,7 @@
       <button id="post" type="button" value="Submit">Submit</button>
       <p id="here" >First time? Sign up <a href="/signup">here</a></p>
       <p class="warning" id="incorrect">Incorrect username/password.</p>
+      <p class="warning" id="toolate">Game already started.</p>
   </div>
   </body>
 </html>
