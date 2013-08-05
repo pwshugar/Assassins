@@ -1,6 +1,23 @@
 /*Scheme ID: 3h11Tw0w0w0w0*/
 
+#roomName {
+  font-size: 22px;
+  color: white;
+}
 
+#killbutton {
+  display:none;
+  background:red;
+  width:258px;
+}
+
+#nocontract {
+  display:none;
+}
+
+.info {
+  display:none;
+}
 
 
 

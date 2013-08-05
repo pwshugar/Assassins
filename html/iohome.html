@@ -13,26 +13,27 @@
         var roomUsername = '';
         var roomName = '';
         
-        // var logcheck = function (){
-        //   $.ajax({
-        //     url:"/logcheck",
-        //     type: "post",
-        //     data: {},
-        //     success: function (data){
-        //       if (data){
-        //         roomUsername = data.username;
-        //         roomName = data.groupname;
-        //         $('#logout').css("display", "block");
-        //         $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-        //         $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
-        //       } else {
-        //         $('#login').css("display", "block");
-        //       }
-        //     }
-        //   });
-        // };
+        var logcheck = function (){
+          $.ajax({
+            url:"/logcheck",
+            type: "post",
+            data: {},
+            success: function (data){
+              if (data){
+                roomUsername = data.username;
+                roomName = data.groupname;
+              }
+                // $('#logout').css("display", "block");
+                // $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
+                // $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+              // } else {
+              //   $('#login').css("display", "block");
+              // }
+            }
+          });
+        };
 
-        // logcheck();
+        logcheck();
 
 
         var socket = io.connect('/');
@@ -65,7 +66,7 @@
                 if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
                   socket.emit('killPlayer', { username: roomUsername, contract: data.username, groupname: roomName });
                 } else {
-                  console.log('You fail');
+                  alert('Assassination Fail. Wrong information.');
                   // need to do something
                 }
               }
@@ -95,16 +96,19 @@
               if (data){
                 if (data === 'dead'){
                   $('.info').css('display', "none");
+                  $('#killbutton').css('display', "none");
                   $('#nocontract').css('display', 'block');
                   $('#nocontract').text('You were assassinated. Game Over.');
                 } else if (data === 'win'){
                   $('.info').css('display', "none");
+                  $('#killbutton').css('display', "none");
                   $('#nocontract').css('display', 'block');
                   $('#nocontract').text('You Win!');
                   socket.emit('gameover', roomUsername);
                 } else {
                   $('#nocontract').css('display', 'none');
                   $('.info').css('display', "block");
+                  $('#killbutton').css('display', "block");
                   $('#username').text(data.username[0].toUpperCase() + data.username.slice(1));
                   $('#fname').text(data.fname);
                   $('#lname').text(data.lname);
@@ -113,6 +117,7 @@
                   $('#fact').text(data.fact);
                 }
               } else {
+                $('#nocontract').css('display', 'block');
                 $('#nocontract').text("Game hasn't started yet.");
               }
             }
@@ -128,7 +133,7 @@
 	<div class="frame">
     <div class="header">
       <div>
-        <span style="font-size: 25px; color: white;"><b>Hackreactor</b></span>
+        <span id="roomName" ><b>Hackreactor</b></span>
       </div>
       <div>
         <button id="logout" class="button next">Log Out</button>
@@ -145,7 +150,7 @@
           <p class="info" ><b>Age: </b><span id="age"></span></p>
           <p class="info" ><b>Weapon of Choice: </b><span id="weapon"></span></p>
           <p class="info" ><b>Interesting Fact: </b><span id="fact"></span></p><br>
-          <button class="info" id='killbutton' type="button">Killed Target</button>
+          <button class="info" id='killbutton' type="button">Kill Target</button>
         </div>
       </div>
     </div>
