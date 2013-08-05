@@ -89,6 +89,7 @@
               born: $('#born')[0].value
             },
             success: function (data){
+              socket.emit('roomUpdate');
               window.location.href = '/';
             }
           });

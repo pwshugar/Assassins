@@ -1,7 +1,14 @@
 {
   "name": "assassins",
+  "subdomain": "assassins",
+  "scripts": {
+    "start": "node server.js"
+  },
   "description": "test",
-  "version": "0.0.1",
+  "version": "0.0.1-6",
+  "engines": {
+    "node": "v0.8.x"
+  },
   "private": true,
   "dependencies": {
     "express": "3.x",

@@ -47,32 +47,32 @@ var fakeUsers = function (){
     lname: 'Shugar',
     age: '28',
     weapon: 'gun',
-    fact: 'blah',
-    born: 'ca',
+    fact: 'i love my wife',
+    born: 'santa monica',
   };
   var user = new UserModel(user_data);
   user.save(function (error, data){
   });
-  user_data.username = 'nams';
-  user_data.fname = 'nams';
-  var user2 = new UserModel(user_data);
-  user2.save(function (error, data){
-  });
-  user_data.username = 'puck';
-  user_data.fname = 'puck';
-  var user3 = new UserModel(user_data);
-  user3.save(function (error, data){
-  });
-  user_data.username = 'pullo';
-  user_data.fname = 'pullo';
-  var user4 = new UserModel(user_data);
-  user4.save(function (error, data){
-  });
-  user_data.username = 'david';
-  user_data.fname = 'david';
-  var user5 = new UserModel(user_data);
-  user5.save(function (error, data){
-  });
+  // user_data.username = 'nams';
+  // user_data.fname = 'nams';
+  // var user2 = new UserModel(user_data);
+  // user2.save(function (error, data){
+  // });
+  // user_data.username = 'puck';
+  // user_data.fname = 'puck';
+  // var user3 = new UserModel(user_data);
+  // user3.save(function (error, data){
+  // });
+  // user_data.username = 'pullo';
+  // user_data.fname = 'pullo';
+  // var user4 = new UserModel(user_data);
+  // user4.save(function (error, data){
+  // });
+  // user_data.username = 'david';
+  // user_data.fname = 'david';
+  // var user5 = new UserModel(user_data);
+  // user5.save(function (error, data){
+  // });
 
   var group_data = {
     admin: 'peter',
@@ -80,9 +80,15 @@ var fakeUsers = function (){
     password: 'm'
   };
   var group = new GroupModel(group_data);
-  group.save(function (err, data){
+    group.save(function (err, data){
   });
 };
+
+// mongoose.connection.collections['users'].drop( function(err) {
+// });
+
+// mongoose.connection.collections['groups'].drop( function(err) {
+// });
 
 // fakeUsers();
 
@@ -93,6 +99,7 @@ exports.signup = function(req, res){
   var user_data = {
     username: req.body.username,
     password: req.body.password,
+    groupname: 'hackreactor', // changed for HR
     fname: req.body.fname,
     lname: req.body.lname,
     age: req.body.age,
@@ -222,7 +229,7 @@ exports.startgame = function (req, res){
         var j = i + 1;
         if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
         UserModel.findOne({ username: names[i].username }, function (err, data){
-          if (data.username = 'peter'){ data.started = true; } // changed for HR
+          if (data.username === 'peter'){ data.started = true; } // changed for HR
           data.contract = names[j].username;
           data.save();
         });   
