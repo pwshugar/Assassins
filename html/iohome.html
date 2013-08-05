@@ -93,7 +93,8 @@
             type: "post",
             data: { flag: true },
             success: function (data){
-              var city = prompt("What city was " + data.fname + ' ' + data.lname + ' born in?');
+              var s = "'s ";
+              var city = prompt("What is " + data.fname + ' ' + data.lname + s + ' password?');
               if (city !== null && city !== ""){
                 if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
                   socket.emit('killPlayer', {
@@ -168,7 +169,7 @@
     </script>
   </head>
   <body class="iOCSS">
-	<div class="frame">
+	<div class="frame striped">
     <div class="header">
       <div>
         <span id="roomName" ><b>Hackreactor</b></span>

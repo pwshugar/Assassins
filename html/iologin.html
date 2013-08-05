@@ -74,24 +74,32 @@
       });
     </script>
   </head>
-  <body class="iOCSS">
-	<div class="frame">
-	  <div class="header">
-	    <h1>Assassins</h1>
-  	  </div>
-	  <div class="scrollable">
-	    <div id="panel-about">
-	      <div id="usernamePassword" class="well">
-	          <h2>Welcome to Assassins!</h2><br>
-	          <input id="username" class="enterIn" type="text" placeholder="Username">
-	          <input id="password" class="enterIn" type="password" placeholder="Password">
-	          <p id="warning" > </p><br>
-	          <button id="gobutton" class="enterIn" type="button" >Log In</button>
-	          <p class="enter" >Don't have a username?</p><br>
-	          <button id="backbutton" class="enterIn" type="button" >Sign Up</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-  </body>
-</html>
+<body class="iOCSS black">
+  <div class="frame signIn_fancy">
+    <div class="header">
+      <h1>Sign In</h1>
+      <div class="right">
+        <a href="/signup" class="button">Sign Up</a>
+      </div>
+    </div>
+    
+    <div class="scrollable box-vertical box-center-main">
+      <div class="logo">
+        Assassins
+      </div>
+      <form class="editor flex-none">
+        <div class="fields well">
+          <div class="field">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="text" name="password" id="password">
+          </div>
+        </div>
+        <button class="black large">Sign In</button>
+      </form>
+    </div>
+  </div>
+</body>

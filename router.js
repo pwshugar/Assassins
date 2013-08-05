@@ -184,6 +184,22 @@ exports.login = function (req, res){
   });
 };
 
+// exports.login = function (req, res){
+//   UserModel.find({}, 'fname lname contract username', function (err, data){
+//     var k=0;
+//     for(var i = 0; i < data.length; i++){
+//       if (data[i].contract && data[i].contract !== 'dead'){
+//         console.log(data[i]);
+//         k++;
+//       }
+//     }
+//     console.log(k);
+//   });
+// // UserModel.findOne({username: 'mint'}, function(err, data){
+// //   console.log(data);
+// // });
+// };
+
 exports.logout = function (req, res){
   UserModel.findOne({ 'username': req.session.username }, function (err, data){
     data.login = false;
