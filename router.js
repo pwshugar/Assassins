@@ -13,7 +13,7 @@ var User = new Schema({
   age: { type: String, trim: true },
   weapon: { type: String, trim: true },
   fact:{ type: String, trim: true },
-  born: { type: String, trim: true, lowercase: true },
+  secret: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
   // lat: { type: Number },
   // long: { type: Number },
@@ -43,15 +43,15 @@ var SessionModel = exports.SM = mongoose.model('sessions', Session)
 
 var fakeUsers = function (){
   var user_data = {
-    username: 'master assassin',
-    password: 'puck5',
+    username: 'peter',
+    password: 'm',
     groupname: 'hackreactor',
     fname: 'Peter',
     lname: 'Shugar',
     age: '28',
     weapon: 'Zombies',
     fact: 'I have a hairless cat',
-    born: 'Santa Monica'
+    secret: 'Santa Monica'
   };
   var user = new UserModel(user_data);
   user.save(function (error, data){});
@@ -105,7 +105,7 @@ var fakeUsers = function (){
   // });
 
   var group_data = {
-    admin: 'master assassin',
+    admin: 'peter',
     groupname: 'hackreactor',
     password: 'plantknife'
   };
@@ -122,7 +122,7 @@ var fakeUsers = function (){
 
 // mongoose.connection.collections['groups'].drop(function (err){});
 // mongoose.connection.collections['users'].drop(function (err){});
-// fakeUsers(); 
+// fakeUsers();
  
 // Router functions
 
@@ -138,7 +138,7 @@ exports.signup = function(req, res){
         age: req.body.age,
         weapon: req.body.weapon,
         fact: req.body.fact,
-        born: req.body.born,
+        secret: req.body.secret,
         // lat: req.body.lat,
         // long: req.body.long,
         // minutes: req.body.minutes
@@ -172,7 +172,7 @@ exports.login = function (req, res){
         req.session.admin = false;
         req.session.username = username;
         req.session.groupname = 'hackreactor'; // changed for HR
-        if (username === 'master assassin' && !data.started){ req.session.admin = true; } // changed for HR
+        if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
         // data.lat = req.body.lat;
         // data.long = req.body.long;
         // data.minutes = req.body.minutes;

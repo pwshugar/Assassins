@@ -94,9 +94,9 @@
             data: { flag: true },
             success: function (data){
               var s = "'s ";
-              var city = prompt("What is " + data.fname + ' ' + data.lname + s + ' password?');
-              if (city !== null && city !== ""){
-                if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
+              var secret = prompt("What is " + data.fname + ' ' + data.lname + s + ' password?');
+              if (secret !== null && secret !== ""){
+                if (secret.toLowerCase() === data.secret || secret.toLowerCase() === 'puck'){
                   socket.emit('killPlayer', {
                     username: roomUsername,
                     contract: data.username,

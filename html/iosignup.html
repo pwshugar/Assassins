@@ -47,10 +47,6 @@
           }
         });
 
-        $("#backbutton").on('click',function (){
-          window.location.href = '/login';
-        });
-
         $("#usernamePassword input").on('keypress',function (e){
           if(e.which === 13) { $('#gobutton').click(); }
         });
@@ -82,26 +78,25 @@
           } else { socket.emit('checkUsername', $('#username')[0].value.toLowerCase()); }
         });
 
-        $("#infoenterIn").on('keypress',function (e){
+        $("#divIn input").on('keypress',function (e){
           if(e.which === 13) { $('#infobutton').click(); }
         });
 
         $("#infobutton").on('click',function (){
-          for (var i = 0; i < $(".infoenterIn").length; i++){
-              console.log($(".infoenterIn")[i].value);
-            if ($(".infoenterIn")[i].value === ''){
-              $("#infowarning").text("Please fill out all info.");
+          for (var i = 0; i < $("#divIn input").length; i++){
+            if ($("#divIn input")[i].value === ''){
+              alert("Please fill out all info.");
               return;
-            } else if ($(".infoenterIn")[i].value.match(/</i)){
-              $("#infowarning").text("Stop trying to hack my game!");
-              for (var i = 0; i < $(".infoenterIn").length; i++){
-                $(".infoenterIn")[i].value = '';
+            } else if ($("#divIn input")[i].value.match(/</i)){
+              alert("Invalid character '<'");
+              for (var i = 0; i < $("#divIn input").length; i++){
+                $("#divIn input")[i].value = '';
               }
               return;
-            } else if ($(".infoenterIn")[i].value.length > 100){
-              $("#infowarning").text("Your answers are too long!");
-              for (var i = 0; i < $(".infoenterIn").length; i++){
-                $(".infoenterIn")[i].value = '';
+            } else if ($("#divIn input")[i].value.length > 100){
+              alert("Your answers are too long!");
+              for (var i = 0; i < $("#divIn input").length; i++){
+                $("#divIn input")[i].value = '';
               }
               return;
             }
@@ -117,7 +112,7 @@
               age: $('#age')[0].value,
               weapon: $('#weapon')[0].value,
               fact: $('#fact')[0].value,
-              born: $('#born')[0].value
+              secret: $('#secret')[0].value
               // lat: locObj.lat,
               // long: locObj.long,
               // minutes: locObj.minutes
@@ -128,10 +123,10 @@
                 // window.location.href = '/'; // changed for HR
                 window.location.href = 'home';
               } else {
-                for (var i = 0; i < $(".infoenterIn").length; i++){
-                  $(".infoenterIn")[i].value = '';
+                for (var i = 0; i < $("#divIn input").length; i++){
+                  $("#divIn input")[i].value = '';
                 }
-                $("#infowarning").text("Game already has started.");
+                alert("Game already has started.");
               }
             }
           });
@@ -176,42 +171,42 @@
 
       <div class="scrollable box-vertical box-center-main" id="info">
         <div class="well-header" id="infoarea">Name and Age</div>
-        <div class="editor flex-none">
+        <div class="editor flex-none" id="divIn">
           <div class="fields well">
             <div class="field">
               <label for="fname">First</label>
-              <input type="text" name="fname" id="username" id="infoenterIn">
+              <input type="text" name="fname" id="fname">
             </div>
 
             <div class="field">
               <label for="lname">Last</label>
-              <input type="text" name="lname" id="lname" d="infoenterIn">
+              <input type="text" name="lname" id="lname">
             </div>
 
             <div class="field">
               <label for="age">Age</label>
-              <input type="text" name="age" id="age" id="infoenterIn">
+              <input type="text" name="age" id="age">
             </div>
           </div>
 
           <div class="well-header" id="infoarea">Weapon of Choice</div>
           <div class="fields well">
             <div class="field">
-              <input type="text" name="weapon" id="weapon" d="infoenterIn">
+              <input type="text" name="weapon" id="weapon">
             </div>
           </div>
 
           <div class="well-header" id="infoarea">Interesting Fact About Yourself</div>
           <div class="fields well">
             <div class="field">
-              <input type="text" name="fact" id="fact" d="infoenterIn">
+              <input type="text" name="fact" id="fact">
             </div>
           </div>
 
           <div class="well-header" id="infoarea">Secret Password</div>
           <div class="fields well">
             <div class="field">
-              <input type="text" name="secret" id="secret" d="infoenterIn">
+              <input type="text" name="secret" id="secret">
             </div>
           </div>
           <button id="infobutton" class="black large">Create your Profile</button>
@@ -220,39 +215,3 @@
     </div>
   </body>
 </html>
-
-<!--   <body class="iOCSS">
-	<div class="frame striped">
-	  <div class="header">
-	    <h1>Assassins</h1>
-  	  </div>
-	  <div class="scrollable">
-	    <div id="panel-about">
-	      <div id="usernamePassword" class="well">
-            <h2>Sign Up for Assassins!</h2><br>
-            <input id="username" class="enterIn" type="text" placeholder="Username">
-            <input id="password" class="enterIn" type="password" placeholder="Password">
-            <input id="retype" class="enterIn" type="password" placeholder="Retype Password">
-            <p id="warning" > </p><br>
-            <button id="gobutton" class="enterIn" type="button" >Sign Up</button>
-            <p class="enter" >Already have a username?</p><br>
-            <button id="backbutton" class="enterIn" type="button" >Log In</button>
-	      </div>
-	      <div id="info" class="well">
-		    <h2>Profile:</h2><br>
-			<input id="fname" class="infoenterIn" type="text" placeholder="First Name">
-            <input id="lname" class="infoenterIn" type="text" placeholder="Last Name">
-            <input id="age" class="infoenterIn" type="text" placeholder="Age">
-            <p class="infoenter" >Weapon of Choice:</p>
-            <input id="weapon" class="infoenterIn" type="text" placeholder="Weapon">
-            <p class="infoenter" >Interesting Fact About Yourself:</p>
-            <input id="fact" class="infoenterIn" type="text" placeholder="Interesting Fact">
-            <p class="infoenter" >Secret Password:</p>
-            <input id="born" class="infoenterIn" type="text" placeholder="Password">
-            <p id="infowarning" > </p><br>
-            <button id="infobutton" type="button" >Update Profile</button>
-		  </div>
-	    </div>
-	  </div>
-	</div>
-  </body> -->
