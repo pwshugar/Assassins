@@ -133,8 +133,8 @@ exports.signup = function(req, res){
         username: req.body.username,
         password: req.body.password,
         groupname: 'hackreactor', // changed for HR
-        fname: req.body.fname,
-        lname: req.body.lname,
+        fname: req.body.fname[0].toUpperCase() + req.body.fname.slice(1),
+        lname: req.body.lname[0].toUpperCase() + req.body.fname.slice(1),
         age: req.body.age,
         weapon: req.body.weapon,
         fact: req.body.fact,

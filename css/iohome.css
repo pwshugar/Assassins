@@ -1,14 +1,19 @@
 /*Scheme ID: 3h11Tw0w0w0w0*/
-
-#roomName {
-  font-size: 22px;
-  color: white;
+.signIn_fancy {
+  background-image: -webkit-radial-gradient(center center, ellipse contain, rgb(50, 50, 50) 0%, rgb(45, 45, 45) 20%, black 100%);
 }
 
-#killbutton {
-  display:none;
-  background:red;
-  width:258px;
+.logo {
+  margin-top: -1rem;
+  font-family: monospace;
+  font-size: 3rem;
+  color: rgb(150, 150, 150);
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.iOCSS .flex-none {
+  -webkit-box-flex: 0 !important;
 }
 
 #nocontract {
@@ -18,13 +23,3 @@
 .info {
   display:none;
 }
-
-
-
-
-
-
-
-
-
-
