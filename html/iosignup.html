@@ -29,9 +29,7 @@
         // foundLocation();
 
         var socket = io.connect('/');
-        socket.on('news', function (data){
-          console.log(data);
-        });
+        socket.on('news', function (data){ console.log(data); });
         
         var infoStore = {}
         socket.on('checkUsernameRes', function (data){
@@ -39,12 +37,13 @@
             $('#username')[0].value = '';
             $('#password')[0].value = '';
             $('#retype')[0].value = '';
-            $("#warning").text("Username already taken.");
+            alert("Username already taken.");
           } else {
             infoStore.username = $('#username')[0].value.toLowerCase();
             infoStore.password = $('#password')[0].value;
-            $("#usernamePassword").css("display", "none");
+            $('#h')[0].textContent = 'Profile';
             $("#info").css("display", "block");
+            $("#usernamePassword").css("display", "none");
           }
         });
 
@@ -53,42 +52,38 @@
         });
 
         $("#usernamePassword input").on('keypress',function (e){
-          if(e.which === 13) {
-            $('#gobutton').click();
-          }
+          if(e.which === 13) { $('#gobutton').click(); }
         });
 
         $("#gobutton").on('click',function (){
           if ($('#username')[0].value.length < 1){
-            $("#warning").text("Please enter a username!");
+            alert("Please enter a username!");
           } else if ($('#username')[0].value.length > 20){
-            $("#warning").text("Username length exceeds limit!");
             $('#username')[0].value = '';
             $('#password')[0].value = '';
             $('#retype')[0].value = ''
+            alert("Username length exceeds limit!");
           } else if ($('#password')[0].value.length < 1){
-            $("#warning").text("Please enter a password!");
+            alert("Please enter a password!");
           } else if ($('#password')[0].value.length > 20){
-            $("#warning").text("Password length exceeds limit!");
             $('#username')[0].value = '';
             $('#password')[0].value = '';
             $('#retype')[0].value = ''
+            alert("Password length exceeds limit!");
           } else if($('#password')[0].value !== $('#retype')[0].value) {
-            $("#warning").text("Please retype password!");
             $('#password')[0].value = '';
             $('#retype')[0].value = '';
+            alert("Please retype password!");
           } else if ($('#username')[0].value.match(/</i) || $('#password')[0].value.match(/</i)){
-            $("#warning").text("Stop trying to hack my game!");
             $('#username')[0].value = '';
             $('#password')[0].value = '';
             $('#retype')[0].value = '';
+            alert("Invalid character '<'");
           } else { socket.emit('checkUsername', $('#username')[0].value.toLowerCase()); }
         });
 
-        $(".infoenterIn").on('keypress',function (e){
-          if(e.which === 13) {
-            $('#infobutton').click();
-          }
+        $("#infoenterIn").on('keypress',function (e){
+          if(e.which === 13) { $('#infobutton').click(); }
         });
 
         $("#infobutton").on('click',function (){
@@ -146,7 +141,87 @@
     </script>
     </script>
   </head>
-  <body class="iOCSS">
+  <body class="iOCSS black">
+
+    <div class="frame signIn_fancy">
+      <div class="header">
+        <h1 id="h">Sign Up</h1>
+        <div class="right">
+          <a href="/login" class="button">Sign In</a>
+        </div>
+      </div>
+
+      <div class="scrollable box-vertical box-center-main" id="usernamePassword">
+        <div class="logo">
+          Assassins
+        </div>
+        <div class="editor flex-none">
+          <div class="fields well">
+            <div class="field">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username">
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password">
+            </div>
+            <div class="field">
+              <label for="retype">Retype</label>
+              <input type="password" name="password" id="retype">
+            </div>
+          </div>
+          <button id="gobutton" class="black large">Create an Account</button>
+        </div>
+      </div>
+
+      <div class="scrollable box-vertical box-center-main" id="info">
+        <div class="well-header" id="infoarea">Name and Age</div>
+        <div class="editor flex-none">
+          <div class="fields well">
+            <div class="field">
+              <label for="fname">First</label>
+              <input type="text" name="fname" id="username" id="infoenterIn">
+            </div>
+
+            <div class="field">
+              <label for="lname">Last</label>
+              <input type="text" name="lname" id="lname" d="infoenterIn">
+            </div>
+
+            <div class="field">
+              <label for="age">Age</label>
+              <input type="text" name="age" id="age" id="infoenterIn">
+            </div>
+          </div>
+
+          <div class="well-header" id="infoarea">Weapon of Choice</div>
+          <div class="fields well">
+            <div class="field">
+              <input type="text" name="weapon" id="weapon" d="infoenterIn">
+            </div>
+          </div>
+
+          <div class="well-header" id="infoarea">Interesting Fact About Yourself</div>
+          <div class="fields well">
+            <div class="field">
+              <input type="text" name="fact" id="fact" d="infoenterIn">
+            </div>
+          </div>
+
+          <div class="well-header" id="infoarea">Secret Password</div>
+          <div class="fields well">
+            <div class="field">
+              <input type="text" name="secret" id="secret" d="infoenterIn">
+            </div>
+          </div>
+          <button id="infobutton" class="black large">Create your Profile</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<!--   <body class="iOCSS">
 	<div class="frame striped">
 	  <div class="header">
 	    <h1>Assassins</h1>
@@ -180,5 +255,4 @@
 	    </div>
 	  </div>
 	</div>
-  </body>
-</html>
+  </body> -->

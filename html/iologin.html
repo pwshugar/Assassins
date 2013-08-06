@@ -29,18 +29,10 @@
         // foundLocation();
 
         var socket = io.connect('/');
-        socket.on('news', function (data){
-          console.log(data);
-        });
+        socket.on('news', function (data){ console.log(data); });
       
-        $("#usernamePassword input").on('keypress',function (e){
-          if(e.which === 13) {
-            $('#gobutton').click();
-          }
-        });
-
-        $("#backbutton").on('click',function (){
-          window.location.href = '/signup';
+        $("#usernamePassword input").on('keypress', function (e){
+          if(e.which === 13) { $('#gobutton').click(); }
         });
 
         $("#gobutton").on('click',function (){
@@ -58,11 +50,11 @@
               if (data === 'false'){
                 $('#username')[0].value = '';
                 $('#password')[0].value = '';
-                $("#warning").text('Incorrect username/password.');
+                alert('Incorrect username/password.');
               } else if (data === 'late'){
                 $('#username')[0].value = '';
                 $('#password')[0].value = '';
-                $("#warning").text('Game already started.');
+                alert('Game already started.');
               } else {
                 socket.emit('roomUpdate');
                 // window.location.href = '/';
@@ -74,32 +66,34 @@
       });
     </script>
   </head>
-<body class="iOCSS black">
-  <div class="frame signIn_fancy">
-    <div class="header">
-      <h1>Sign In</h1>
-      <div class="right">
-        <a href="/signup" class="button">Sign Up</a>
+  <body class="iOCSS black">
+
+    <div class="frame signIn_fancy">
+      <div class="header">
+        <h1>Sign In</h1>
+        <div class="right">
+          <a href="/signup" class="button">Sign Up</a>
+        </div>
       </div>
-    </div>
-    
-    <div class="scrollable box-vertical box-center-main">
-      <div class="logo">
-        Assassins
-      </div>
-      <form class="editor flex-none">
-        <div class="fields well">
-          <div class="field">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username">
-          </div>
-          <div class="field">
-            <label for="password">Password</label>
-            <input type="text" name="password" id="password">
+
+      <div class="scrollable box-vertical box-center-main">
+        <div class="logo">
+          Assassins
+        </div>
+        <div class="editor flex-none" id="usernamePassword">
+          <div class="fields well">
+            <div class="field">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username">
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password">
+            </div>
           </div>
         </div>
-        <button class="black large">Sign In</button>
-      </form>
+        <button id="gobutton" class="black large">Sign In</button>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
+<html>

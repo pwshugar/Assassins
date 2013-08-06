@@ -1,6 +1,7 @@
 .signIn_fancy {
   background-image: -webkit-radial-gradient(center center, ellipse contain, rgb(50, 50, 50) 0%, rgb(45, 45, 45) 20%, black 100%);
 }
+
 .logo {
   margin-top: -1rem;
   font-family: monospace;
@@ -12,4 +13,12 @@
 
 .iOCSS .flex-none {
   -webkit-box-flex: 0 !important;
+}
+
+#info {
+  display:none;
+}
+
+#infoarea {
+  color:gray !important;
 }
