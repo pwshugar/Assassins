@@ -7,9 +7,10 @@ var router = require('./router.js')
   , io = require('socket.io').listen(server);
 
 var UserModel = router.UM;
+var GroupModel = router.GM;
 
-// mongoose.connect('mongodb://127.0.0.1/assassinTest2');
-mongoose.connect('mongodb://nodejitsu:7b724dcedab5de16f70e1b7a1ff7168e@dharma.mongohq.com:10081/nodejitsudb3550895571');
+mongoose.connect('mongodb://127.0.0.1/assassinTest2');
+// mongoose.connect('mongodb://nodejitsu:7b724dcedab5de16f70e1b7a1ff7168e@dharma.mongohq.com:10081/nodejitsudb3550895571');
 console.log("Connected to 'assassin' database");
 
 server.listen(8080);
@@ -165,13 +166,24 @@ io.sockets.on('connection', function (socket){
     UserModel.findOne({ username: data.contract }, function (err, contractdata){
       UserModel.findOne({ username: data.username }, function (err, userdata){
         if (contractdata.contract && userdata.contract){
-          userdata.contract = contractdata.contract;
-          // userdata.lat = data.location.lat,
-          // userdata.long = data.location.long,
-          // userdata.minutes = data.location.minutes,
-          userdata.save();
-          contractdata.contract = undefined;
-          contractdata.save();
+          if (userdata.username === contractdata.contract){
+            GroupModel.findOne({ groupname: userdata.groupname}, function (err, groupdata){
+              groupdata.winner = userdata.username;
+              groupdata.save();
+              contractdata.contract = undefined;
+              userdata.save();
+              contractdata.contract = undefined;
+              contractdata.save();
+            });
+          } else {
+            userdata.contract = contractdata.contract;
+            // userdata.lat = data.location.lat,
+            // userdata.long = data.location.long,
+            // userdata.minutes = data.location.minutes,
+            userdata.save();
+            contractdata.contract = undefined;
+            contractdata.save();
+          }
         }
         io.sockets.emit('roomUpdate');
       });

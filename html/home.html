@@ -134,15 +134,11 @@
             data: { flag: false },
             success: function (data){
               if (data){
-                if (data === 'notStarted'){
-                  $('#nocontract').css('display', 'block');
-                  $('#nocontract').text("Game hasn't started yet.");
-                } else if (data === 'win'){
+                if (typeof data === 'string'){
                   $('.info').css('display', "none");
                   $('#killbutton').css('display', "none");
                   $('#nocontract').css('display', 'block');
-                  $('#nocontract').text('You Win!');
-                  socket.emit('gameover', roomObj.username);
+                  $('#nocontract').text(data);
                 } else {
                   // var dobj = directionCompare(data);
                   $('#nocontract').css('display', 'none');

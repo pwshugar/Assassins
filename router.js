@@ -27,7 +27,8 @@ var Group = new Schema({
   password: { type: String, required: true, trim: true },
   admin: { type: String, trim: true, lowercase: true },
   started: { type: Boolean, 'default': false },
-  ended: { type: Boolean, 'default': false }
+  ended: { type: Boolean, 'default': false },
+  winner: { type: String }
 });
 
 var Session = new Schema({
@@ -55,8 +56,10 @@ var fakeUsers = function (){
   };
   var user = new UserModel(user_data);
   user.save(function (error, data){});
-  
+
   user_data.username = 'puck';
+  user_data.fname = 'Puck';
+  user_data.lname = 'Yuck';
   var user2 = new UserModel(user_data);
   user2.save(function (error, data){});
 
@@ -126,7 +129,7 @@ exports.signup = function(req, res){
         password: req.body.password,
         groupname: 'hackreactor', // changed for HR
         fname: req.body.fname[0].toUpperCase() + req.body.fname.slice(1),
-        lname: req.body.lname[0].toUpperCase() + req.body.fname.slice(1),
+        lname: req.body.lname[0].toUpperCase() + req.body.lname.slice(1),
         age: req.body.age,
         weapon: req.body.weapon,
         fact: req.body.fact,
@@ -194,8 +197,10 @@ exports.login = function (req, res){
 
 exports.logout = function (req, res){
   UserModel.findOne({ 'username': req.session.username }, function (err, data){
-    data.login = false;
-    data.save();
+    if (data){
+      data.login = false;
+      data.save();
+    }
   });
   req.session.destroy();
   res.end();
@@ -257,7 +262,6 @@ exports.checklist = function (req, res){
 
 exports.home = function (req, res){
   if (req.session.username && req.session.groupname){
-      console.log(req.session.admin);
     if (req.session.admin){
       res.sendfile('./html/admin.html');
     } else {
@@ -294,22 +298,22 @@ exports.startgame = function (req, res){
 };
 
 exports.contractUpdate = function (req, res){
-  GroupModel.findOne({ groupname: req.session.groupname }, function (err, data){
-    if (!data.started){
-      res.send('notStarted');
+  GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
+    if (!groupdata.started){
+      res.send('Game has not started yet.');
     } else {
-      UserModel.findOne({ username: req.session.username }, 'contract', function (err, data){
-        if (data === null){
+      UserModel.findOne({ username: req.session.username }, 'contract', function (err, userdata){
+        if (userdata === null){
           res.send();
         } else {
-          if (data.contract){
-            if (data.contract === req.session.username){
-              res.send('win');
-            } else {
-              UserModel.findOne({ 'username': data.contract }, function (err, data){
-                res.send(data);
-              });
-            }
+          if (groupdata.winner){
+            UserModel.findOne({ username: groupdata.winner}, function (err, winnerdata){
+              res.send(winnerdata.fname + " " + winnerdata.lname + " won!")
+            });
+          } else if (userdata.contract){
+            UserModel.findOne({ username: userdata.contract }, function (err, contractdata){
+              res.send(contractdata);
+            });
           } else {
             res.send(null);
           }
