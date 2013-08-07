@@ -13,12 +13,7 @@
 
         var socket = io.connect('/');
         socket.on('roomUpdate', function (data){
-          console.log('room update');
           checklist();
-        });
-        socket.on('gamestart', function (data){
-          console.log('game started');
-        contractUpdate();
         });
 
         $("#logout").on('click',function (){
@@ -79,7 +74,7 @@
           <div class="well-header" id="infoarea">Player List</div>
           <div class="well" id="list">
           </div>
-          <button  class="black large" id="startgame" >Start Game</button>
+          <button class="black large" id="startgame" >Start Game</button>
         </div>
       </div>
     </div>

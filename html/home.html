@@ -10,6 +10,14 @@
     <script type="text/javascript">
       $(document).ready(function (){
 
+        var socket = io.connect('/');
+        socket.on('roomUpdate', function (data){
+          contractUpdate();
+        });
+        socket.on('gamestart', function (data){
+          contractUpdate();
+        });
+
         var roomObj = {
           username: '',
           roomName: '',
@@ -22,72 +30,12 @@
             type: "post",
             data: {},
             success: function (data){
-              // if (data){
-                roomObj.username = data.username;
-                roomObj.roomName = data.groupname;
-              // }
-                // $('#logout').css("display", "block");
-                // $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-                $('.logo').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
-              // } else {
-              //   $('#login').css("display", "block");
-              // }
+              roomObj.username = data.username;
+              roomObj.roomName = data.groupname;
+              $('.logo').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
             }
           });
         };
-
-        logcheck();
-
-        // var locObj = {
-        //   lat: 0,
-        //   long: 0,
-        //   minutes: 0
-        // };
-
-        // var foundLocation = function(){
-        //   navigator.geolocation.getCurrentPosition(foundLocation);
-        //   function locfind (position){
-        //     locObj.lat = position.coords.latitude;
-        //     locObj.long = position.coords.longitude;
-        //     locObj.minutes = new Date().getTime() / 60000;
-        //     console.log(locObj);
-        //   };
-        // };
-
-        // var directionCompare = function (data){
-        //   var obj = {};
-        //   if (data.lat === 0 || data.long === 0 || data.minutes === 0){
-        //     return false;
-        //   } else if (locObj.lat === 0 || locObj.long === 0 || locObj.minutes === 0){
-        //     return false
-        //   } else {
-        //     obj.latComp = data.lat - locObj.lat;
-        //     obj.longComp = Math.abs(data.long) - Math.abs(locObj.long);
-        //     obj.angle = obj.latComp/obj.longComp;
-        //     obj.minComp = Math.floor(data.minutes - locObj.minutes)
-        //     console.log(obj);
-        //     return obj;
-        //   }
-        // };
-
-        var socket = io.connect('/');
-        socket.on('news', function (data){
-          console.log(data);
-        });
-
-        socket.on('roomUpdate', function (data){
-          console.log('room update');
-          contractUpdate();
-        });
-
-        socket.on('gamestart', function (data){
-          console.log('game started');
-          contractUpdate();
-        });
-
-        // socket.on('gameover', function (data){
-        //   console.log(data.fname);
-        // });
 
         $("#killbutton").on('click',function (){
           $.ajax({
@@ -102,11 +50,8 @@
                     username: roomObj.username,
                     contract: data.username,
                     groupname: roomObj.roomName
-                    // location: locObj
                   });
-                } else {
-                  alert('Assassination Fail. Wrong information.');
-                }
+                } else { alert('Assassination Fail. Wrong information.'); }
               }
             }
           });
@@ -131,14 +76,12 @@
             data: {},
             success: function (data){
               socket.emit('roomUpdate');
-              // window.location.href = '/';
-              window.location.href = '/login'; //changed for HR
+              location.reload();
             }
           });
         });
 
         var contractUpdate = function (){
-          // foundLocation();
           $.ajax({
             url:"/contractUpdate",
             type: "post",
@@ -171,6 +114,7 @@
           });
         };
 
+        logcheck();
         contractUpdate();
 
       });
@@ -178,12 +122,10 @@
   </head>
   <body class="iOCSS black">
     <div class="frame signIn_fancy">
-    
       <div class="header">
         <h1>Welcome</h1>
         <div><button class="edit" type="button" id="logout">Log out</button></div>
       </div>
-    
       <div class="scrollable">
         <div class="editor flex-none" id="divIn">
           <div class="well-header" id="infoarea">Target Profile</div>
@@ -199,9 +141,6 @@
           <button  class="black large" id="resetbutton" >Reset Game</button>
         </div>
       </div>
-
     </div>
   </body>
-
-
 </html>

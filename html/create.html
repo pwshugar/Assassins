@@ -66,9 +66,7 @@
                   $('#password')[0].value = '';
                   $('#retype')[0].value = '';
                   alert('Group already created.');
-                } else {
-                  location.reload();
-                }
+                } else { location.reload(); }
               }
             });
           }
@@ -79,14 +77,12 @@
   </head>
   <body class="iOCSS black">
     <div class="frame signIn_fancy">
-
       <div class="header">
         <h1>Welcome</h1>
         <div class="right">
           <button type="button" class="button" id="logout">Log out</a>
         </div>
       </div>
-
       <div class="scrollable box-vertical box-center-main" id="createDiv">
         <div class="editor flex-none" id="joinDiv">
           <div class="well-header" id="infoarea">Create a Game</div>
@@ -109,7 +105,6 @@
         <div class="well-header" id="infoarea">Want to join a game?</div><br>
         <a href="/join" type="button" class="button black large">Join a Game</a>
       </div>
-
     </div>
   </body>
 </html>
