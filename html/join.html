@@ -15,98 +15,79 @@
           console.log(data);
         });
 
-        var loggedIn = false;
-
-        var logcheck = function (){
-          $.ajax({
-            url:"/logcheck",
-            type: "post",
-            data: {},
-            success: function (data){
-              if (data){
-                $('#logout').css("display", "block");
-                $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-                loggedIn = true;
-              } else {
-                $('#login').css("display", "block");
-              }
-            }
-          });
-        };
-
-        logcheck();
-
-        $("#fakeLink").on('click',function (){
+        $("#logout").on('click',function (){
           $.ajax({
             url:"/logout",
             type: "post",
             data: {},
             success: function (data){
               socket.emit('roomUpdate');
-              $('#logout').css("display", "none");
-              $('#login').css("display", "block");
+              location.reload();
             }
           });
         });
 
-        $(".enter").on('keypress',function (e){
-          if(e.which === 13) {
-            $('#post').click();
-          }
-        });
-
-        $("#post").on('click',function (){
-          console.log('posted');
-          $.ajax({  
-            url:"/create",
-            type: "post",
-            data: {
-              groupname: $('#groupname')[0].value.toLowerCase(),
-              password: $('#password')[0].value
-            },
-            success: function (data){
-              console.log('data', data);
-              if (data === 'false'){
-                $('#groupname')[0].value = '';
-                $('#password')[0].value = '';
-              } else {
-                $('#groupname')[0].value = '';
-                $('#password')[0].value = '';
-              }
-            }
-          });
-        });
-
-        $(".joinenter").on('keypress',function (e){
-          if(e.which === 13) {
-            $('#joinpost').click();
-          }
+        $("#joinDiv input").on('keypress',function (e){
+          if(e.which === 13) { $('#joinpost').click(); }
         });
 
         $("#joinpost").on('click',function (){
-          if (!loggedIn){
-            return
-            // need to make fail message
+          if ($('#groupname')[0].value === '' || $('#password')[0].value === ''){
+            alert('Please enter a groupname and password.')
           } else {
             $.ajax({  
               url:"/joingroup",
               type: "post",
               data: {
-                groupname: $('#joingroupname')[0].value.toLowerCase(),
-                password: $('#joinpassword')[0].value
+                groupname: $('#groupname')[0].value.toLowerCase(),
+                password: $('#password')[0].value
               },
               success: function (data){
-                if (data === 'false'){
-                  $('#joingroupname')[0].value = '';
-                  $('#joinpassword')[0].value = '';
+                if (data === 'nogame'){
+                  $('#groupname')[0].value = '';
+                  $('#password')[0].value = '';
+                  console.log(data);
+                } else if (data === 'badpass'){
+                  $('#password')[0].value = '';
+                  console.log(data);
+                } else if (data === 'ingame'){
+                  $('#groupname')[0].value = '';
+                  $('#password')[0].value = '';
+                  console.log(data);
                 } else {
                   socket.emit('roomUpdate');
-                  window.location.href = '/home';
+                  location.reload();
                 }
               }
             });
           }
         });
+
+        // $("?").on('keypress',function (e){
+        //   if(e.which === 13) { $('#?').click(); }
+        // });
+
+        // $("#?").on('click',function (){
+        //   console.log('posted');
+        //   $.ajax({  
+        //     url:"/create",
+        //     type: "post",
+        //     data: {
+        //       groupname: $('#groupname')[0].value.toLowerCase(),
+        //       password: $('#password')[0].value
+        //     },
+        //     success: function (data){
+        //       console.log('data', data);
+        //       if (data === 'false'){
+        //         $('#groupname')[0].value = '';
+        //         $('#password')[0].value = '';
+        //       } else {
+        //         $('#groupname')[0].value = '';
+        //         $('#password')[0].value = '';
+        //       }
+        //     }
+        //   });
+        // });
 
       });
     </script>
@@ -144,7 +125,7 @@
       <div class="header">
         <h1>Welcome</h1>
         <div class="right">
-          <a href="/signup" class="button">Log out</a>
+          <button type="button" class="button" id="logout">Log out</a>
         </div>
       </div>
 
@@ -152,11 +133,11 @@
         <div class="logo">
           Join a Game
         </div>
-        <div class="editor flex-none" id="usernamePassword">
-          <div class="fields well">
+        <div class="editor flex-none">
+          <div class="fields well"  id="joinDiv">
             <div class="field">
-              <label for="username">Groupname</label>
-              <input type="text" name="username" id="username">
+              <label for="groupname">Group</label>
+              <input type="text" name="groupname" id="groupname">
             </div>
             <div class="field">
               <label for="password">Password</label>
@@ -164,9 +145,9 @@
             </div>
           </div>
         </div>
-        <button id="gobutton" class="black large">Join Game</button>
+        <button id="joinpost" class="black large">Join Game</button>
         <div class="well-header" id="infoarea">Need to create a new game?</div>
-        <button id="gobutton" class="black large">Create Game</button>
+        <button id="createpost" class="black large">Create Game</button>
       </div>
 
     </div>

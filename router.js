@@ -173,7 +173,6 @@ exports.login = function (req, res){
       } else {
         req.session.admin = false;
         req.session.username = username;
-        req.session.groupname = 'hackreactor'; // changed for HR
         if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
         // data.lat = req.body.lat;
         // data.long = req.body.long;
@@ -187,19 +186,19 @@ exports.login = function (req, res){
 };
 
 // exports.login = function (req, res){
-//   UserModel.find({}, 'fname lname contract username', function (err, data){
-//     var k=0;
-//     for(var i = 0; i < data.length; i++){
-//       if (data[i].contract && data[i].contract !== 'dead'){
-//         console.log(data[i]);
-//         k++;
-//       }
-//     }
-//     console.log(k);
-//   });
-// // UserModel.findOne({username: 'mint'}, function(err, data){
-// //   console.log(data);
-// // });
+  // UserModel.find({}, 'fname lname contract username', function (err, data){
+  //   var k=0;
+  //   for(var i = 0; i < data.length; i++){
+  //     if (data[i].contract && data[i].contract !== 'dead'){
+  //       console.log(data[i]);
+  //       k++;
+  //     }
+  //   }
+  //   console.log(k);
+  // });
+// UserModel.find({}, function(err, data){
+//   console.log(data);
+// });
 // };
 
 exports.logout = function (req, res){
@@ -238,15 +237,15 @@ exports.logcheck = function (req, res){
 
 exports.joingroup = function (req, res){
   var groupname = req.body.groupname;
-  GroupModel.findOne({ 'groupname': groupname }, function (err, groupdata){
+  GroupModel.findOne({ groupname: groupname }, function (err, groupdata){
     if (groupdata === null){
-      res.send(false);
+      res.send('nogame');
     } else if (groupdata.password !== req.body.password){
-      res.send(false);
+      res.send('badpass');
     } else {
-      UserModel.findOne({ 'username': req.session.username }, function (err, userdata){
+      UserModel.findOne({ username: req.session.username }, function (err, userdata){
         if (userdata.groupname !== groupname && userdata.started){
-          res.send(null);
+          res.send('ingame');
         } else {
           if (req.session.username === groupdata.admin && !groupdata.started){
             req.session.admin = true;
@@ -254,7 +253,7 @@ exports.joingroup = function (req, res){
           userdata.groupname = groupname;
           userdata.save();
           req.session.groupname = req.body.groupname;
-          res.send('true');
+          res.send('success');
         }
       });
     }

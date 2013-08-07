@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="./css/io.css">
-    <link rel="stylesheet" type="text/css" href="./css/login.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link href="./css/create.css" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript">
+  </head>
+  <body>
+    <h1 class="head" >Welcome to Assassins!</h1>
+    <h3 class="head" >The game where you learn people's names... by KILLING them!</h3>
+    <div id="login">
+      <span class="loginEls" >You are not logged in</span>
+      <a href="/login" class="loginEls" >Login<a>
+      <a href="/signup" class="loginEls" >Sign Up<a>
+    </div>
+    <div id="logout">
+      <span id="welcome" class="loginEls" >Welcome</span>
+      <span id="fakeLink" class="loginEls" >Log Out?<span>
+    </div>
+    <div class="left" >
+      <h2>Create a new game?</h2>
+      <label >Group Name<input class="enter" id="groupname" type="text" name="groupname" ></label>
+      <label>Password<input class="enter" id="password" type="password" name="password" ></label>
+      <button type="button" id="post" >Submit</button>
+    </div>
+    <div class="left" id="right">
+      <h2>Join a game?</h2>
+      <label >Group Name<input class="joinenter" id="joingroupname" type="text" name="joingroupname" ></label>
+      <label>Password<input class="joinenter" id="joinpassword" type="password" name="joinpassword" ></label>
+      <button type="button" id="joinpost" >Submit</button>
+    </div>
+    <script>
       $(function (){
 
         var socket = io.connect('/');
@@ -110,67 +132,5 @@
 
       });
     </script>
-  </head>
-
-<!--   <body>
-    <h1 class="head" >Welcome to Assassins!</h1>
-    <h3 class="head" >The game where you learn people's names... by KILLING them!</h3>
-    <div id="login">
-      <span class="loginEls" >You are not logged in</span>
-      <a href="/login" class="loginEls" >Login<a>
-      <a href="/signup" class="loginEls" >Sign Up<a>
-    </div>
-    <div id="logout">
-      <span id="welcome" class="loginEls" >Welcome</span>
-      <span id="fakeLink" class="loginEls" >Log Out?<span>
-    </div>
-    <div class="left" >
-      <h2>Create a new game?</h2>
-      <label >Group Name<input class="enter" id="groupname" type="text" name="groupname" ></label>
-      <label>Password<input class="enter" id="password" type="password" name="password" ></label>
-      <button type="button" id="post" >Submit</button>
-    </div>
-    <div class="left" id="right">
-      <h2>Join a game?</h2>
-      <label >Group Name<input class="joinenter" id="joingroupname" type="text" name="joingroupname" ></label>
-      <label>Password<input class="joinenter" id="joinpassword" type="password" name="joinpassword" ></label>
-      <button type="button" id="joinpost" >Submit</button>
-    </div>
-  </body> -->
-
-  <body class="iOCSS black">
-    <div class="frame signIn_fancy">
-
-      <div class="header">
-        <h1>Welcome</h1>
-        <div class="right">
-          <a href="/signup" class="button">Log out</a>
-        </div>
-      </div>
-
-      <div class="scrollable box-vertical box-center-main">
-        <div class="logo">
-          Join a Game
-        </div>
-        <div class="editor flex-none" id="usernamePassword">
-          <div class="fields well">
-            <div class="field">
-              <label for="username">Groupname</label>
-              <input type="text" name="username" id="username">
-            </div>
-            <div class="field">
-              <label for="password">Password</label>
-              <input type="password" name="password" id="password">
-            </div>
-          </div>
-        </div>
-        <button id="gobutton" class="black large">Join Game</button>
-        <div class="well-header" id="infoarea">Need to create a new game?</div>
-        <button id="gobutton" class="black large">Create Game</button>
-      </div>
-
-    </div>
   </body>
-
-
 </html>

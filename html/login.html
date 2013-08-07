@@ -57,7 +57,7 @@
                 alert('Game already started.');
               } else {
                 socket.emit('roomUpdate');
-                location.reload();
+                location.href = '/join';
               }
             }
           });

@@ -75,7 +75,9 @@ app.get('/home', function (req, res){
 
 app.get('/login', function (req, res){
   if (req.session.username && req.session.groupname){
-	res.redirect('/home');
+	  res.redirect('/home');
+  } else if (req.session.username){
+    res.sendfile('./html/join.html');
   } else {
     res.sendfile('./html/login.html');
   }
@@ -83,19 +85,23 @@ app.get('/login', function (req, res){
 
 app.get('/signup', function (req, res){
   if (req.session.username && req.session.groupname){
-	res.redirect('/home');
+	  res.redirect('/home');
+  } else if (req.session.username){
+    res.sendfile('./html/join.html');
   } else {
     res.sendfile('./html/signup.html');
   }
 });
 
-// app.get('/', function (req, res){ // changed for HR
-//   if (req.session.username && req.session.groupname){
-// 	  res.redirect('/home');
-//   } else {
-//     res.sendfile('./html/create.html');
-//   }
-// });
+app.get('/join', function (req, res){ // changed for HR
+  if (req.session.username && req.session.groupname){
+    res.redirect('/home');
+  } else if (req.session.username){
+    res.sendfile('./html/join.html');
+  } else {
+    res.redirect('/login');
+  }
+});
 
 
 // css/js get requests
