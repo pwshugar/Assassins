@@ -55,18 +55,11 @@ var fakeUsers = function (){
   };
   var user = new UserModel(user_data);
   user.save(function (error, data){});
+  
   user_data.username = 'puck';
   var user2 = new UserModel(user_data);
   user2.save(function (error, data){});
 
-  user_data.username = 'win';
-  user_data.login = false;
-  user_data.groupname = '';
-  var user3 = new UserModel(user_data);
-  user3.save(function (error, data){});
-  user_data.username = 'dead';
-  var user4 = new UserModel(user_data);
-  user4.save(function (error, data){});
   // user_data.username = 'pullo';
   // user_data.fname = 'pullo';
   // var user4 = new UserModel(user_data);
@@ -301,25 +294,29 @@ exports.startgame = function (req, res){
 };
 
 exports.contractUpdate = function (req, res){
-  UserModel.findOne({ 'username': req.session.username }, 'contract', function (err, data){
-    if (data === null) {
-      res.send(null);
+  GroupModel.findOne({ groupname: req.session.groupname }, function (err, data){
+    if (!data.started){
+      res.send('notStarted');
     } else {
-      if (data.contract){
-        if (data.contract === 'dead'){
-          res.send('dead');
-        } else if (data.contract === req.session.username){
-          res.send('win');
+      UserModel.findOne({ username: req.session.username }, 'contract', function (err, data){
+        if (data === null){
+          res.send();
         } else {
-          UserModel.findOne({ 'username': data.contract }, function (err, data){
-            res.send(data);
-          });
+          if (data.contract){
+            if (data.contract === req.session.username){
+              res.send('win');
+            } else {
+              UserModel.findOne({ 'username': data.contract }, function (err, data){
+                res.send(data);
+              });
+            }
+          } else {
+            res.send(null);
+          }
         }
-      } else {
-        res.send(null);
-      }
+      });
     }
-  });
+  }); 
 };
 
 

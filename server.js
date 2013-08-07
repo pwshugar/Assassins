@@ -8,8 +8,8 @@ var router = require('./router.js')
 
 var UserModel = router.UM;
 
-mongoose.connect('mongodb://127.0.0.1/assassinTest2');
-// mongoose.connect('mongodb://nodejitsu:7b724dcedab5de16f70e1b7a1ff7168e@dharma.mongohq.com:10081/nodejitsudb3550895571');
+// mongoose.connect('mongodb://127.0.0.1/assassinTest2');
+mongoose.connect('mongodb://nodejitsu:7b724dcedab5de16f70e1b7a1ff7168e@dharma.mongohq.com:10081/nodejitsudb3550895571');
 console.log("Connected to 'assassin' database");
 
 server.listen(8080);
@@ -164,13 +164,13 @@ io.sockets.on('connection', function (socket){
   socket.on('killPlayer', function (data){
     UserModel.findOne({ username: data.contract }, function (err, contractdata){
       UserModel.findOne({ username: data.username }, function (err, userdata){
-        if (userdata.contract !== 'dead'){
+        if (contractdata.contract && userdata.contract){
           userdata.contract = contractdata.contract;
           // userdata.lat = data.location.lat,
           // userdata.long = data.location.long,
           // userdata.minutes = data.location.minutes,
           userdata.save();
-          contractdata.contract = 'dead';
+          contractdata.contract = undefined;
           contractdata.save();
         }
         io.sockets.emit('roomUpdate');

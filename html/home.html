@@ -134,11 +134,9 @@
             data: { flag: false },
             success: function (data){
               if (data){
-                if (data === 'dead'){
-                  $('.info').css('display', "none");
-                  $('#killbutton').css('display', "none");
+                if (data === 'notStarted'){
                   $('#nocontract').css('display', 'block');
-                  $('#nocontract').text('You were assassinated. Game Over.');
+                  $('#nocontract').text("Game hasn't started yet.");
                 } else if (data === 'win'){
                   $('.info').css('display', "none");
                   $('#killbutton').css('display', "none");
@@ -157,8 +155,10 @@
                   $('#fact').text(data.fact);
                 }
               } else {
+                $('.info').css('display', "none");
+                $('#killbutton').css('display', "none");
                 $('#nocontract').css('display', 'block');
-                $('#nocontract').text("Game hasn't started yet.");
+                $('#nocontract').text('You were assassinated. Game Over.');
               }
             }
           });
@@ -209,7 +209,7 @@
     
       <div class="scrollable">
         <div class="editor flex-none" id="divIn">
-          <div class="well-header" id="infoarea">Target's Profile</div>
+          <div class="well-header" id="infoarea">Target Profile</div>
           <div class="well">
             <h2 class="info" id="name"></h2>
             <p id="nocontract" ></p>
