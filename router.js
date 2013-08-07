@@ -45,7 +45,6 @@ var fakeUsers = function (){
   var user_data = {
     username: 'peter',
     password: 'm',
-    groupname: 'hackreactor',
     fname: 'Peter',
     lname: 'Shugar',
     age: '28',
@@ -105,12 +104,16 @@ var fakeUsers = function (){
 
   var group_data = {
     admin: 'peter',
-    groupname: 'hackreactor',
-    password: 'plantknife'
+    groupname: 'm',
+    password: 'm'
   };
 
   var group = new GroupModel(group_data);
   group.save(function (err, data){});
+
+  group_data.groupname = 'mm'
+  var group2 = new GroupModel(group_data);
+  group2.save(function (err, data){});
 
 };
 
@@ -121,7 +124,7 @@ var fakeUsers = function (){
 // Router functions
 
 exports.signup = function(req, res){
-  GroupModel.findOne({ groupname: 'hackreactor' }, function (err, data){
+  GroupModel.findOne({ groupname: 'm' }, function (err, data){
     if (!data.started){
       UserModel.findOne({ username: req.body.username }, function (err, data){
         console.log(data);
@@ -144,7 +147,7 @@ exports.signup = function(req, res){
 
           user.save(function (error, data){
             req.session.username = req.body.username;
-            req.session.groupname = 'hackreactor'; // changed for HR
+            req.session.groupname = 'm'; // changed for HR
             req.session.admin = false;
             // res.redirect('/');  // changed for HR
             res.send('success')
@@ -162,26 +165,17 @@ exports.signup = function(req, res){
 
 exports.login = function (req, res){
   var username = req.body.username;
-  GroupModel.findOne({ groupname: 'hackreactor' }, function (err, gdata){
-    UserModel.findOne({'username': username}, function (err, data){
-      if (data === null){
-        res.send('false');
-      } else if (data.password !== req.body.password){
-        res.send('false');
-      } else if (gdata.started !== data.started){
-        res.send('late');
-      } else {
-        req.session.admin = false;
-        req.session.username = username;
-        if (username === 'peter' && !data.started){ req.session.admin = true; } // changed for HR
-        // data.lat = req.body.lat;
-        // data.long = req.body.long;
-        // data.minutes = req.body.minutes;
-        data.login = true;
-        data.save();
-        res.send(true);
-      }
-    });
+  UserModel.findOne({'username': username}, function (err, data){
+    if (data === null){
+      res.send('false');
+    } else if (data.password !== req.body.password){
+      res.send('false');
+    } else {
+      req.session.username = username;
+      data.login = true;
+      data.save();
+      res.send(true);
+    }
   });
 };
 
@@ -243,11 +237,13 @@ exports.joingroup = function (req, res){
     } else if (groupdata.password !== req.body.password){
       res.send('badpass');
     } else {
+      console.log(req.session.admin);
       UserModel.findOne({ username: req.session.username }, function (err, userdata){
         if (userdata.groupname !== groupname && userdata.started){
           res.send('ingame');
         } else {
-          if (req.session.username === groupdata.admin && !groupdata.started){
+          if (req.session.username === groupdata.admin && !groupdata.started && !groupdata.winner){
+            console.log('THIS IS WINNER', groupdata.winner);
             req.session.admin = true;
           }
           userdata.groupname = groupname;
@@ -305,7 +301,7 @@ exports.startgame = function (req, res){
 
 exports.contractUpdate = function (req, res){
   GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
-    if (!groupdata.started){
+    if (!groupdata.started && !groupdata.winner){
       res.send('Game has not started yet.');
     } else {
       UserModel.findOne({ username: req.session.username }, 'contract', function (err, userdata){

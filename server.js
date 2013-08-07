@@ -174,12 +174,20 @@ io.sockets.on('connection', function (socket){
         if (contractdata.contract && userdata.contract){
           if (userdata.username === contractdata.contract){
             GroupModel.findOne({ groupname: userdata.groupname}, function (err, groupdata){
-              groupdata.winner = userdata.username;
-              groupdata.save();
-              contractdata.contract = undefined;
-              userdata.save();
-              contractdata.contract = undefined;
-              contractdata.save();
+              UserModel.find({ groupname: userdata.groupname }, function (err, alluserdata){
+                for (var i = 0; i < alluserdata.length; i++){
+                  alluserdata[i].started = false;
+                  alluserdata[i].save();
+                }
+                groupdata.winner = userdata.username;
+                groupdata.started = false;
+                groupdata.save();
+                contractdata.contract = undefined;
+                userdata.save();
+                contractdata.contract = undefined;
+                contractdata.save();
+                io.sockets.emit('roomUpdate');
+              });
             });
           } else {
             userdata.contract = contractdata.contract;
@@ -189,9 +197,11 @@ io.sockets.on('connection', function (socket){
             userdata.save();
             contractdata.contract = undefined;
             contractdata.save();
+            io.sockets.emit('roomUpdate');
           }
+        } else {
+          io.sockets.emit('roomUpdate');
         }
-        io.sockets.emit('roomUpdate');
       });
     });
   });
