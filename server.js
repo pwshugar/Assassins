@@ -63,6 +63,10 @@ app.post('/contractUpdate', function (req, res){
   router.contractUpdate(req, res);
 });
 
+app.post('/reset', function (req, res){
+  router.reset(req, res);
+});
+
 // get requests
 
 app.get('/io', function (req, res){

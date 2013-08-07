@@ -237,13 +237,11 @@ exports.joingroup = function (req, res){
     } else if (groupdata.password !== req.body.password){
       res.send('badpass');
     } else {
-      console.log(req.session.admin);
       UserModel.findOne({ username: req.session.username }, function (err, userdata){
         if (userdata.groupname !== groupname && userdata.started){
           res.send('ingame');
         } else {
           if (req.session.username === groupdata.admin && !groupdata.started && !groupdata.winner){
-            console.log('THIS IS WINNER', groupdata.winner);
             req.session.admin = true;
           }
           userdata.groupname = groupname;
@@ -299,10 +297,22 @@ exports.startgame = function (req, res){
   res.send('true');
 };
 
+exports.reset = function (req, res){
+  req.session.admin = true;
+  GroupModel.findOne({ groupname: req.session.groupname }, function (err, data){
+    data.winner = undefined;
+    data.save();
+    res.send();
+  });
+};
+
 exports.contractUpdate = function (req, res){
   GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
+    var messageObj = {};
     if (!groupdata.started && !groupdata.winner){
-      res.send('Game has not started yet.');
+      messageObj.flag = 'user';
+      messageObj.message = 'Game has not started yet.'
+      res.send(messageObj);
     } else {
       UserModel.findOne({ username: req.session.username }, 'contract', function (err, userdata){
         if (userdata === null){
@@ -310,7 +320,10 @@ exports.contractUpdate = function (req, res){
         } else {
           if (groupdata.winner){
             UserModel.findOne({ username: groupdata.winner}, function (err, winnerdata){
-              res.send(winnerdata.fname + " " + winnerdata.lname + " won!")
+              messageObj.flag = 'user';
+              if (req.session.username === groupdata.admin){ messageObj.flag = 'admin'; }
+              messageObj.message = winnerdata.fname + " " + winnerdata.lname + " won!";
+              res.send(messageObj);
             });
           } else if (userdata.contract){
             UserModel.findOne({ username: userdata.contract }, function (err, contractdata){
