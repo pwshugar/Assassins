@@ -9,7 +9,6 @@
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       $(function (){
-
         // var locObj = {
         //   lat: 0,
         //   long: 0,
@@ -101,7 +100,8 @@
               return;
             }
           }
-          $.ajax({  
+          $("#infobutton").attr("disabled", "disabled");
+          $.ajax({
             url:"/signup",
             type: "post",  
             data: {
@@ -118,15 +118,20 @@
               // minutes: locObj.minutes
             },
             success: function (data){
-              if (data){
+              $("#infobutton").removeAttr("disabled");
+              if (data === 'success'){
                 socket.emit('roomUpdate');
                 location.reload();
-              } else {
-                for (var i = 0; i < $("#divIn input").length; i++){
-                  $("#divIn input")[i].value = '';
-                }
+              } else if (data === 'started'){
                 alert("Game already has started.");
+                location.reload();
+              } else if (data === 'fail'){
+                alert("Username already taken");
+                location.reload();
               }
+            },
+            error: function (data){
+              $("#infobutton").removeAttr("disabled");
             }
           });
         });

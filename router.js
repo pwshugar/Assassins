@@ -27,7 +27,6 @@ var Group = new Schema({
   password: { type: String, required: true, trim: true },
   admin: { type: String, trim: true, lowercase: true },
   started: { type: Boolean, 'default': false },
-  ended: { type: Boolean, 'default': false },
   winner: { type: String }
 });
 
@@ -124,31 +123,39 @@ var fakeUsers = function (){
 exports.signup = function(req, res){
   GroupModel.findOne({ groupname: 'hackreactor' }, function (err, data){
     if (!data.started){
-      var user_data = {
-        username: req.body.username,
-        password: req.body.password,
-        groupname: 'hackreactor', // changed for HR
-        fname: req.body.fname[0].toUpperCase() + req.body.fname.slice(1),
-        lname: req.body.lname[0].toUpperCase() + req.body.lname.slice(1),
-        age: req.body.age,
-        weapon: req.body.weapon,
-        fact: req.body.fact,
-        secret: req.body.secret,
-        // lat: req.body.lat,
-        // long: req.body.long,
-        // minutes: req.body.minutes
-      };
-      var user = new UserModel(user_data);
+      UserModel.findOne({ username: req.body.username }, function (err, data){
+        console.log(data);
+        if (data === null){
+          var user_data = {
+            username: req.body.username,
+            password: req.body.password,
+            groupname: 'hackreactor', // changed for HR
+            fname: req.body.fname[0].toUpperCase() + req.body.fname.slice(1),
+            lname: req.body.lname[0].toUpperCase() + req.body.lname.slice(1),
+            age: req.body.age,
+            weapon: req.body.weapon,
+            fact: req.body.fact,
+            secret: req.body.secret,
+            // lat: req.body.lat,
+            // long: req.body.long,
+            // minutes: req.body.minutes
+          };
+          var user = new UserModel(user_data);
 
-      user.save(function (error, data){
-        req.session.username = req.body.username;
-        req.session.groupname = 'hackreactor'; // changed for HR
-        req.session.admin = false;
-        // res.redirect('/');  // changed for HR
-        res.send(true)
+          user.save(function (error, data){
+            req.session.username = req.body.username;
+            req.session.groupname = 'hackreactor'; // changed for HR
+            req.session.admin = false;
+            // res.redirect('/');  // changed for HR
+            res.send('success')
+          });
+        } else {
+          console.log("FAIL");
+          res.send('fail');
+        }
       });
     } else {
-      res.send(false);
+      res.send('started');
     }
   });
 };

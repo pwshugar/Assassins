@@ -23,9 +23,6 @@
               for (var i = 0; i < data.length; i++){
                 $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
               }
-            },
-            error: function (x,t,e){
-              debugger;
             }
           });
         };
