@@ -11,9 +11,6 @@
       $(function (){
 
         var socket = io.connect('/');
-        socket.on('news', function (data){
-          console.log(data);
-        });
 
         $("#logout").on('click',function (){
           $.ajax({
@@ -40,9 +37,10 @@
               password: $('#password')[0].value
             },
             success: function (data){
-              if (data === 'false'){
+              if (data === false){
                 $('#groupname')[0].value = '';
                 $('#password')[0].value = '';
+                $('#retype')[0].value = '';
                 alert('Group already created.');
               } else {
                 location.reload();
@@ -65,10 +63,8 @@
       </div>
 
       <div class="scrollable box-vertical box-center-main" id="createDiv">
-        <div class="logo">
-          Create a Game
-        </div>
         <div class="editor flex-none" id="joinDiv">
+          <div class="well-header" id="infoarea">Create a Game</div>
           <div class="fields well">
             <div class="field">
               <label for="groupname">Group</label>

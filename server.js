@@ -27,12 +27,12 @@ app.use(express.bodyParser());
 
 // Router functions are defined in router.js
 
-app.post('/login', function (req, res){
-  router.login(req, res);
-});
-
 app.post('/signup', function (req, res){
   router.signup(req, res);
+});
+
+app.post('/login', function (req, res){
+  router.login(req, res);
 });
 
 app.post('/creategroup', function (req, res){
@@ -77,7 +77,7 @@ app.get('/home', function (req, res){
       res.sendfile('./html/home.html');
     }
   } else {
-    res.redirect('/login');
+    res.redirect('/signup');
   }
 });
 

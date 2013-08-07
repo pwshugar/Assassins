@@ -191,19 +191,6 @@ exports.logout = function (req, res){
   res.end();
 };
 
-// exports.create = function (req, res){
-//   var group_data = {
-//     admin: req.session.username,
-//     groupname: req.body.groupname,
-//     password: req.body.password
-//   };
-//   var group = new GroupModel(group_data);
-//   group.save(function (err, data){
-
-//     res.send('true');
-//   });
-// };
-
 exports.logcheck = function (req, res){
   if (req.session.username){
     res.send({
@@ -285,7 +272,7 @@ exports.startgame = function (req, res){
         var j = i + 1;
         if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
         UserModel.findOne({ username: names[i].username }, function (err, data){
-          data.started = true; // changed for HR
+          data.started = true;
           data.contract = names[j].username;
           data.save();
         });   
