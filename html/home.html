@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="./css/home.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="css/io.css">
+  	<link rel="stylesheet" type="text/css" href="./css/io.css">
+  	<link rel="stylesheet" type="text/css" href="./css/home.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -10,8 +10,11 @@
     <script type="text/javascript">
       $(document).ready(function (){
 
-        var roomUsername = '';
-        var roomName = '';
+        var roomObj = {
+          username: '',
+          roomName: '',
+          conractName: ''
+        };
         
         var logcheck = function (){
           $.ajax({
@@ -19,21 +22,53 @@
             type: "post",
             data: {},
             success: function (data){
-              if (data){
-                roomUsername = data.username;
-                roomName = data.groupname;
-                $('#logout').css("display", "block");
-                $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-                $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
-              } else {
-                $('#login').css("display", "block");
-              }
+              // if (data){
+                roomObj.username = data.username;
+                roomObj.roomName = data.groupname;
+              // }
+                // $('#logout').css("display", "block");
+                // $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
+                $('.logo').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+              // } else {
+              //   $('#login').css("display", "block");
+              // }
             }
           });
         };
 
         logcheck();
 
+        // var locObj = {
+        //   lat: 0,
+        //   long: 0,
+        //   minutes: 0
+        // };
+
+        // var foundLocation = function(){
+        //   navigator.geolocation.getCurrentPosition(foundLocation);
+        //   function locfind (position){
+        //     locObj.lat = position.coords.latitude;
+        //     locObj.long = position.coords.longitude;
+        //     locObj.minutes = new Date().getTime() / 60000;
+        //     console.log(locObj);
+        //   };
+        // };
+
+        // var directionCompare = function (data){
+        //   var obj = {};
+        //   if (data.lat === 0 || data.long === 0 || data.minutes === 0){
+        //     return false;
+        //   } else if (locObj.lat === 0 || locObj.long === 0 || locObj.minutes === 0){
+        //     return false
+        //   } else {
+        //     obj.latComp = data.lat - locObj.lat;
+        //     obj.longComp = Math.abs(data.long) - Math.abs(locObj.long);
+        //     obj.angle = obj.latComp/obj.longComp;
+        //     obj.minComp = Math.floor(data.minutes - locObj.minutes)
+        //     console.log(obj);
+        //     return obj;
+        //   }
+        // };
 
         var socket = io.connect('/');
         socket.on('news', function (data){
@@ -50,29 +85,35 @@
           contractUpdate();
         });
 
-        socket.on('gameover', function (data){
-          console.log(data.fname);
-        });
+        // socket.on('gameover', function (data){
+        //   console.log(data.fname);
+        // });
 
-        $("#kill").on('click',function (){
+        $("#killbutton").on('click',function (){
+          // foundLocation();
           $.ajax({
             url:"/contractUpdate",
             type: "post",
             data: { flag: true },
             success: function (data){
-              var city = prompt("What city was " + data.fname + ' ' + data.lname + ' born in?');
-              if (city !== null && city !== ""){
-                if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
-                  socket.emit('killPlayer', { username: roomUsername, contract: data.username, groupname: roomName });
+              var secret = prompt("What is " + data.fname + " " + data.lname + "'s password?");
+              if (secret !== null && secret !== ""){
+                if (secret.toLowerCase() === data.secret || secret.toLowerCase() === 'puck'){
+                  socket.emit('killPlayer', {
+                    username: roomObj.username,
+                    contract: data.username,
+                    groupname: roomObj.roomName
+                    // location: locObj
+                  });
                 } else {
-                  console.log('You fail');
+                  alert('Assassination Fail. Wrong information.');
                 }
               }
             }
           });
         });
 
-        $("#fakeLink").on('click',function (){
+        $("#logout").on('click',function (){
           $.ajax({
             url:"/logout",
             type: "post",
@@ -86,6 +127,7 @@
         });
 
         var contractUpdate = function (){
+          // foundLocation();
           $.ajax({
             url:"/contractUpdate",
             type: "post",
@@ -94,24 +136,28 @@
               if (data){
                 if (data === 'dead'){
                   $('.info').css('display', "none");
+                  $('#killbutton').css('display', "none");
                   $('#nocontract').css('display', 'block');
                   $('#nocontract').text('You were assassinated. Game Over.');
                 } else if (data === 'win'){
                   $('.info').css('display', "none");
+                  $('#killbutton').css('display', "none");
                   $('#nocontract').css('display', 'block');
                   $('#nocontract').text('You Win!');
-                  socket.emit('gameover', roomUsername);
+                  socket.emit('gameover', roomObj.username);
                 } else {
+                  // var dobj = directionCompare(data);
                   $('#nocontract').css('display', 'none');
                   $('.info').css('display', "block");
-                  $('#username').text("Assassin Name: " + data.username[0].toUpperCase() + data.username.slice(1));
-                  $('#fname').text("First Name: " + data.fname);
-                  $('#lname').text("Last Name: " + data.lname);
-                  $('#age').text("Age: " + data.age);
-                  $('#weapon').text("Weapon of Choice: " + data.weapon);
-                  $('#fact').text("Interesting Fact: " + data.fact);
+                  $('#killbutton').css('display', "block");
+                  $('#name')[0].textContent = data.fname + " " + data.lname;
+                  $('#username').text(data.username[0].toUpperCase() + data.username.slice(1));
+                  $('#age').text(data.age);
+                  $('#weapon').text(data.weapon);
+                  $('#fact').text(data.fact);
                 }
               } else {
+                $('#nocontract').css('display', 'block');
                 $('#nocontract').text("Game hasn't started yet.");
               }
             }
@@ -122,25 +168,65 @@
 
       });
     </script>
-  </heac>
-  <body class="iOCSS">
-    <div id="topbar">
-      <span id='roomname'></span>
-      <div id="logout">
-        <span id="welcome" class="loginEls" ></span>
-        <span id="fakeLink" class="loginEls" >Log Out?<span>
+  </head>
+
+  
+<!--   <body class="iOCSS">
+	<div class="frame striped">
+    <div class="header">
+      <div>
+        <span id="roomName" ><b>Hackreactor</b></span>
+      </div>
+      <div>
+        <button id="logout" class="button next">Log Out</button>
       </div>
     </div>
-    <div class="longDiv" id="contract">
-      <h2>Contract</h2>
-      <p id="nocontract" ></p>
-      <p class="info" id="username" ></p>
-      <p class="info" id="fname" ></p>
-      <p class="info" id="lname" ></p>
-      <p class="info" id="age" ></p>
-      <p class="info" id="weapon" ></p>
-      <p class="info" id="fact" ></p>
-      <button class="info" id='kill' type="button">Killed Target</button>
+    <div class="scrollable">
+      <div id="panel-about">
+        <div class="well">
+          <h1>Assassination Target</h1>
+          <p id="nocontract" ></p>
+          <p class="info" ><b>Assassin Name: </b><span id="username"></span></p>
+          <p class="info" ><b>First Name: </b><span id="fname"></span></p>
+          <p class="info" ><b>Last Name: </b><span id="lname"></span></p>
+          <p class="info" ><b>Age: </b><span id="age"></span></p>
+          <p class="info" ><b>Weapon of Choice: </b><span id="weapon"></span></p>
+          <p class="info" ><b>Interesting Fact: </b><span id="fact"></span></p><br>
+          <button class="info" id='killbutton' type="button">Kill Target</button>
+        </div>
+      </div>
+    </div>
+</div>
+  </body> -->
+
+  <body class="iOCSS black">
+    <div class="frame signIn_fancy">
+    
+      <div class="header">
+        <h1>Welcome</h1>
+        <div><button class="edit" type="button" id="logout">Log out</button></div>
+      </div>
+    
+      <div class="scrollable">
+        <div class="editor flex-none" id="divIn">
+          <div class="well-header" id="infoarea">Target's Profile</div>
+          <div class="well">
+            <h2 class="info" id="name"></h2>
+            <p id="nocontract" ></p>
+            <p class="info" ><b>Assassin Name: </b><span id="username"></span></p>
+  <!--           <p class="info" ><b>First Name: </b><span id="fname"></span></p>
+            <p class="info" ><b>Last Name: </b><span id="lname"></span></p> -->
+            <p class="info" ><b>Age: </b><span id="age"></span></p>
+            <p class="info" ><b>Weapon of Choice: </b><span id="weapon"></span></p>
+            <p class="info" ><b>Interesting Fact: </b><span id="fact"></span></p><br>
+          </div>
+
+          <button  class="red large" id="killbutton" >Kill Target</button>
+        </div>
+      </div>
+
     </div>
   </body>
+
+
 </html>

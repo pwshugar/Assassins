@@ -65,7 +65,7 @@ app.post('/contractUpdate', function (req, res){
 // get requests
 
 app.get('/io', function (req, res){
-  res.sendfile('./html/iologin.html');
+  res.sendfile('./html/login.html');
 });
 
 app.get('/home', function (req, res){
@@ -76,7 +76,7 @@ app.get('/login', function (req, res){
   if (req.session.username && req.session.groupname){
 	res.redirect('/home');
   } else {
-    res.sendfile('./html/iologin.html');
+    res.sendfile('./html/login.html');
   }
 });
 
@@ -84,7 +84,7 @@ app.get('/signup', function (req, res){
   if (req.session.username && req.session.groupname){
 	res.redirect('/home');
   } else {
-    res.sendfile('./html/iosignup.html');
+    res.sendfile('./html/signup.html');
   }
 });
 
@@ -104,10 +104,6 @@ app.get('/js/admin.js', function (req, res){
   res.sendfile('./js/admin.js');
 });
 
-app.get('/css/home.css', function (req, res){
-  res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/home.css');
-});
 
 app.get('/css/login.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
@@ -124,14 +120,14 @@ app.get('/css/io.css', function (req, res){
   res.sendfile('./css/io.css');
 });
 
-app.get('/css/iologin.css', function (req, res){
+app.get('/css/login.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/iologin.css');
+  res.sendfile('./css/login.css');
 });
 
-app.get('/css/iohome.css', function (req, res){
+app.get('/css/home.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/iohome.css');
+  res.sendfile('./css/home.css');
 });
 
 // all other requests redirect to home

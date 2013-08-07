@@ -1,104 +1,106 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="./css/home.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="./css/io.css">
+    <link rel="stylesheet" type="text/css" href="./css/home.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript"></script>
     <script>
-	  $(document).ready(function (){
+  	  $(document).ready(function (){
 
         var checklist = function (){
+                        console.log('RAN');
           $.ajax({
             url:"/checklist",
             type: "post",
             data: {},
             success: function (data){
+
               $('li').remove();
               for (var i = 0; i < data.length; i++){
                 $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
               }
+            },
+            error: function (x,t,e){
+              debugger;
             }
           });
         };
 
         checklist();
 
-        var logcheck = function (){
+        var socket = io.connect('/');
+      //var socket = io.connect(); 
+
+          socket.on('news', function (data){
+            console.log(data);
+          });
+
+          socket.on('roomUpdate', function (data){
+            console.log('room update');
+            checklist();
+          });
+
+
+          socket.on('gamestart', function (data){
+            console.log('game started');
+          contractUpdate();
+          });
+
+        
+
+
+        $("#startgame").on('click',function (){
           $.ajax({
-            url:"/logcheck",
+            url:"/startgame",
             type: "post",
             data: {},
             success: function (data){
-              if (data){
-                $('#logout').css("display", "block");
-                $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
-                $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1) + ' - Admin');
-              } else {
-                $('#login').css("display", "block");
-              }
+              socket.emit('gamestart');
+              window.location.href = '/';
             }
           });
-        };
+        });
 
-        logcheck();
+        $("#logout").on('click',function (){
+          $.ajax({
+            url:"/logout",
+            type: "post",
+            data: {},
+            success: function (data){
+              socket.emit('roomUpdate');
+              window.location.href = '/';
+            }
+          });
+        });
 
-	    var socket = io.connect('/');
-	    socket.on('news', function (data){
-	      console.log(data);
-	    });
-
-	    socket.on('roomUpdate', function (data){
-	      console.log('room update');
-	      checklist();
-	    });
 
 
-	    socket.on('gamestart', function (data){
-	      console.log('game started');
-	 	  contractUpdate();
-	    });
-
-	    $("#startgame").on('click',function (){
-	      $.ajax({
-	        url:"/startgame",
-	        type: "post",
-	        data: {},
-	        success: function (data){
-	          socket.emit('gamestart');
-	          window.location.href = '/';
-	        }
-	      });
-	    });
-
-	    $("#fakeLink").on('click',function (){
-	      $.ajax({
-	        url:"/logout",
-	        type: "post",
-	        data: {},
-	        success: function (data){
-	          socket.emit('roomUpdate');
-	          window.location.href = '/';
-	        }
-	      });
-	    });
-
-	  });
+  	  });
     </script>
   </head>
-  <body>
-  	<div id="topbar">
-      <span id='roomname'>''</span>
-      <div id="logout">
-        <span id="welcome" class="loginEls" ></span>
-        <span id="fakeLink" class="loginEls" >Log Out?<span>
+
+  <body class="iOCSS black">
+    <div class="frame signIn_fancy">
+    
+      <div class="header">
+        <h1>Welcome - Admin</h1>
+        <div><button class="edit" type="button" id="logout">Log out</button></div>
       </div>
-    </div>
-    <div class="longDiv" id="list">
-      <h2 class="title" >List of players</h2>
-    </div>
-    <div class="longDiv" id="settings">
-      <h2>Game Settings</h2>
-      <button type="button" id="startgame" >Start Game</button>
+    
+      <div class="scrollable">
+        <div class="editor flex-none" id="divIn">
+          <div class="well-header" id="infoarea">Player List</div>
+          <div class="well" id="list">
+          </div>
+
+          <button  class="black large" id="startgame" >Start Game</button>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>

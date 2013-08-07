@@ -55,14 +55,18 @@ var fakeUsers = function (){
   };
   var user = new UserModel(user_data);
   user.save(function (error, data){});
+  user_data.username = 'puck';
+  var user2 = new UserModel(user_data);
+  user2.save(function (error, data){});
+
   user_data.username = 'win';
   user_data.login = false;
   user_data.groupname = '';
-  var user2 = new UserModel(user_data);
-  user2.save(function (error, data){});
-  user_data.username = 'dead';
   var user3 = new UserModel(user_data);
   user3.save(function (error, data){});
+  user_data.username = 'dead';
+  var user4 = new UserModel(user_data);
+  user4.save(function (error, data){});
   // user_data.username = 'pullo';
   // user_data.fname = 'pullo';
   // var user4 = new UserModel(user_data);
@@ -111,12 +115,7 @@ var fakeUsers = function (){
   };
 
   var group = new GroupModel(group_data);
-  group.save(function (err, data){ 
-    if(err){
-      console.log("ERROR");
-    }
-    console.log('hi');
-  });
+  group.save(function (err, data){});
 
 };
 
@@ -269,7 +268,7 @@ exports.home = function (req, res){
     if (req.session.admin){
       res.sendfile('./html/admin.html');
     } else {
-      res.sendfile('./html/iohome.html');
+      res.sendfile('./html/home.html');
     }
   } else {
     // res.redirect('/');

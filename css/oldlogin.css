@@ -1,0 +1,59 @@
+body {
+  background-color: #009b95;
+}
+
+.warning {
+  color: red;
+  display: none;
+  float:right;
+  position:relative;
+  top:50px;
+}
+
+div {
+  padding: 30px;
+  position: absolute;
+  top: 100px;
+  left: 400px;
+  height: 250px;
+  width: 400px;
+  background-color: #5ccdc9;
+  box-shadow: 10px 10px 5px #006561;
+}
+
+#info {
+  height:370px;
+}
+
+#signup {
+  display: block;
+}
+
+#info {
+  display: none;
+  height: 370px;
+}
+
+#here {
+  float:left;
+}
+
+label{
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 250px;
+  text-align: left;
+}
+input {
+  margin:5px;
+  display: inline-block;
+  float: right;
+}
+
+button {
+  font-size:14px;
+  width:80px;
+  height:30px;
+  float:right;
+}

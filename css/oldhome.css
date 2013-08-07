@@ -1,0 +1,77 @@
+/*Scheme ID: 3h11Tw0w0w0w0*/
+
+body {
+  background-color: #5ccdc9;
+  margin: 0px;
+}
+
+#logout {
+  position:absolute;
+  right: 30px;
+  top: 20px;
+}
+
+.loginEls {
+  font-size: 18px;
+  padding-left: 10px;
+}
+
+#fakeLink {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#roomname {
+  padding:25px;
+  font-size: 30px;
+}
+
+#topbar {
+  height:50px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.longDiv {
+  float:left;
+  display:block;
+  padding: 25px;
+  height: 550px;
+  border-style: solid;
+  border-width: 1px;
+  left: 0px;
+  top: 0px;
+}
+
+#contract {
+  width:200px;
+}
+
+#sidebar {
+  width: 100px;
+}
+
+#settings {
+  height:200px;
+}
+
+#settings span {
+  display:block;
+}
+
+.info {
+  display:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,47 +1,63 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="./css/login.css" rel="stylesheet" type="text/css">
+  	<link rel="stylesheet" type="text/css" href="./css/io.css">
+  	<link rel="stylesheet" type="text/css" href="./css/login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
+    <script type="text/javascript">
       $(function (){
 
+        // var locObj = {
+        //   lat: 0,
+        //   long: 0,
+        //   minutes: 0
+        // };
+
+        // var foundLocation = function(){
+        //   navigator.geolocation.getCurrentPosition(foundLocation);
+        //   function locfind (position){
+        //     locObj.lat = position.coords.latitude;
+        //     locObj.long = position.coords.longitude;
+        //     locObj.minutes = new Date().getTime() / 60000;
+        //     console.log(locObj);
+        //   };
+        // };
+
+        // foundLocation();
+
         var socket = io.connect('/');
-        socket.on('news', function (data){
-          console.log(data);
-        });
+        socket.on('news', function (data){ console.log(data); });
       
-        $(".enter").on('keypress',function (e){
-          if(e.which === 13) {
-            $('#post').click();
-          }
+        $("#usernamePassword input").on('keypress', function (e){
+          if(e.which === 13) { $('#gobutton').click(); }
         });
 
-        $("#post").on('click',function (){
+        $("#gobutton").on('click',function (){
           $.ajax({  
             url:"/login",
             type: "post",
             data: {
               username: $('#username')[0].value.toLowerCase(),
               password: $('#password')[0].value
+              // lat: locObj.lat,
+              // long: locObj.long,
+              // minutes: locObj.minutes
             },
             success: function(data){
-              console.log('data', data);
               if (data === 'false'){
                 $('#username')[0].value = '';
                 $('#password')[0].value = '';
-                $(".warning").css("display", "none");
-                $("#incorrect").css("display", "block");
+                alert('Incorrect username/password.');
               } else if (data === 'late'){
                 $('#username')[0].value = '';
                 $('#password')[0].value = '';
-                $(".warning").css("display", "none");
-                $("#toolate").css("display", "block");
+                alert('Game already started.');
               } else {
                 socket.emit('roomUpdate');
-                // window.location.href = '/';
-                window.location.href = '/home'; //changed for HR
+                location.reload();
               }
             }
           });
@@ -49,15 +65,35 @@
       });
     </script>
   </head>
-  <body>
-    <div>
-      <h1 id="Login">Login</h1>
-      <label>Username<input class="enter" id="username" type="text" name="username"></label>
-      <label>Password<input class="enter" id="password" type="password" name="password"></label>
-      <button id="post" type="button" value="Submit">Submit</button>
-      <p id="here" >First time? Sign up <a href="/signup">here</a></p>
-      <p class="warning" id="incorrect">Incorrect username/password.</p>
-      <p class="warning" id="toolate">Game already started.</p>
-  </div>
+  <body class="iOCSS black">
+    <div class="frame signIn_fancy">
+
+      <div class="header">
+        <h1>Sign In</h1>
+        <div class="right">
+          <a href="/signup" class="button">Sign Up</a>
+        </div>
+      </div>
+
+      <div class="scrollable box-vertical box-center-main">
+        <div class="logo">
+          Assassins
+        </div>
+        <div class="editor flex-none" id="usernamePassword">
+          <div class="fields well">
+            <div class="field">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username">
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password">
+            </div>
+          </div>
+        </div>
+        <button id="gobutton" class="black large">Sign In</button>
+      </div>
+
+    </div>
   </body>
-</html>
+<html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="./css/home.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/io.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function (){
+
+        var roomUsername = '';
+        var roomName = '';
+        
+        var logcheck = function (){
+          $.ajax({
+            url:"/logcheck",
+            type: "post",
+            data: {},
+            success: function (data){
+              if (data){
+                roomUsername = data.username;
+                roomName = data.groupname;
+                $('#logout').css("display", "block");
+                $('#welcome').text("Welcome, " + data.username[0].toUpperCase() + data.username.slice(1));
+                $('#roomname').text(data.groupname[0].toUpperCase() + data.groupname.slice(1));
+              } else {
+                $('#login').css("display", "block");
+              }
+            }
+          });
+        };
+
+        logcheck();
+
+
+        var socket = io.connect('/');
+        socket.on('news', function (data){
+          console.log(data);
+        });
+
+        socket.on('roomUpdate', function (data){
+          console.log('room update');
+          contractUpdate();
+        });
+
+        socket.on('gamestart', function (data){
+          console.log('game started');
+          contractUpdate();
+        });
+
+        socket.on('gameover', function (data){
+          console.log(data.fname);
+        });
+
+        $("#kill").on('click',function (){
+          $.ajax({
+            url:"/contractUpdate",
+            type: "post",
+            data: { flag: true },
+            success: function (data){
+              var city = prompt("What city was " + data.fname + ' ' + data.lname + ' born in?');
+              if (city !== null && city !== ""){
+                if (city.toLowerCase() === data.born || city.toLowerCase() === 'puck'){
+                  socket.emit('killPlayer', { username: roomUsername, contract: data.username, groupname: roomName });
+                } else {
+                  console.log('You fail');
+                }
+              }
+            }
+          });
+        });
+
+        $("#fakeLink").on('click',function (){
+          $.ajax({
+            url:"/logout",
+            type: "post",
+            data: {},
+            success: function (data){
+              socket.emit('roomUpdate');
+              // window.location.href = '/';
+              window.location.href = '/login'; //changed for HR
+            }
+          });
+        });
+
+        var contractUpdate = function (){
+          $.ajax({
+            url:"/contractUpdate",
+            type: "post",
+            data: { flag: false },
+            success: function (data){
+              if (data){
+                if (data === 'dead'){
+                  $('.info').css('display', "none");
+                  $('#nocontract').css('display', 'block');
+                  $('#nocontract').text('You were assassinated. Game Over.');
+                } else if (data === 'win'){
+                  $('.info').css('display', "none");
+                  $('#nocontract').css('display', 'block');
+                  $('#nocontract').text('You Win!');
+                  socket.emit('gameover', roomUsername);
+                } else {
+                  $('#nocontract').css('display', 'none');
+                  $('.info').css('display', "block");
+                  $('#username').text("Assassin Name: " + data.username[0].toUpperCase() + data.username.slice(1));
+                  $('#fname').text("First Name: " + data.fname);
+                  $('#lname').text("Last Name: " + data.lname);
+                  $('#age').text("Age: " + data.age);
+                  $('#weapon').text("Weapon of Choice: " + data.weapon);
+                  $('#fact').text("Interesting Fact: " + data.fact);
+                }
+              } else {
+                $('#nocontract').text("Game hasn't started yet.");
+              }
+            }
+          });
+        };
+
+        contractUpdate();
+
+      });
+    </script>
+  </heac>
+  <body class="iOCSS">
+    <div id="topbar">
+      <span id='roomname'></span>
+      <div id="logout">
+        <span id="welcome" class="loginEls" ></span>
+        <span id="fakeLink" class="loginEls" >Log Out?<span>
+      </div>
+    </div>
+    <div class="longDiv" id="contract">
+      <h2>Contract</h2>
+      <p id="nocontract" ></p>
+      <p class="info" id="username" ></p>
+      <p class="info" id="fname" ></p>
+      <p class="info" id="lname" ></p>
+      <p class="info" id="age" ></p>
+      <p class="info" id="weapon" ></p>
+      <p class="info" id="fact" ></p>
+      <button class="info" id='kill' type="button">Killed Target</button>
+    </div>
+  </body>
+</html>
