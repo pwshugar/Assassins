@@ -126,12 +126,7 @@ app.get('/create', function (req, res){ // changed for HR
 
 app.get('/css/login.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/login.css')
-});
-
-app.get('/css/create.css', function (req, res){
-  res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/create.css');
+  res.sendfile('./css/login.css');
 });
 
 app.get('/css/io.css', function (req, res){
@@ -139,14 +134,9 @@ app.get('/css/io.css', function (req, res){
   res.sendfile('./css/io.css');
 });
 
-app.get('/css/login.css', function (req, res){
+app.get('/css/assassin.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/login.css');
-});
-
-app.get('/css/home.css', function (req, res){
-  res.setHeader('Content-Type', 'text/css');
-  res.sendfile('./css/home.css');
+  res.sendfile('./css/assassin.css')
 });
 
 // all other requests redirect to home

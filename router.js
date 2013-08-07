@@ -1,7 +1,6 @@
-var mongoose = require('mongoose');
-
 // Mongoose schemas
 
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema, ObjectId = Schema.ObjectID;
 
 var User = new Schema({
@@ -15,11 +14,8 @@ var User = new Schema({
   fact:{ type: String, trim: true },
   secret: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
-  // lat: { type: Number },
-  // long: { type: Number },
-  // minutes: { type: Number },
   login: { type: Boolean, 'default': true },
-  started:{ type: Boolean, 'default': false } // changed for HR
+  started:{ type: Boolean, 'default': false }
 });
 
 var Group = new Schema({
@@ -30,97 +26,9 @@ var Group = new Schema({
   winner: { type: String }
 });
 
-var Session = new Schema({
-  username: { type: String, required: true, trim: true },
-  groupname: { type: String, required: true, trim: true }
-});
-
 var UserModel = exports.UM = mongoose.model('users', User);
 var GroupModel = exports.GM = mongoose.model('groups', Group);
-var SessionModel = exports.SM = mongoose.model('sessions', Session)
 
-// fake database
-
-var fakeUsers = function (){
-  var user_data = {
-    username: 'peter',
-    password: 'm',
-    fname: 'Peter',
-    lname: 'Shugar',
-    age: '28',
-    weapon: 'Zombies',
-    fact: 'I have a hairless cat',
-    secret: 'Santa Monica'
-  };
-  var user = new UserModel(user_data);
-  user.save(function (error, data){});
-
-  user_data.username = 'puck';
-  user_data.fname = 'Puck';
-  user_data.lname = 'Yuck';
-  var user2 = new UserModel(user_data);
-  user2.save(function (error, data){});
-
-  // user_data.username = 'pullo';
-  // user_data.fname = 'pullo';
-  // var user4 = new UserModel(user_data);
-  // user4.save(function (error, data){
-  // });
-  // user_data.username = 'david';
-  // user_data.fname = 'david';
-  // var user5 = new UserModel(user_data);
-  // user5.save(function (error, data){
-  // });
-  // user_data.username = 'kathleen';
-  // user_data.fname = 'kathleen';
-  // var user6 = new UserModel(user_data);
-  // user6.save(function (error, data){
-  // });
-  // user_data.username = 'dan';
-  // user_data.fname = 'dan';
-  // var user7 = new UserModel(user_data);
-  // user7.save(function (error, data){
-  // });
-  // user_data.username = 'nisha';
-  // user_data.fname = 'nisha';
-  // var user8 = new UserModel(user_data);
-  // user8.save(function (error, data){
-  // });
-  // user_data.username = 'sid';
-  // user_data.fname = 'sid';
-  // var user9 = new UserModel(user_data);
-  // user9.save(function (error, data){
-  // });
-  // user_data.username = 'raj';
-  // user_data.fname = 'raj';
-  // var user10 = new UserModel(user_data);
-  // user10.save(function (error, data){
-  // });
-  // user_data.username = 'praveena';
-  // user_data.fname = 'praveena';
-  // var user11 = new UserModel(user_data);
-  // user11.save(function (error, data){
-  // });
-
-  var group_data = {
-    admin: 'peter',
-    groupname: 'm',
-    password: 'm'
-  };
-
-  var group = new GroupModel(group_data);
-  group.save(function (err, data){});
-
-  group_data.groupname = 'mm'
-  var group2 = new GroupModel(group_data);
-  group2.save(function (err, data){});
-
-};
-
-// mongoose.connection.collections['groups'].drop(function (err){});
-// mongoose.connection.collections['users'].drop(function (err){});
-// fakeUsers();
- 
 // Router functions
 
 exports.signup = function(req, res){
@@ -260,26 +168,30 @@ exports.checklist = function (req, res){
 
 // gets a list of users, assigns each user an assassination contract from the next user in the array
 exports.startgame = function (req, res){
-  req.session.admin = false;
-  GroupModel.findOne({ groupname: req.session.groupname }, function (err, data){
-    data.started = true;
-    data.save();
-  });
-  UserModel.find({ groupname: req.session.groupname, login: true }, 'username', function (err, data){
-    var names = data;
-    for (var i = 0; i < names.length; i++){
-      setTimeout(function (i){
-        var j = i + 1;
-        if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
-        UserModel.findOne({ username: names[i].username }, function (err, data){
-          data.started = true;
-          data.contract = names[j].username;
-          data.save();
-        });   
-      }, 0, i);
+  UserModel.find({ groupname: req.session.groupname, login: true }, 'username', function (err, userdata){
+    if (userdata.length < 2){
+      res.send('false');
+    } else {
+      req.session.admin = false;
+      GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
+        groupdata.started = true;
+        groupdata.save();
+        var names = userdata;
+        for (var i = 0; i < names.length; i++){
+          setTimeout(function (i){
+            var j = i + 1;
+            if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
+            UserModel.findOne({ username: names[i].username }, function (err, data){
+              data.started = true;
+              data.contract = names[j].username;
+              data.save();
+            });   
+          }, 0, i);
+        }
+        res.send('true');
+      });
     }
   });
-  res.send('true');
 };
 
 exports.reset = function (req, res){

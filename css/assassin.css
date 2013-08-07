@@ -15,22 +15,31 @@
   -webkit-box-flex: 0 !important;
 }
 
+#infoarea {
+  color: gray !important;
+}
+
 #nocontract {
-  display:none;
+  display: none;
 }
 
 .info {
-  display:none;
+  display: none;
+}
+
+#info {
+  display: none;
 }
 
 #killbutton {
-  display:none;
+  display: none;
 }
 
 #resetbutton {
-  display:none;
+  display: none;
 }
 
 li {
   list-style-type: none;
 }
+

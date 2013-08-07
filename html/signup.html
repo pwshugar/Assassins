@@ -2,33 +2,15 @@
 <html>
   <head>
   	<link rel="stylesheet" type="text/css" href="./css/io.css">
-  	<link rel="stylesheet" type="text/css" href="./css/login.css">
+  	<link rel="stylesheet" type="text/css" href="./css/assassin.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       $(function (){
-        // var locObj = {
-        //   lat: 0,
-        //   long: 0,
-        //   minutes: 0
-        // };
-
-        // var foundLocation = function(){
-        //   navigator.geolocation.getCurrentPosition(foundLocation);
-        //   function locfind (position){
-        //     locObj.lat = position.coords.latitude;
-        //     locObj.long = position.coords.longitude;
-        //     locObj.minutes = new Date().getTime() / 60000;
-        //     console.log(locObj);
-        //   };
-        // };
-
-        // foundLocation();
 
         var socket = io.connect('/');
-        socket.on('news', function (data){ console.log(data); });
         
         var infoStore = {}
         socket.on('checkUsernameRes', function (data){
