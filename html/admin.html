@@ -12,13 +12,11 @@
   	  $(document).ready(function (){
 
         var checklist = function (){
-                        console.log('RAN');
           $.ajax({
             url:"/checklist",
             type: "post",
             data: {},
             success: function (data){
-
               $('li').remove();
               for (var i = 0; i < data.length; i++){
                 $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));

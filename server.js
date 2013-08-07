@@ -69,12 +69,16 @@ app.post('/reset', function (req, res){
 
 // get requests
 
-app.get('/io', function (req, res){
-  res.sendfile('./html/login.html');
-});
-
 app.get('/home', function (req, res){
-  router.home(req, res);
+  if (req.session.username && req.session.groupname){
+    if (req.session.admin){
+      res.sendfile('./html/admin.html');
+    } else {
+      res.sendfile('./html/home.html');
+    }
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.get('/login', function (req, res){
@@ -107,14 +111,18 @@ app.get('/join', function (req, res){ // changed for HR
   }
 });
 
-
-// css/js get requests
-
-app.get('/js/admin.js', function (req, res){
-  res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('./js/admin.js');
+app.get('/create', function (req, res){ // changed for HR
+  if (req.session.username && req.session.groupname){
+    res.redirect('/home');
+  } else if (req.session.username){
+    res.sendfile('./html/create.html');
+  } else {
+    res.redirect('/login');
+  }
 });
 
+
+// css/js get requests
 
 app.get('/css/login.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
@@ -195,9 +203,6 @@ io.sockets.on('connection', function (socket){
             });
           } else {
             userdata.contract = contractdata.contract;
-            // userdata.lat = data.location.lat,
-            // userdata.long = data.location.long,
-            // userdata.minutes = data.location.minutes,
             userdata.save();
             contractdata.contract = undefined;
             contractdata.save();

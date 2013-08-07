@@ -124,41 +124,26 @@ var fakeUsers = function (){
 // Router functions
 
 exports.signup = function(req, res){
-  GroupModel.findOne({ groupname: 'm' }, function (err, data){
-    if (!data.started){
-      UserModel.findOne({ username: req.body.username }, function (err, data){
-        console.log(data);
-        if (data === null){
-          var user_data = {
-            username: req.body.username,
-            password: req.body.password,
-            groupname: 'hackreactor', // changed for HR
-            fname: req.body.fname[0].toUpperCase() + req.body.fname.slice(1),
-            lname: req.body.lname[0].toUpperCase() + req.body.lname.slice(1),
-            age: req.body.age,
-            weapon: req.body.weapon,
-            fact: req.body.fact,
-            secret: req.body.secret,
-            // lat: req.body.lat,
-            // long: req.body.long,
-            // minutes: req.body.minutes
-          };
-          var user = new UserModel(user_data);
-
-          user.save(function (error, data){
-            req.session.username = req.body.username;
-            req.session.groupname = 'm'; // changed for HR
-            req.session.admin = false;
-            // res.redirect('/');  // changed for HR
-            res.send('success')
-          });
-        } else {
-          console.log("FAIL");
-          res.send('fail');
-        }
+  UserModel.findOne({ username: req.body.username }, function (err, data){
+    if (data === null){
+      var user_data = {
+        username: req.body.username,
+        password: req.body.password,
+        fname: req.body.fname[0].toUpperCase() + req.body.fname.slice(1),
+        lname: req.body.lname[0].toUpperCase() + req.body.lname.slice(1),
+        age: req.body.age,
+        weapon: req.body.weapon,
+        fact: req.body.fact,
+        secret: req.body.secret,
+      };
+      var user = new UserModel(user_data);
+      user.save(function (error, data){
+        req.session.username = req.body.username;
+        req.session.admin = false;
+        res.send('success');
       });
     } else {
-      res.send('started');
+      res.send('fail');
     }
   });
 };
@@ -258,19 +243,6 @@ exports.checklist = function (req, res){
   UserModel.find({groupname: req.session.groupname, login: true}, 'username', function (err, data){
     res.send(data);
   })
-};
-
-exports.home = function (req, res){
-  if (req.session.username && req.session.groupname){
-    if (req.session.admin){
-      res.sendfile('./html/admin.html');
-    } else {
-      res.sendfile('./html/home.html');
-    }
-  } else {
-    // res.redirect('/');
-    res.redirect('/login'); // changed for HR
-  }
 };
 
 // gets a list of users, assigns each user an assassination contract from the next user in the array

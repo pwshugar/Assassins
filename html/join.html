@@ -27,6 +27,11 @@
           });
         });
 
+        $("#createswitch").on('click',function (){
+          $('#joinDiv').remove();
+          $('#createDiv').css('display', 'inline');
+        });
+
         $("#joinDiv input").on('keypress',function (e){
           if(e.which === 13) { $('#joinpost').click(); }
         });
@@ -92,33 +97,6 @@
       });
     </script>
   </head>
-
-<!--   <body>
-    <h1 class="head" >Welcome to Assassins!</h1>
-    <h3 class="head" >The game where you learn people's names... by KILLING them!</h3>
-    <div id="login">
-      <span class="loginEls" >You are not logged in</span>
-      <a href="/login" class="loginEls" >Login<a>
-      <a href="/signup" class="loginEls" >Sign Up<a>
-    </div>
-    <div id="logout">
-      <span id="welcome" class="loginEls" >Welcome</span>
-      <span id="fakeLink" class="loginEls" >Log Out?<span>
-    </div>
-    <div class="left" >
-      <h2>Create a new game?</h2>
-      <label >Group Name<input class="enter" id="groupname" type="text" name="groupname" ></label>
-      <label>Password<input class="enter" id="password" type="password" name="password" ></label>
-      <button type="button" id="post" >Submit</button>
-    </div>
-    <div class="left" id="right">
-      <h2>Join a game?</h2>
-      <label >Group Name<input class="joinenter" id="joingroupname" type="text" name="joingroupname" ></label>
-      <label>Password<input class="joinenter" id="joinpassword" type="password" name="joinpassword" ></label>
-      <button type="button" id="joinpost" >Submit</button>
-    </div>
-  </body> -->
-
   <body class="iOCSS black">
     <div class="frame signIn_fancy">
 
@@ -129,12 +107,12 @@
         </div>
       </div>
 
-      <div class="scrollable box-vertical box-center-main">
+      <div class="scrollable box-vertical box-center-main" id="joinDiv">
         <div class="logo">
           Join a Game
         </div>
-        <div class="editor flex-none">
-          <div class="fields well"  id="joinDiv">
+        <div class="editor flex-none" id="joinDiv">
+          <div class="fields well">
             <div class="field">
               <label for="groupname">Group</label>
               <input type="text" name="groupname" id="groupname">
@@ -145,13 +123,11 @@
             </div>
           </div>
         </div>
-        <button id="joinpost" class="black large">Join Game</button>
-        <div class="well-header" id="infoarea">Need to create a new game?</div>
-        <button id="createpost" class="black large">Create Game</button>
+        <button id="joinpost" class="black large">Join Game</button><br>
+        <div class="well-header" id="infoarea">Need to create a new game?</div><br>
+        <a href="/create" type="button" class="button black large">Create a Game</a>
       </div>
 
     </div>
   </body>
-
-
 </html>

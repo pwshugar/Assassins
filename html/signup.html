@@ -113,12 +113,8 @@
               weapon: $('#weapon')[0].value,
               fact: $('#fact')[0].value,
               secret: $('#secret')[0].value
-              // lat: locObj.lat,
-              // long: locObj.long,
-              // minutes: locObj.minutes
             },
             success: function (data){
-              $("#infobutton").removeAttr("disabled");
               if (data === 'success'){
                 socket.emit('roomUpdate');
                 location.reload();
@@ -129,6 +125,7 @@
                 alert("Username already taken");
                 location.reload();
               }
+              $("#infobutton").removeAttr("disabled");
             },
             error: function (data){
               $("#infobutton").removeAttr("disabled");
