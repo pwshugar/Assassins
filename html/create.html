@@ -29,24 +29,49 @@
         });
 
         $("#creategroup").on('click',function (){
-          $.ajax({  
-            url:"/creategroup",
-            type: "post",
-            data: {
-              groupname: $('#groupname')[0].value.toLowerCase(),
-              password: $('#password')[0].value
-            },
-            success: function (data){
-              if (data === false){
-                $('#groupname')[0].value = '';
-                $('#password')[0].value = '';
-                $('#retype')[0].value = '';
-                alert('Group already created.');
-              } else {
-                location.reload();
+            if ($('#groupname')[0].value.length < 1){
+            alert("Please enter a groupname!");
+          } else if ($('#groupname')[0].value.length > 20){
+            $('#groupname')[0].value = '';
+            $('#password')[0].value = '';
+            $('#retype')[0].value = ''
+            alert("Groupname length exceeds limit!");
+          } else if ($('#password')[0].value.length < 1){
+            alert("Please enter a password!");
+          } else if ($('#password')[0].value.length > 20){
+            $('#groupname')[0].value = '';
+            $('#password')[0].value = '';
+            $('#retype')[0].value = ''
+            alert("Password length exceeds limit!");
+          } else if($('#password')[0].value !== $('#retype')[0].value) {
+            $('#password')[0].value = '';
+            $('#retype')[0].value = '';
+            alert("Please retype password!");
+          } else if ($('#groupname')[0].value.match(/</i) || $('#password')[0].value.match(/</i)){
+            $('#groupname')[0].value = '';
+            $('#password')[0].value = '';
+            $('#retype')[0].value = '';
+            alert("Invalid character '<'");
+          } else {
+            $.ajax({  
+              url:"/creategroup",
+              type: "post",
+              data: {
+                groupname: $('#groupname')[0].value.toLowerCase(),
+                password: $('#password')[0].value
+              },
+              success: function (data){
+                if (data === false){
+                  $('#groupname')[0].value = '';
+                  $('#password')[0].value = '';
+                  $('#retype')[0].value = '';
+                  alert('Group already created.');
+                } else {
+                  location.reload();
+                }
               }
-            }
-          });
+            });
+          }
         });
 
       });
