@@ -27,11 +27,6 @@
           });
         });
 
-        $("#createswitch").on('click',function (){
-          $('#joinDiv').remove();
-          $('#createDiv').css('display', 'inline');
-        });
-
         $("#joinDiv input").on('keypress',function (e){
           if(e.which === 13) { $('#joinpost').click(); }
         });

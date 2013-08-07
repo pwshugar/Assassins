@@ -191,17 +191,18 @@ exports.logout = function (req, res){
   res.end();
 };
 
-exports.create = function (req, res){
-  var group_data = {
-    admin: req.session.username,
-    groupname: req.body.groupname,
-    password: req.body.password
-  };
-  var group = new GroupModel(group_data);
-  group.save(function (err, data){
-    res.send('true');
-  });
-};
+// exports.create = function (req, res){
+//   var group_data = {
+//     admin: req.session.username,
+//     groupname: req.body.groupname,
+//     password: req.body.password
+//   };
+//   var group = new GroupModel(group_data);
+//   group.save(function (err, data){
+
+//     res.send('true');
+//   });
+// };
 
 exports.logcheck = function (req, res){
   if (req.session.username){
@@ -212,6 +213,31 @@ exports.logcheck = function (req, res){
   } else {
     res.end();
   }
+};
+
+exports.creategroup = function (req, res){
+  var groupname = req.body.groupname;
+  GroupModel.findOne({ groupname: groupname }, function (err, data){
+    if (data === null){
+      var group_data = {
+        admin: req.session.username,
+        groupname: req.body.groupname,
+        password: req.body.password
+      };
+      var group = new GroupModel(group_data);
+      group.save(function (err, data){
+        req.session.groupname = groupname;
+        req.session.admin = true;
+        UserModel.findOne({ username: req.session.username }, function (err, userdata){
+          userdata.groupname = groupname;
+          userdata.save();
+          res.send('success');
+        });
+      });
+    } else {
+      res.send(false);
+    }
+  });
 };
 
 exports.joingroup = function (req, res){

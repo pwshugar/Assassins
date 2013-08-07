@@ -35,8 +35,8 @@ app.post('/signup', function (req, res){
   router.signup(req, res);
 });
 
-app.post('/create', function (req, res){
-  router.create(req, res);
+app.post('/creategroup', function (req, res){
+  router.creategroup(req, res);
 });
 
 app.post('/joingroup', function (req, res){
