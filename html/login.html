@@ -10,26 +10,7 @@
     <script type="text/javascript">
       $(function (){
 
-        // var locObj = {
-        //   lat: 0,
-        //   long: 0,
-        //   minutes: 0
-        // };
-
-        // var foundLocation = function(){
-        //   navigator.geolocation.getCurrentPosition(foundLocation);
-        //   function locfind (position){
-        //     locObj.lat = position.coords.latitude;
-        //     locObj.long = position.coords.longitude;
-        //     locObj.minutes = new Date().getTime() / 60000;
-        //     console.log(locObj);
-        //   };
-        // };
-
-        // foundLocation();
-
         var socket = io.connect('/');
-        socket.on('news', function (data){ console.log(data); });
       
         $("#usernamePassword input").on('keypress', function (e){
           if(e.which === 13) { $('#gobutton').click(); }
@@ -42,9 +23,6 @@
             data: {
               username: $('#username')[0].value.toLowerCase(),
               password: $('#password')[0].value
-              // lat: locObj.lat,
-              // long: locObj.long,
-              // minutes: locObj.minutes
             },
             success: function(data){
               if (data === 'false'){
@@ -67,18 +45,14 @@
   </head>
   <body class="iOCSS black">
     <div class="frame signIn_fancy">
-
       <div class="header">
         <h1>Sign In</h1>
         <div class="right">
           <a href="/signup" class="button">Sign Up</a>
         </div>
       </div>
-
       <div class="scrollable box-vertical box-center-main">
-        <div class="logo">
-          Assassins
-        </div>
+        <div class="logo">Assassins</div>
         <div class="editor flex-none" id="usernamePassword">
           <div class="fields well">
             <div class="field">
@@ -93,7 +67,6 @@
         </div>
         <button id="gobutton" class="black large">Sign In</button>
       </div>
-
     </div>
   </body>
 <html>

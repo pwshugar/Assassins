@@ -76,7 +76,7 @@
             data: {},
             success: function (data){
               socket.emit('roomUpdate');
-              location.reload();
+              location.href = '/login';
             }
           });
         });

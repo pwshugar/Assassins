@@ -43,14 +43,14 @@
                 if (data === 'nogame'){
                   $('#groupname')[0].value = '';
                   $('#password')[0].value = '';
-                  console.log(data);
+                  alert('This group has not been created.');
                 } else if (data === 'badpass'){
                   $('#password')[0].value = '';
-                  console.log(data);
+                  alert('Incorrect password.');
                 } else if (data === 'ingame'){
                   $('#groupname')[0].value = '';
                   $('#password')[0].value = '';
-                  console.log(data);
+                  alert("You cannot join another game until you finish the game in progress.");
                 } else {
                   socket.emit('roomUpdate');
                   location.reload();
@@ -65,14 +65,12 @@
   </head>
   <body class="iOCSS black">
     <div class="frame signIn_fancy">
-
       <div class="header">
         <h1>Welcome</h1>
         <div class="right">
           <button type="button" class="button" id="logout">Log out</a>
         </div>
       </div>
-
       <div class="scrollable box-vertical box-center-main" id="joinDiv">
         <div class="editor flex-none" id="joinDiv">
           <div class="well-header" id="infoarea">Join a Game</div>
@@ -91,7 +89,6 @@
         <div class="well-header" id="infoarea">Need to create a new game?</div><br>
         <a href="/create" type="button" class="button black large">Create a Game</a>
       </div>
-
     </div>
   </body>
 </html>

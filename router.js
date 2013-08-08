@@ -50,20 +50,16 @@ exports.signup = function(req, res){
         req.session.admin = false;
         res.send('success');
       });
-    } else {
-      res.send('fail');
-    }
+    } else { res.send('fail'); }
   });
 };
 
 exports.login = function (req, res){
   var username = req.body.username;
   UserModel.findOne({'username': username}, function (err, data){
-    if (data === null){
-      res.send('false');
-    } else if (data.password !== req.body.password){
-      res.send('false');
-    } else {
+    if (data === null){ res.send('false'); }
+    else if (data.password !== req.body.password){ res.send('false'); }
+    else {
       req.session.username = username;
       data.login = true;
       data.save();
@@ -71,22 +67,6 @@ exports.login = function (req, res){
     }
   });
 };
-
-// exports.login = function (req, res){
-  // UserModel.find({}, 'fname lname contract username', function (err, data){
-  //   var k=0;
-  //   for(var i = 0; i < data.length; i++){
-  //     if (data[i].contract && data[i].contract !== 'dead'){
-  //       console.log(data[i]);
-  //       k++;
-  //     }
-  //   }
-  //   console.log(k);
-  // });
-// UserModel.find({}, function(err, data){
-//   console.log(data);
-// });
-// };
 
 exports.logout = function (req, res){
   UserModel.findOne({ 'username': req.session.username }, function (err, data){
@@ -105,9 +85,7 @@ exports.logcheck = function (req, res){
       username: req.session.username, 
       groupname: req.session.groupname
     });
-  } else {
-    res.end();
-  }
+  } else { res.end(); }
 };
 
 exports.creategroup = function (req, res){
@@ -129,20 +107,16 @@ exports.creategroup = function (req, res){
           res.send('success');
         });
       });
-    } else {
-      res.send(false);
-    }
+    } else { res.send(false); }
   });
 };
 
 exports.joingroup = function (req, res){
   var groupname = req.body.groupname;
   GroupModel.findOne({ groupname: groupname }, function (err, groupdata){
-    if (groupdata === null){
-      res.send('nogame');
-    } else if (groupdata.password !== req.body.password){
-      res.send('badpass');
-    } else {
+    if (groupdata === null){ res.send('nogame'); }
+    else if (groupdata.password !== req.body.password){ res.send('badpass'); }
+    else {
       UserModel.findOne({ username: req.session.username }, function (err, userdata){
         if (userdata.groupname !== groupname && userdata.started){
           res.send('ingame');
@@ -212,9 +186,8 @@ exports.contractUpdate = function (req, res){
       res.send(messageObj);
     } else {
       UserModel.findOne({ username: req.session.username }, 'contract', function (err, userdata){
-        if (userdata === null){
-          res.send();
-        } else {
+        if (userdata === null){ res.send(); }
+        else {
           if (groupdata.winner){
             UserModel.findOne({ username: groupdata.winner}, function (err, winnerdata){
               messageObj.flag = 'user';
@@ -226,24 +199,9 @@ exports.contractUpdate = function (req, res){
             UserModel.findOne({ username: userdata.contract }, function (err, contractdata){
               res.send(contractdata);
             });
-          } else {
-            res.send(null);
-          }
+          } else { res.send(null); }
         }
       });
     }
   }); 
 };
-
-
-
-
-
-
-
-
-
-
-
-
-

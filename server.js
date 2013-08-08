@@ -101,7 +101,7 @@ app.get('/signup', function (req, res){
   }
 });
 
-app.get('/join', function (req, res){ // changed for HR
+app.get('/join', function (req, res){
   if (req.session.username && req.session.groupname){
     res.redirect('/home');
   } else if (req.session.username){
@@ -111,7 +111,7 @@ app.get('/join', function (req, res){ // changed for HR
   }
 });
 
-app.get('/create', function (req, res){ // changed for HR
+app.get('/create', function (req, res){
   if (req.session.username && req.session.groupname){
     res.redirect('/home');
   } else if (req.session.username){
@@ -121,8 +121,7 @@ app.get('/create', function (req, res){ // changed for HR
   }
 });
 
-
-// css/js get requests
+// css get requests
 
 app.get('/css/login.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
@@ -198,18 +197,9 @@ io.sockets.on('connection', function (socket){
             contractdata.save();
             io.sockets.emit('roomUpdate');
           }
-        } else {
-          io.sockets.emit('roomUpdate');
-        }
+        } else { io.sockets.emit('roomUpdate'); }
       });
     });
   });
 
 });
-
-
-
-
-
-
-
