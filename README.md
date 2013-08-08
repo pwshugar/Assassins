@@ -19,8 +19,8 @@ You can access the deployed app at www.assassins.jit.su
 SCREEN SHOTS
 
 ![Alt text](./node_modules/README/photo.PNG "Sign In")
-![Alt text](./node_modules/README/photo(6).PNG "Profile")
-![Alt text](./node_modules/README/photo(2).PNG "Join Game")
-![Alt text](./node_modules/README/photo(3).PNG "Player List")
-![Alt text](./node_modules/README/photo(4).PNG "Target")
-![Alt text](./node_modules/README/photo(5).PNG "Victory")
+![Alt text](./node_modules/README/photo (6).PNG "Profile")
+![Alt text](./node_modules/README/photo (2).PNG "Join Game")
+![Alt text](./node_modules/README/photo (3).PNG "Player List")
+![Alt text](./node_modules/README/photo (4).PNG "Target")
+![Alt text](./node_modules/README/photo (5).PNG "Victory")
