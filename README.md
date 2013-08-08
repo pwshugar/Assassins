@@ -16,15 +16,15 @@ LINK
 You can access the deployed app at www.assassins.jit.su
 
 
-TECH STAC
+TECH STACK
 
-node.js
-express
-socket.io
-Mongodb
-Mongoose
-connect-mongo
-jquery
+node.js,
+express,
+socket.io,
+Mongodb,
+Mongoose,
+connect-mongo,
+jquery,
 iOCSS
 
 
@@ -32,5 +32,5 @@ SCREEN SHOTS
 
 ![Alt text](./node_modules/README/photo.PNG "Sign In")
 ![Alt text](./node_modules/README/photo1.PNG "Profile")
-![Alt text](./node_modules/README/photo3.PNG "Player List")
+![Alt text](./node_modules/README/photo4.PNG "Target")
 ![Alt text](./node_modules/README/photo5.PNG "Victory")
