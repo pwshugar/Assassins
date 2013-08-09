@@ -69,6 +69,10 @@ app.post('/reset', function (req, res){
 
 // get requests
 
+app.get('/practice', function (req, res){
+  res.sendfile('./backbone/index.html');
+});
+
 app.get('/home', function (req, res){
   if (req.session.username && req.session.groupname){
     if (req.session.admin){
@@ -123,6 +127,38 @@ app.get('/create', function (req, res){
 
 // css get requests
 
+
+
+app.get("/backbone/templates/login", function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile("backbone/templates/login");
+});
+
+app.get('/backbone/lib/backbone.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('backbone/lib/backbone.js');
+});
+
+app.get('/backbone/lib/underscore.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('backbone/lib/underscore.js');
+});
+
+app.get('/backbone/models/App.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('backbone/models/App.js');
+});
+
+app.get('/backbone/views/AppView.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('backbone/views/AppView.js');
+});
+
+app.get('/backbone/views/LoginView.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('backbone/views/LoginView.js');
+});
+
 app.get('/css/login.css', function (req, res){
   res.setHeader('Content-Type', 'text/css');
   res.sendfile('./css/login.css');
@@ -140,9 +176,9 @@ app.get('/css/assassin.css', function (req, res){
 
 // all other requests redirect to home
 
-app.get('/*', function (req, res){
-  res.redirect('/home');
-});
+// app.get('/*', function (req, res){
+//   res.redirect('/home');
+// });
 
 // socket io events
 

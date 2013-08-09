@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="./css/io.css">
+  	<link rel="stylesheet" type="text/css" href="./css/assassin.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--     // <script src="http://underscorejs.org/underscore.js"></script>
+    // <script src="http://backbonejs.org/backbone.js"></script> -->
+  </head>
+  <body class="iOCSS black">
+
+    <script src="backbone/lib/underscore.js"></script>
+    <script src="backbone/lib/backbone.js"></script>
+    <script src="backbone/models/App.js"></script>
+    <script src="backbone/views/AppView.js"></script>
+    <script src="backbone/views/LoginView.js"></script>
+    <script>
+      $(document).ready(function (){
+        $('body').append(new AppView({ model: new App() }));
+      });
+    </script>
+  </body>
+<html>
