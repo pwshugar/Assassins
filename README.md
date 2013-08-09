@@ -30,7 +30,7 @@ iOCSS
 
 SCREEN SHOTS
 
-![Alt text](./node_modules/README/photo.PNG "Sign In")
-![Alt text](./node_modules/README/photo1.PNG "Profile")
-![Alt text](./node_modules/README/photo4.PNG "Target")
-![Alt text](./node_modules/README/photo5.PNG "Victory")
+![Alt text](README/photo.PNG "Sign In")
+![Alt text](README/photo1.PNG "Profile")
+![Alt text](README/photo4.PNG "Target")
+![Alt text](README/photo5.PNG "Victory")
