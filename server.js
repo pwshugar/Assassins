@@ -1,10 +1,10 @@
-var router = require('./router.js')
-  , mongoose = require('mongoose')
-  , express = require('express')
-  , app = express()
-  , MongoStore = require('connect-mongo')(express)
-  , server = require('http').createServer(app)
-  , io = exports.io = require('socket.io').listen(server);
+// var router = require('./router.js')
+//   , mongoose = require('mongoose')
+//   , express = require('express')
+//   , app = express()
+//   , MongoStore = require('connect-mongo')(express)
+//   , server = require('http').createServer(app)
+//   , io = exports.io = require('socket.io').listen(server);
 
 var UserModel = router.UM;
 var GroupModel = router.GM;
