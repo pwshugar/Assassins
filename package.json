@@ -16,5 +16,9 @@
     "mongodb": "*",
     "mongoose": "*",
     "socket.io": "~0.9.10"
+  },
+  "devDependencies": {
+    "chai": "~1.7.2",
+    "mocha": "~1.12.0"
   }
 }

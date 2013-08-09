@@ -4,13 +4,13 @@ var router = require('./router.js')
   , app = express()
   , MongoStore = require('connect-mongo')(express)
   , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server);
+  , io = exports.io = require('socket.io').listen(server);
 
 var UserModel = router.UM;
 var GroupModel = router.GM;
 
-// mongoose.connect('mongodb://127.0.0.1/assassin');
-mongoose.connect('mongodb://nodejitsu:7b724dcedab5de16f70e1b7a1ff7168e@dharma.mongohq.com:10081/nodejitsudb3550895571');
+mongoose.connect('mongodb://127.0.0.1/assassin');
+// mongoose.connect('mongodb://nodejitsu:7b724dcedab5de16f70e1b7a1ff7168e@dharma.mongohq.com:10081/nodejitsudb3550895571');
 console.log("Connected to 'assassin' database");
 
 server.listen(8080);

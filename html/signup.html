@@ -33,6 +33,7 @@
         });
 
         $("#gobutton").on('click',function (){
+          console.log('GO');
           if ($('#username')[0].value.length < 1){
             alert("Please enter a username!");
           } else if ($('#username')[0].value.length > 20){
