@@ -61,12 +61,14 @@ var App = Backbone.Model.extend({
       self.goJoin();
     });
 
-    this.get('create').on('loggedOut', function (){
+    this.get('create').on('logout', function (){
+      socket.emit('roomUpdate');
       self.goLogin();
     });
 
-    this.get('create').on('logout', function (){
-      self.goLogin();
+    this.get('create').on('createGame', function (){
+      socket.emit('roomUpdate');
+      self.goHome();
     });
 
   },

@@ -22,10 +22,10 @@ var JoinView = Backbone.View.extend({
   ),
 
   events: {
-    'click #logout': 'logout',
+    'click #logout': 'clicklogout',
     'click #goCreate': 'goCreate',
     'click #join': 'join',
-    'keypress': 'keypress'
+    'keypress input': 'keypress'
   },
 
   clicklogout: function (){ this.logout(this.model); },
