@@ -7,7 +7,7 @@ var LoginView = Backbone.View.extend({
   '<div class="header">' +
     '<h1>Sign In</h1>' +
     '<div class="right">' +
-      '<button id="signup" type="button" class="button">Sign Up</button>' +
+      '<button id="switch" type="button" class="button">Sign Up</button>' +
     '</div>' +
   '</div>' +
   '<div class="scrollable box-vertical box-center-main">' +
@@ -24,21 +24,21 @@ var LoginView = Backbone.View.extend({
         '</div>' +
       '</div>' +
     '</div>' +
-    '<button type="button" id="signin" class="black large">Sign In</button>' +
+    '<button type="button" id="login" class="black large">Sign In</button>' +
   '</div>'
 
     ),
   events: {
-    'click #signin': 'signin',
-    'click #signup': 'signup'
+    'click #switch': 'switch',
+    'click #login': 'login'
   },
 
-  signin: function (){
-    console.log('signin');
+  switch: function (){
+    this.model.trigger('signup');
   },
 
-  signup: function (){
-    console.log('signup');
+  login: function (){
+    console.log('login');
   },
 
   render: function (){
