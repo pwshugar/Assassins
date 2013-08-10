@@ -159,6 +159,11 @@ app.get('/js/models/Signup.js', function (req, res){
   res.sendfile('js/models/Signup.js');
 });
 
+app.get('/js/models/Profile.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('js/models/Profile.js');
+});
+
 app.get('/js/models/Join.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
   res.sendfile('js/models/Join.js');
@@ -182,6 +187,11 @@ app.get('/js/views/LoginView.js', function (req, res){
 app.get('/js/views/SignupView.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
   res.sendfile('js/views/SignupView.js');
+});
+
+app.get('/js/views/ProfileView.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('js/views/ProfileView.js');
 });
 
 app.get('/js/views/JoinView.js', function (req, res){

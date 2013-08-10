@@ -15,18 +15,18 @@ var SignupView = Backbone.View.extend({
           <div class="field"><label for="password">Password</label><input type="password" name="password" id="password"></div>\
           <div class="field"><label for="retype">Retype</label><input type="password" name="password" id="retype"></div>\
         </div>\
-        <button id="signup" class="black large">Create an Account</button>\
+        <button id="checkUsername" class="black large">Create an Account</button>\
       </div>\
     </div>'
   ),
 
   events: {
     'click #goLogin': 'goLogin',
-    'click #signup': 'signup'
+    'click #checkUsername': 'checkUsername'
   },
 
   goLogin: function (){ this.model.trigger('goLogin'); },
-  signup: function (){ this.model.signup(); },
+  checkUsername: function (){ this.model.checkUsername(); },
 
   render: function (){
   	this.$el.html(this.template());

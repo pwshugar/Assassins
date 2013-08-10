@@ -3,9 +3,9 @@ var Signup = Backbone.Model.extend({
   initialize: function (){
   },
 
-  signup: function (){
+  checkUsername: function (){
   	// validate
-  	this.trigger('signedUp');
+  	this.trigger('checked');
   }
 
 }); 

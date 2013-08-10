@@ -4,6 +4,7 @@ var App = Backbone.Model.extend({
   	var self = this;
     this.set('login', new Login());
     this.set('signup', new Signup());
+    this.set('profile', new Profile());
     this.set('join', new Join());
     this.set('create', new Create());
 
@@ -19,7 +20,15 @@ var App = Backbone.Model.extend({
       self.goLogin();
     });
 
-    this.get('signup').on('signedUp', function (){
+    this.get('signup').on('checked', function (){
+      self.goProfile();
+    });
+
+    this.get('profile').on('goLogin', function (){
+      self.goLogin();
+    });
+
+    this.get('profile').on('createdProfile', function (){
       self.goJoin();
     });
 
@@ -47,6 +56,7 @@ var App = Backbone.Model.extend({
 
   checkView: function (){ this.trigger('goLogin'); },
   goSignup: function (){ this.trigger('goSignup'); },
+  goProfile: function (){ this.trigger('goProfile'); },
   goLogin: function (){ this.trigger('goLogin'); },
   goJoin: function (){ this.trigger('goJoin'); },
   goCreate: function (){ this.trigger('goCreate'); }

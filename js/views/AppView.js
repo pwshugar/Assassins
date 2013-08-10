@@ -11,6 +11,10 @@ var AppView = Backbone.View.extend({
       self.render(new SignupView({ model: self.model.get('signup') }));
     });
 
+    this.model.on('goProfile', function (){
+      self.render(new ProfileView({ model: self.model.get('profile') }));
+    });
+
     this.model.on('goJoin', function (){
       self.render(new JoinView({ model: self.model.get('join') }));
     });
