@@ -1,4 +1,7 @@
 var SignupView = Backbone.View.extend({
+  initialize: function (){
+  },
+
   tagName: 'div',
   className: 'frame signIn_fancy',
 
@@ -15,18 +18,64 @@ var SignupView = Backbone.View.extend({
           <div class="field"><label for="password">Password</label><input type="password" name="password" id="password"></div>\
           <div class="field"><label for="retype">Retype</label><input type="password" name="password" id="retype"></div>\
         </div>\
-        <button id="checkUsername" class="black large">Create an Account</button>\
+        <button id="check" class="black large">Create an Account</button>\
       </div>\
     </div>'
   ),
 
   events: {
     'click #goLogin': 'goLogin',
-    'click #checkUsername': 'checkUsername'
+    'click #check': 'check',
+    'keypress input': 'keypress'
   },
 
   goLogin: function (){ this.model.trigger('goLogin'); },
-  checkUsername: function (){ this.model.checkUsername(); },
+
+  keypress: function (e){ if(e.which === 13) { this.validate(this.model); console.log('hi'); }},
+  check: function (){ this.validate(this.model); },
+
+  validate: function (model){
+    if ($('#username')[0].value.length < 1){
+      alert("Please enter a username!");
+    } else if ($('#username')[0].value.length > 20){
+      $('#username')[0].value = '';
+      $('#password')[0].value = '';
+      $('#retype')[0].value = ''
+      alert("Username length exceeds limit!");
+    } else if ($('#password')[0].value.length < 1){
+      alert("Please enter a password!");
+    } else if ($('#password')[0].value.length > 20){
+      $('#username')[0].value = '';
+      $('#password')[0].value = '';
+      $('#retype')[0].value = ''
+      alert("Password length exceeds limit!");
+    } else if($('#password')[0].value !== $('#retype')[0].value) {
+      $('#password')[0].value = '';
+      $('#retype')[0].value = '';
+      alert("Please retype password!");
+    } else if ($('#username')[0].value.match(/</i) || $('#password')[0].value.match(/</i)){
+      $('#username')[0].value = '';
+      $('#password')[0].value = '';
+      $('#retype')[0].value = '';
+      alert("Invalid character '<'");
+    } else {
+      $.ajax({
+        url:"/checkUsername",
+        type: "post",  
+        data: { username: $('#username')[0].value.toLowerCase() },
+        success: function (data){
+          if (data){
+            $('#username')[0].value = '';
+            $('#password')[0].value = '';
+            $('#retype')[0].value = '';
+            alert("Username already taken.");
+          } else {
+            model.saveUsername();
+          }
+        }
+      });
+    }
+  },
 
   render: function (){
   	this.$el.html(this.template());
@@ -34,3 +83,64 @@ var SignupView = Backbone.View.extend({
   }
 
 });
+
+
+
+
+
+
+        // $("#divIn input").on('keypress',function (e){
+        //   if(e.which === 13) { $('#infobutton').click(); }
+        // });
+
+        // $("#infobutton").on('click',function (){
+        //   for (var i = 0; i < $("#divIn input").length; i++){
+        //     if ($("#divIn input")[i].value === ''){
+        //       alert("Please fill out all info.");
+        //       return;
+        //     } else if ($("#divIn input")[i].value.match(/</i)){
+        //       alert("Invalid character '<'");
+        //       for (var i = 0; i < $("#divIn input").length; i++){
+        //         $("#divIn input")[i].value = '';
+        //       }
+        //       return;
+        //     } else if ($("#divIn input")[i].value.length > 100){
+        //       alert("Your answers are too long!");
+        //       for (var i = 0; i < $("#divIn input").length; i++){
+        //         $("#divIn input")[i].value = '';
+        //       }
+        //       return;
+        //     }
+        //   }
+        //   $("#infobutton").attr("disabled", "disabled");
+        //   $.ajax({
+        //     url:"/signup",
+        //     type: "post",  
+        //     data: {
+        //       username: infoStore.username,
+        //       password: infoStore.password,
+        //       fname: $('#fname')[0].value.toLowerCase(),
+        //       lname: $('#lname')[0].value.toLowerCase(),
+        //       age: $('#age')[0].value,
+        //       weapon: $('#weapon')[0].value,
+        //       fact: $('#fact')[0].value,
+        //       secret: $('#secret')[0].value
+        //     },
+        //     success: function (data){
+        //       if (data === 'success'){
+        //         socket.emit('roomUpdate');
+        //         location.reload();
+        //       } else if (data === 'started'){
+        //         alert("Game already has started.");
+        //         location.reload();
+        //       } else if (data === 'fail'){
+        //         alert("Username already taken");
+        //         location.reload();
+        //       }
+        //       $("#infobutton").removeAttr("disabled");
+        //     },
+        //     error: function (data){
+        //       $("#infobutton").removeAttr("disabled");
+        //     }
+        //   });
+        // });

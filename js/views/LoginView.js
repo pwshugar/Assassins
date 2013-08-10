@@ -24,12 +24,15 @@ var LoginView = Backbone.View.extend({
 
   events: {
     'click #goSignup': 'goSignup',
-    'click #login': 'login',
+    'click #login': 'log',
     'keypress input': 'keypress'
   },
 
-  keypress: function (e){ if(e.which === 13) { this.login(this.model); }},
   goSignup: function (){ this.model.trigger('goSignup'); },
+  
+  keypress: function (e){ if(e.which === 13) { this.login(this.model); }},
+  log: function () { this.login(this.model); },
+  
   login: function (model){
     $.ajax({  
       url:"/login",

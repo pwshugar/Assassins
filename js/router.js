@@ -78,6 +78,12 @@ exports.login = function (req, res){
   });
 };
 
+exports.checkUsername = function (req, res){
+  UserModel.findOne({ username: req.body.username }, function (err, data){
+    res.send(data);
+  });
+};
+
 exports.logout = function (req, res){
   UserModel.findOne({ 'username': req.session.username }, function (err, data){
     if (data){

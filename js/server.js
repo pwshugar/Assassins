@@ -31,6 +31,10 @@ app.post('/signup', function (req, res){
   router.signup(req, res);
 });
 
+app.post('/checkUsername', function (req, res){
+  router.checkUsername(req, res);
+});
+
 app.post('/login', function (req, res){
   router.login(req, res);
 });
@@ -234,10 +238,8 @@ io.sockets.on('connection', function (socket){
     io.sockets.volatile.emit('roomUpdate');
   });
 
-  socket.on('checkUsername', function (data){
-    UserModel.findOne({ 'username': data }, function (err, data){
-      socket.emit('checkUsernameRes', data);
-    });
+  socket.on('test', function (data){
+    io.sockets.volatile.emit('testback');
   });
 
   socket.on('gamestart', function (data){
