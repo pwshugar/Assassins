@@ -35,6 +35,14 @@ var App = Backbone.Model.extend({
       self.goJoin();
     });
 
+    this.get('profile').on('goJoin', function (){
+      self.goJoin();
+    });
+
+    this.get('profile').on('goSignup', function (){
+      self.goSignup();
+    });
+
     this.get('join').on('goCreate', function (){
       self.goCreate();
     });

@@ -33,18 +33,14 @@ var ProfileView = Backbone.View.extend({
   events: {
     'click #goLogin': 'goLogin',
     'click #create': 'create',
-    'keypress input': 'test'
+    'keypress input': 'keypress'
   },
 
   goLogin: function (){ this.model.trigger('goLogin'); },
   keypress: function (e){ if(e.which === 13) { this.createProfile(this.model); }},
   create: function (){ this.createProfile(this.model); },
 
-  test: function (){
-    console.log(this.model);
-  },
-
-  createProfile: function (){
+  createProfile: function (model){
     for (var i = 0; i < $("input").length; i++){
       if ($("input")[i].value === ''){
         alert("Please fill out all info.");
@@ -68,8 +64,6 @@ var ProfileView = Backbone.View.extend({
       url:"/signup",
       type: "post",  
       data: {
-        username: infoStore.username,
-        password: infoStore.password,
         fname: $('#fname')[0].value.toLowerCase(),
         lname: $('#lname')[0].value.toLowerCase(),
         age: $('#age')[0].value,
@@ -79,14 +73,10 @@ var ProfileView = Backbone.View.extend({
       },
       success: function (data){
         if (data === 'success'){
-          socket.emit('roomUpdate');
-          location.reload();
-        } else if (data === 'started'){
-          alert("Game already has started.");
-          location.reload();
+          model.trigger('createdProfile');
         } else if (data === 'fail'){
           alert("Username already taken");
-          location.reload();
+          model.trigger('goSignup');
         }
         $("#infobutton").removeAttr("disabled");
       },

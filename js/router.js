@@ -45,9 +45,9 @@ var SessionModel = mongoose.model('sessions', Session);
 
 exports.signup = function(req, res){
   UserModel.findOne({ username: req.body.username }, function (err, data){
-    if (data.username === null){
-      data.username = req.body.username;
-      data.password = req.body.password;
+    if (!data.username){
+      data.username = data.tempUsername;
+      data.password = data.tempPassword;
       data.fname = req.body.fname[0].toUpperCase() + req.body.fname.slice(1);
       data.lname = req.body.lname[0].toUpperCase() + req.body.lname.slice(1);
       data.age = req.body.age;
@@ -55,6 +55,7 @@ exports.signup = function(req, res){
       data.fact = req.body.fact;
       data.secret = req.body.secret;
       data.save();
+      res.send('success')
     } else { res.send('fail'); }
   });
 };
@@ -74,9 +75,7 @@ exports.login = function (req, res){
 };
 
 exports.checkUsername = function (req, res){
-  console.log('ROUTER');
   UserModel.findOne({ username: req.body.username }, function (err, data){
-    console.log('DATA', data);
     if (data === null){
       var user_data = {
         tempUsername: req.body.username,
@@ -85,7 +84,6 @@ exports.checkUsername = function (req, res){
       var user = new UserModel(user_data);
       user.save(function (error, data){
         if (error){console.log(error);}
-        console.log('SAVED');
         res.send(null);
       });
     } else { res.send(data); }
