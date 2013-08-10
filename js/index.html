@@ -26,6 +26,7 @@
     <script src="js/views/CreateView.js"></script>
     <script>
       $(document).ready(function (){
+        var socket = io.connect('/');
         $('body').append(new AppView({ model: new App() }));
       });
     </script>

@@ -1,4 +1,9 @@
 var LoginView = Backbone.View.extend({
+
+  initialize: function (){
+
+  },
+
   tagName: 'div',
   className: 'frame signIn_fancy',
 
@@ -9,7 +14,7 @@ var LoginView = Backbone.View.extend({
     </div>\
     <div class="scrollable box-vertical box-center-main">\
       <div class="logo">Assassins</div>\
-      <div class="editor flex-none" id="usernamePassword">\
+      <div class="editor flex-none">\
         <div class="fields well">\
           <div class="field"><label for="username">Username</label><input type="text" name="username" id="username"></div>\
           <div class="field"><label for="password">Password</label><input type="password" name="password" id="password"></div>\
@@ -21,11 +26,36 @@ var LoginView = Backbone.View.extend({
 
   events: {
     'click #goSignup': 'goSignup',
-    'click #login': 'login'
+    'click #login': 'login',
+    'keypress input': 'keypress'
   },
 
+  keypress: function (e){ if(e.which === 13) { this.login(); }},
   goSignup: function (){ this.model.trigger('goSignup'); },
-  login: function (){ this.model.login(); },
+  login: function (){
+    $.ajax({  
+      url:"/login",
+      type: "post",
+      data: {
+        username: $('#username')[0].value.toLowerCase(),
+        password: $('#password')[0].value
+      },
+      success: function(data){
+        if (data === 'false'){
+          $('#username')[0].value = '';
+          $('#password')[0].value = '';
+          alert('Incorrect username/password.');
+        } else if (data === 'late'){
+          $('#username')[0].value = '';
+          $('#password')[0].value = '';
+          alert('Game already started.');
+        } else {
+          socket.emit('roomUpdate');
+          this.trigger('loggedIn');
+        }
+      }
+    });
+  },
 
   render: function (){
   	this.$el.html(this.template());
