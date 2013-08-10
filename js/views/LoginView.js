@@ -1,7 +1,5 @@
 var LoginView = Backbone.View.extend({
-
   initialize: function (){
-
   },
 
   tagName: 'div',
@@ -30,9 +28,9 @@ var LoginView = Backbone.View.extend({
     'keypress input': 'keypress'
   },
 
-  keypress: function (e){ if(e.which === 13) { this.login(); }},
+  keypress: function (e){ if(e.which === 13) { this.login(this.model); }},
   goSignup: function (){ this.model.trigger('goSignup'); },
-  login: function (){
+  login: function (model){
     $.ajax({  
       url:"/login",
       type: "post",
@@ -50,8 +48,7 @@ var LoginView = Backbone.View.extend({
           $('#password')[0].value = '';
           alert('Game already started.');
         } else {
-          socket.emit('roomUpdate');
-          this.trigger('loggedIn');
+          model.trigger('loggedIn');
         }
       }
     });

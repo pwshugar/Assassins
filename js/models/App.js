@@ -1,6 +1,7 @@
 var App = Backbone.Model.extend({
 
-  initialize: function (){
+  initialize: function (params){
+    var socket = params;
   	var self = this;
     this.set('login', new Login());
     this.set('signup', new Signup());
@@ -13,6 +14,7 @@ var App = Backbone.Model.extend({
     });
 
     this.get('login').on('loggedIn', function (){
+      socket.emit('roomUpdate');
       self.goJoin();
     });
 
@@ -29,6 +31,7 @@ var App = Backbone.Model.extend({
     });
 
     this.get('profile').on('createdProfile', function (){
+      socket.emit('roomUpdate');
       self.goJoin();
     });
 

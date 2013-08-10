@@ -27,7 +27,7 @@
     <script>
       $(document).ready(function (){
         var socket = io.connect('/');
-        $('body').append(new AppView({ model: new App() }));
+        $('body').append(new AppView({ model: new App(socket) }));
       });
     </script>
   </body>
