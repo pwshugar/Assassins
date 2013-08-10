@@ -4,8 +4,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema, ObjectId = Schema.ObjectID;
 
 var User = new Schema({
-  username: { type: String, required: true, trim: true, lowercase: true, unique: true },
-  password: { type: String, required: true, trim: true },
+  username: { type: String, trim: true, lowercase: true, unique: true },
+  password: { type: String, trim: true },
   groupname: { type: String, trim: true, lowercase: true },
   fname: { type: String, trim: true },
   lname: { type: String, trim: true },
@@ -15,7 +15,9 @@ var User = new Schema({
   secret: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
   login: { type: Boolean, 'default': true },
-  started:{ type: Boolean, 'default': false }
+  started:{ type: Boolean, 'default': false },
+  tempUsername: { type: String, trim: true, lowercase: true, unique: true },
+  tempPassword: { type: String, trim: true },
 });
 
 var Group = new Schema({
@@ -43,23 +45,16 @@ var SessionModel = mongoose.model('sessions', Session);
 
 exports.signup = function(req, res){
   UserModel.findOne({ username: req.body.username }, function (err, data){
-    if (data === null){
-      var user_data = {
-        username: req.body.username,
-        password: req.body.password,
-        fname: req.body.fname[0].toUpperCase() + req.body.fname.slice(1),
-        lname: req.body.lname[0].toUpperCase() + req.body.lname.slice(1),
-        age: req.body.age,
-        weapon: req.body.weapon,
-        fact: req.body.fact,
-        secret: req.body.secret,
-      };
-      var user = new UserModel(user_data);
-      user.save(function (error, data){
-        req.session.username = req.body.username;
-        req.session.admin = false;
-        res.send('success');
-      });
+    if (data.username === null){
+      data.username = req.body.username;
+      data.password = req.body.password;
+      data.fname = req.body.fname[0].toUpperCase() + req.body.fname.slice(1);
+      data.lname = req.body.lname[0].toUpperCase() + req.body.lname.slice(1);
+      data.age = req.body.age;
+      data.weapon = req.body.weapon;
+      data.fact = req.body.fact;
+      data.secret = req.body.secret;
+      data.save();
     } else { res.send('fail'); }
   });
 };
@@ -79,8 +74,21 @@ exports.login = function (req, res){
 };
 
 exports.checkUsername = function (req, res){
+  console.log('ROUTER');
   UserModel.findOne({ username: req.body.username }, function (err, data){
-    res.send(data);
+    console.log('DATA', data);
+    if (data === null){
+      var user_data = {
+        tempUsername: req.body.username,
+        tempPassword: req.body.password
+      };
+      var user = new UserModel(user_data);
+      user.save(function (error, data){
+        if (error){console.log(error);}
+        console.log('SAVED');
+        res.send(null);
+      });
+    } else { res.send(data); }
   });
 };
 

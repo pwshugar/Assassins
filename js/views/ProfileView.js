@@ -25,22 +25,82 @@ var ProfileView = Backbone.View.extend({
         <div class="fields well">\
           <div class="field"><input type="text" name="secret" id="secret" placeholder="Important! Do not forget!"></div>\
         </div>\
-        <button id="createProfile" class="black large">Create your Profile</button>\
+        <button id="create" class="black large">Create your Profile</button>\
       </div>\
     </div>'
   ),
 
   events: {
     'click #goLogin': 'goLogin',
-    'click #createProfile': 'createProfile'
+    'click #create': 'create',
+    'keypress input': 'test'
   },
 
   goLogin: function (){ this.model.trigger('goLogin'); },
-  createProfile: function (){ this.model.createProfile(); },
+  keypress: function (e){ if(e.which === 13) { this.createProfile(this.model); }},
+  create: function (){ this.createProfile(this.model); },
+
+  test: function (){
+    console.log(this.model);
+  },
+
+  createProfile: function (){
+    for (var i = 0; i < $("input").length; i++){
+      if ($("input")[i].value === ''){
+        alert("Please fill out all info.");
+        return;
+      } else if ($("input")[i].value.match(/</i)){
+        alert("Invalid character '<'");
+        for (var i = 0; i < $("#input").length; i++){
+          $("input")[i].value = '';
+        }
+        return;
+      } else if ($("input")[i].value.length > 100){
+        alert("Your answers are too long!");
+        for (var i = 0; i < $("input").length; i++){
+          $("input")[i].value = '';
+        }
+        return;
+      }
+    }
+    $("#create").attr("disabled", "disabled");
+    $.ajax({
+      url:"/signup",
+      type: "post",  
+      data: {
+        username: infoStore.username,
+        password: infoStore.password,
+        fname: $('#fname')[0].value.toLowerCase(),
+        lname: $('#lname')[0].value.toLowerCase(),
+        age: $('#age')[0].value,
+        weapon: $('#weapon')[0].value,
+        fact: $('#fact')[0].value,
+        secret: $('#secret')[0].value
+      },
+      success: function (data){
+        if (data === 'success'){
+          socket.emit('roomUpdate');
+          location.reload();
+        } else if (data === 'started'){
+          alert("Game already has started.");
+          location.reload();
+        } else if (data === 'fail'){
+          alert("Username already taken");
+          location.reload();
+        }
+        $("#infobutton").removeAttr("disabled");
+      },
+      error: function (data){
+        $("#infobutton").removeAttr("disabled");
+      }
+    });
+  },
 
   render: function (){
-  	this.$el.html(this.template());
+    this.$el.html(this.template());
     return this.el;
   }
 
 });
+
+

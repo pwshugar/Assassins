@@ -31,7 +31,7 @@ var SignupView = Backbone.View.extend({
 
   goLogin: function (){ this.model.trigger('goLogin'); },
 
-  keypress: function (e){ if(e.which === 13) { this.validate(this.model); console.log('hi'); }},
+  keypress: function (e){ if(e.which === 13) { this.validate(this.model); }},
   check: function (){ this.validate(this.model); },
 
   validate: function (model){
@@ -62,7 +62,7 @@ var SignupView = Backbone.View.extend({
       $.ajax({
         url:"/checkUsername",
         type: "post",  
-        data: { username: $('#username')[0].value.toLowerCase() },
+        data: { username: $('#username')[0].value.toLowerCase(), password: $('#password')[0].value },
         success: function (data){
           if (data){
             $('#username')[0].value = '';
@@ -70,7 +70,7 @@ var SignupView = Backbone.View.extend({
             $('#retype')[0].value = '';
             alert("Username already taken.");
           } else {
-            model.saveUsername();
+            model.trigger('checkedUsername');
           }
         }
       });
