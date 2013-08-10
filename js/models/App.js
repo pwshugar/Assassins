@@ -22,7 +22,7 @@ var App = Backbone.Model.extend({
       self.goLogin();
     });
 
-    this.get('signup').on('checked', function (){
+    this.get('signup').on('checkedUsername', function (){
       self.goProfile();
     });
 

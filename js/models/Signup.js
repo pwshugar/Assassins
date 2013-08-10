@@ -8,7 +8,7 @@ var Signup = Backbone.Model.extend({
   saveUsername: function (){
     this.infoStore.username = $('#username')[0].value.toLowerCase();
     this.infoStore.password = $('#password')[0].value;
-  	console.log(this.infoStore);
+    this.trigger('checkedUsername');
   }
 
 });
