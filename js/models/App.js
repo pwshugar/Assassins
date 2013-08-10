@@ -47,8 +47,14 @@ var App = Backbone.Model.extend({
       self.goCreate();
     });
 
-    this.get('join').on('loggedOut', function (){
+    this.get('join').on('logout', function (){
+      socket.emit('roomUpdate');
       self.goLogin();
+    });
+
+    this.get('join').on('joinGame', function (){
+      socket.emit('roomUpdate');
+      self.goHome();
     });
 
     this.get('create').on('goJoin', function (){
@@ -70,6 +76,7 @@ var App = Backbone.Model.extend({
   goProfile: function (){ this.trigger('goProfile'); },
   goLogin: function (){ this.trigger('goLogin'); },
   goJoin: function (){ this.trigger('goJoin'); },
-  goCreate: function (){ this.trigger('goCreate'); }
+  goCreate: function (){ this.trigger('goCreate'); },
+  goHome: function (){ this.trigger('goLogin'); }
 
 }); 

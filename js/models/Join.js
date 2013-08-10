@@ -8,9 +8,5 @@ var Join = Backbone.Model.extend({
   	this.trigger('joined');
   },
 
-  logout: function (){
-  	// logout
-  	this.trigger('loggedOut')
-  }
+});
 
-}); 
