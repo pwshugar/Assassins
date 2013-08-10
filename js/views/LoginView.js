@@ -3,43 +3,29 @@ var LoginView = Backbone.View.extend({
   className: 'frame signIn_fancy',
 
   template: _.template(
+    '<div class="header">\
+      <h1>Sign In</h1>\
+      <div class="right"><button id="goSignup" type="button" class="button">Sign Up</button></div>\
+    </div>\
+    <div class="scrollable box-vertical box-center-main">\
+      <div class="logo">Assassins</div>\
+      <div class="editor flex-none" id="usernamePassword">\
+        <div class="fields well">\
+          <div class="field"><label for="username">Username</label><input type="text" name="username" id="username"></div>\
+          <div class="field"><label for="password">Password</label><input type="password" name="password" id="password"></div>\
+        </div>\
+      </div>\
+      <button type="button" id="login" class="black large">Sign In</button>\
+    </div>'
+  ),
 
-  '<div class="header">' +
-    '<h1>Sign In</h1>' +
-    '<div class="right">' +
-      '<button id="switch" type="button" class="button">Sign Up</button>' +
-    '</div>' +
-  '</div>' +
-  '<div class="scrollable box-vertical box-center-main">' +
-    '<div class="logo">Assassins</div>' +
-    '<div class="editor flex-none" id="usernamePassword">' +
-      '<div class="fields well">' +
-        '<div class="field">' +
-          '<label for="username">Username</label>' +
-          '<input type="text" name="username" id="username">' +
-        '</div>' +
-        '<div class="field">' +
-          '<label for="password">Password</label>' +
-          '<input type="password" name="password" id="password">' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-    '<button type="button" id="login" class="black large">Sign In</button>' +
-  '</div>'
-
-    ),
   events: {
-    'click #switch': 'switch',
+    'click #goSignup': 'goSignup',
     'click #login': 'login'
   },
 
-  switch: function (){
-    this.model.trigger('signup');
-  },
-
-  login: function (){
-    console.log('login');
-  },
+  goSignup: function (){ this.model.trigger('goSignup'); },
+  login: function (){ this.model.login(); },
 
   render: function (){
   	this.$el.html(this.template());
