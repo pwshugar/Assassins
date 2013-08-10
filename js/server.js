@@ -1,10 +1,10 @@
-// var router = require('./router.js')
-//   , mongoose = require('mongoose')
-//   , express = require('express')
-//   , app = express()
-//   , MongoStore = require('connect-mongo')(express)
-//   , server = require('http').createServer(app)
-//   , io = exports.io = require('socket.io').listen(server);
+var router = require('./router.js')
+  , mongoose = require('mongoose')
+  , express = require('express')
+  , app = express()
+  , MongoStore = require('connect-mongo')(express)
+  , server = require('http').createServer(app)
+  , io = exports.io = require('socket.io').listen(server);
 
 var UserModel = router.UM;
 var GroupModel = router.GM;
@@ -70,7 +70,7 @@ app.post('/reset', function (req, res){
 // get requests
 
 app.get('/practice', function (req, res){
-  res.sendfile('./backbone/index.html');
+  res.sendfile('js/index.html');
 });
 
 app.get('/home', function (req, res){
@@ -129,34 +129,39 @@ app.get('/create', function (req, res){
 
 
 
-app.get("/backbone/templates/login", function (req, res){
+app.get("/js/templates/login", function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile("backbone/templates/login");
+  res.sendfile("js/templates/login");
 });
 
-app.get('/backbone/lib/backbone.js', function (req, res){
+app.get('/js/lib/backbone.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('backbone/lib/backbone.js');
+  res.sendfile('js/lib/backbone.js');
 });
 
-app.get('/backbone/lib/underscore.js', function (req, res){
+app.get('/js/lib/underscore.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('backbone/lib/underscore.js');
+  res.sendfile('js/lib/underscore.js');
 });
 
-app.get('/backbone/models/App.js', function (req, res){
+app.get('/js/models/App.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('backbone/models/App.js');
+  res.sendfile('js/models/App.js');
 });
 
-app.get('/backbone/views/AppView.js', function (req, res){
+app.get('/js/models/Login.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('backbone/views/AppView.js');
+  res.sendfile('js/models/Login.js');
 });
 
-app.get('/backbone/views/LoginView.js', function (req, res){
+app.get('/js/views/AppView.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('backbone/views/LoginView.js');
+  res.sendfile('js/views/AppView.js');
+});
+
+app.get('/js/views/LoginView.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('js/views/LoginView.js');
 });
 
 app.get('/css/login.css', function (req, res){
