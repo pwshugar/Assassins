@@ -62,11 +62,14 @@ var HomeView = Backbone.View.extend({
         var secret = prompt("What is " + data.fname + " " + data.lname + "'s password?");
         if (secret !== null && secret !== ""){
           if (secret.toLowerCase() === data.secret || secret.toLowerCase() === 'puck'){
-            // socket.emit('killPlayer', {
-            //   username: roomObj.username,
-            //   contract: data.username,
-            //   groupname: roomObj.roomName
-            // });
+            $.ajax({
+              url:"/killTarget",
+              type: "post",
+              data: {},
+              success: function (data){
+                model.trigger('killTarget');
+              }
+            });
           } else { alert('Assassination Fail. Wrong information.'); }
         }
       }

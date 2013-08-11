@@ -27,6 +27,10 @@ app.use(express.bodyParser());
 
 // Router functions are defined in router.js
 
+app.post('/killTarget', function (req, res){
+  router.killTarget(req, res);
+});
+
 app.post('/signup', function (req, res){
   router.signup(req, res);
 });
@@ -273,39 +277,6 @@ io.sockets.on('connection', function (socket){
   socket.on('gameover', function (data){
     UserModel.findOne({ username: data }, function (err, data){
       io.sockets.emit(data);
-    });
-  });
-
-  socket.on('killPlayer', function (data){
-    UserModel.findOne({ username: data.contract }, function (err, contractdata){
-      UserModel.findOne({ username: data.username }, function (err, userdata){
-        if (contractdata.contract && userdata.contract){
-          if (userdata.username === contractdata.contract){
-            GroupModel.findOne({ groupname: userdata.groupname}, function (err, groupdata){
-              UserModel.find({ groupname: userdata.groupname }, function (err, alluserdata){
-                for (var i = 0; i < alluserdata.length; i++){
-                  alluserdata[i].started = false;
-                  alluserdata[i].save();
-                }
-                groupdata.winner = userdata.username;
-                groupdata.started = false;
-                groupdata.save();
-                contractdata.contract = undefined;
-                userdata.save();
-                contractdata.contract = undefined;
-                contractdata.save();
-                io.sockets.emit('roomUpdate');
-              });
-            });
-          } else {
-            userdata.contract = contractdata.contract;
-            userdata.save();
-            contractdata.contract = undefined;
-            contractdata.save();
-            io.sockets.emit('roomUpdate');
-          }
-        } else { io.sockets.emit('roomUpdate'); }
-      });
     });
   });
 

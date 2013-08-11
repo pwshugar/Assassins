@@ -258,3 +258,36 @@ exports.contractUpdate = function (req, res){
     }
   }); 
 };
+
+exports.killTarget = function (req, res){
+  UserModel.findOne({ username: req.session.username }, function (err, userdata){
+    UserModel.findOne({ username: userdata.contract }, function (err, contractdata){
+      if (contractdata.contract && userdata.contract){
+        if (userdata.username === contractdata.contract){
+          GroupModel.findOne({ groupname: userdata.groupname}, function (err, groupdata){
+            UserModel.find({ groupname: userdata.groupname }, function (err, alluserdata){
+              for (var i = 0; i < alluserdata.length; i++){
+                alluserdata[i].started = false;
+                alluserdata[i].save();
+              }
+              groupdata.winner = userdata.username;
+              groupdata.started = false;
+              groupdata.save();
+              contractdata.contract = undefined;
+              userdata.save();
+              contractdata.contract = undefined;
+              contractdata.save();
+              res.send();
+            });
+          });
+        } else {
+          userdata.contract = contractdata.contract;
+          userdata.save();
+          contractdata.contract = undefined;
+          contractdata.save();
+          res.send();
+        }
+      } else { res.send(); }
+    });
+  });
+};

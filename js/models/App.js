@@ -69,6 +69,10 @@ var App = Backbone.Model.extend({
     //   self.checkAdmin(self, socket);
     // });
 
+    this.get('home').on('killTarget', function (){
+      socket.emit('roomUpdate');
+    });
+
     this.get('home').on('goAdmin', function (){
       socket.emit('roomUpdate');
       self.goAdmin();
