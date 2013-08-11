@@ -46,9 +46,7 @@ var SessionModel = mongoose.model('sessions', Session);
 exports.signup = function(req, res){
   UserModel.findOne({ username: req.body.username }, function (err, data){
     if (!data.username){
-      console.log(req.session.username);
       req.session.username = data.tempUsername;
-      console.log(req.session.username);
       data.username = data.tempUsername;
       data.password = data.tempPassword;
       data.fname = req.body.fname[0].toUpperCase() + req.body.fname.slice(1);
@@ -86,10 +84,9 @@ exports.checkUsername = function (req, res){
       };
       var user = new UserModel(user_data);
       user.save(function (error, data){
-        if (error){console.log(error);}
         res.send(null);
       });
-    } else { res.send(data); }
+    } else { res.send(true); }
   });
 };
 
@@ -125,7 +122,6 @@ exports.creategroup = function (req, res){
       var group = new GroupModel(group_data);
       group.save(function (err, data){
         req.session.groupname = groupname;
-        console.log('GROUPNAME', groupname);
         req.session.admin = true;
         UserModel.findOne({ username: req.session.username }, function (err, userdata){
           userdata.groupname = groupname;
@@ -153,7 +149,6 @@ exports.joingroup = function (req, res){
           userdata.groupname = groupname;
           userdata.save();
           req.session.groupname = req.body.groupname;
-          console.log('GROUPNAME join', groupname);
           res.send('success');
         }
       });
@@ -204,17 +199,6 @@ exports.reset = function (req, res){
   });
 };
 
-// exports.contractUpdate = function (req, res){
-//       var test = {
-//         username: 'm',
-//         fname: 'm',
-//         lname: 'm',
-//         age: 'm',
-//         fact: 'm',
-//         weapon: 'm',
-//       };
-//   res.send(test);
-// };
 
 exports.checkAdmin = function (req, res){
   if (req.session.admin){

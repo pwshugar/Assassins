@@ -25,7 +25,7 @@ var App = Backbone.Model.extend({
       self.goSignup();
     });
 
-    this.get('login').on('loggedIn', function (){
+    this.get('login').on('login', function (){
       socket.emit('roomUpdate');
       self.goJoin();
     });

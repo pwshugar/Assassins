@@ -51,7 +51,7 @@ var LoginView = Backbone.View.extend({
           $('#password')[0].value = '';
           alert('Game already started.');
         } else {
-          model.trigger('loggedIn');
+          model.trigger('login');
         }
       }
     });

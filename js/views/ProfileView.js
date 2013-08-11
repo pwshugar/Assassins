@@ -78,10 +78,10 @@ var ProfileView = Backbone.View.extend({
           alert("Username already taken");
           model.trigger('goSignup');
         }
-        $("#infobutton").removeAttr("disabled");
+        $("#create").removeAttr("disabled");
       },
       error: function (data){
-        $("#infobutton").removeAttr("disabled");
+        $("#create").removeAttr("disabled");
       }
     });
   },
