@@ -31,7 +31,7 @@ var AdminView = Backbone.View.extend({
   },
 
   clicklogout: function (){ this.logout(this.model); },
-  start: function (){ this.startgame(this.model); },
+  start: function (){ this.gamestart(this.model); },
 
   logout: function (model){           
     $.ajax({
@@ -51,6 +51,7 @@ var AdminView = Backbone.View.extend({
       data: {},
       success: function (data){
         if (data === 'true'){
+          console.log('started');
           model.trigger('gamestart');
         } else {
           alert('The game needs at least two people.');

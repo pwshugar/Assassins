@@ -37,6 +37,11 @@ var AppView = Backbone.View.extend({
   render: function (view){
     $('.signIn_fancy').remove();
     $('body').append(view.render());
+  }  
+
+  renderHome: function (view){
+    $('.signIn_fancy').remove();
+    $('body').append(view.render();
   }
 
 });

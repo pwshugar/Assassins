@@ -9,4 +9,3 @@ var Join = Backbone.Model.extend({
   },
 
 });
-

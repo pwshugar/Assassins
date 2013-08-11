@@ -24,7 +24,7 @@ var CreateView = Backbone.View.extend({
 
   events: {
     'click #logout': 'clicklogout',
-    'click #goJoin': 'goJoin ',
+    'click #goJoin': 'goJoin',
     'click #create': 'create',
     'keypress input': 'keypress'
   },

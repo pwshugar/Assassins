@@ -46,6 +46,7 @@ var Home = Backbone.Model.extend({
            	self.set('fact', undefined);
           	self.set('flag', undefined);
         }
+        if(data.username){ $('#killbutton').css('display', 'block'); }
         console.log('contract', data);
         self.trigger('homeRefresh');
       }

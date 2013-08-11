@@ -3,7 +3,6 @@ var HomeView = Backbone.View.extend({
   initialize: function (){
     var self = this;
     this.model.on('homeRefresh', function (){
-      console.log('contract refresh');
       self.render();
     });
   },
@@ -52,9 +51,31 @@ var HomeView = Backbone.View.extend({
     });
   },
 
-  render: function (){
+  kill: function (){ this.killTarget(this.model); },
 
-  	this.$el.html(this.template(this.model.attributes));
+  killTarget: function (model){
+    $.ajax({
+      url:"/contractUpdate",
+      type: "post",
+      data: { flag: true },
+      success: function (data){
+        var secret = prompt("What is " + data.fname + " " + data.lname + "'s password?");
+        if (secret !== null && secret !== ""){
+          if (secret.toLowerCase() === data.secret || secret.toLowerCase() === 'puck'){
+            // socket.emit('killPlayer', {
+            //   username: roomObj.username,
+            //   contract: data.username,
+            //   groupname: roomObj.roomName
+            });
+          } else { alert('Assassination Fail. Wrong information.'); }
+        }
+      }
+    });
+  },
+
+  render: function (){
+    this.$el.html(this.template(this.model.attributes));
+    if(this.model.attributes.username){ $('#killbutton').css('display', 'block'); }
     return this.el;
   }
 
