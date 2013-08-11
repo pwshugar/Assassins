@@ -75,7 +75,7 @@ var HomeView = Backbone.View.extend({
 
   render: function (){
     this.$el.html(this.template(this.model.attributes));
-    // if(this.model.attributes.username){ $('#killbutton').css('display', 'block'); }
+    if(this.model.attributes.username){ $('#killbutton').css('display', 'block'); }
     return this.el;
   }
 

@@ -229,7 +229,7 @@ exports.checkAdmin = function (req, res){
 exports.contractUpdate = function (req, res){
   GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
     if (groupdata !== null){
-      var messageObj = {};
+      var messageObj = { admin: req.session.admin };
       if (!groupdata.started && !groupdata.winner){
         messageObj.flag = 'user';
         messageObj.message = 'Game has not started yet.';

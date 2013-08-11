@@ -31,7 +31,11 @@ var Home = Backbone.Model.extend({
       data: { flag: false },
       success: function (data){
         self.helper(data);
-        self.trigger('goHome');
+        if (data.admin){
+          self.trigger('goAdmin');
+        } else {
+          self.trigger('goHome');
+        }
       }
     });
   },
