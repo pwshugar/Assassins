@@ -18,7 +18,6 @@ var Admin = Backbone.Model.extend({
 	  data: {},
 	  success: function (data){
 		self.set('list', data);
-		console.log('DATAQQQQQQQ', data);
 		self.trigger('listRefresh');
 	  }
 	});

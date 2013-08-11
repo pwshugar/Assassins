@@ -3,7 +3,6 @@ var AdminView = Backbone.View.extend({
   initialize: function (){
     var self = this;
     this.model.on('listRefresh', function (){
-      console.log('list refresh');
       self.render();
     });
   },
@@ -51,7 +50,6 @@ var AdminView = Backbone.View.extend({
       data: {},
       success: function (data){
         if (data === 'true'){
-          console.log('started');
           model.trigger('gamestart');
         } else {
           alert('The game needs at least two people.');
@@ -63,7 +61,6 @@ var AdminView = Backbone.View.extend({
   render: function (){
   	this.$el.html(this.template());
     var data  = this.model.attributes.list || 0;
-    console.log('model data', this.model.attributes.list);
     for (var i = 0; i < data.length; i++){
       $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
     }

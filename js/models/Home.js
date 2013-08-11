@@ -1,14 +1,8 @@
 var Home = Backbone.Model.extend({
 
   initialize: function (){
-
-  	this.set('name', 'Peter Shugar');
-  	this.set('username', 'peter');
-  	this.set('age', '28');
-  	this.set('weapon', 'Zombies');
-  	this.set('fact', 'I have a hairless cat');
-  	this.set('message', 'hi');
-
+  	this.set('username', undefined);
+    this.set('data', {message:'hello'});
   },
 
   contractUpdate: function (self){
@@ -17,8 +11,17 @@ var Home = Backbone.Model.extend({
       type: "post",
       data: { flag: false },
       success: function (data){
-        self.helper(data);
-        self.trigger('homeRefresh');
+        if (data.username !== self.attributes.data.username){
+          self.set('data', data);
+          self.helper(data);
+          self.trigger('homeRefresh');
+        } else {
+          if (data.message !== self.attributes.data.message){
+            self.set('data', data);
+            self.helper(data);
+            self.trigger('homeRefresh');
+          }
+        }
       }
     });
   },
