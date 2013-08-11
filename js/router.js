@@ -46,6 +46,9 @@ var SessionModel = mongoose.model('sessions', Session);
 exports.signup = function(req, res){
   UserModel.findOne({ username: req.body.username }, function (err, data){
     if (!data.username){
+      console.log(req.session.username);
+      req.session.username = data.tempUsername;
+      console.log(req.session.username);
       data.username = data.tempUsername;
       data.password = data.tempPassword;
       data.fname = req.body.fname[0].toUpperCase() + req.body.fname.slice(1);
@@ -122,6 +125,7 @@ exports.creategroup = function (req, res){
       var group = new GroupModel(group_data);
       group.save(function (err, data){
         req.session.groupname = groupname;
+        console.log('GROUPNAME', groupname);
         req.session.admin = true;
         UserModel.findOne({ username: req.session.username }, function (err, userdata){
           userdata.groupname = groupname;
@@ -149,6 +153,7 @@ exports.joingroup = function (req, res){
           userdata.groupname = groupname;
           userdata.save();
           req.session.groupname = req.body.groupname;
+          console.log('GROUPNAME join', groupname);
           res.send('success');
         }
       });
@@ -163,7 +168,7 @@ exports.checklist = function (req, res){
 };
 
 // gets a list of users, assigns each user an assassination contract from the next user in the array
-exports.startgame = function (req, res){
+exports.gamestart = function (req, res){
   UserModel.find({ groupname: req.session.groupname, login: true }, 'username', function (err, userdata){
     if (userdata.length < 2){
       res.send('false');
@@ -199,45 +204,57 @@ exports.reset = function (req, res){
   });
 };
 
-exports.contractUpdate = function (req, res){
-      var test = {
-        username: 'm',
-        fname: 'm',
-        lname: 'm',
-        age: 'm',
-        fact: 'm',
-        weapon: 'm',
-      };
-  res.send(test);
+// exports.contractUpdate = function (req, res){
+//       var test = {
+//         username: 'm',
+//         fname: 'm',
+//         lname: 'm',
+//         age: 'm',
+//         fact: 'm',
+//         weapon: 'm',
+//       };
+//   res.send(test);
+// };
+
+exports.checkAdmin = function (req, res){
+  if (req.session.admin){
+    res.send('admin');
+  } else {
+    res.send('user');
+  }
 };
 
 
 
-// exports.contractUpdate = function (req, res){
-//   GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
-//     var messageObj = {};
-//     if (!groupdata.started && !groupdata.winner){
-//       messageObj.flag = 'user';
-//       messageObj.message = 'Game has not started yet.';
-//       res.send(messageObj);
-//     } else {
-//       UserModel.findOne({ username: req.session.username }, 'contract', function (err, userdata){
-//         if (userdata === null){ res.send(); }
-//         else {
-//           if (groupdata.winner){
-//             UserModel.findOne({ username: groupdata.winner}, function (err, winnerdata){
-//               messageObj.flag = 'user';
-//               if (req.session.username === groupdata.admin){ messageObj.flag = 'admin'; }
-//               messageObj.message = winnerdata.fname + " " + winnerdata.lname + " won!";
-//               res.send(messageObj);
-//             });
-//           } else if (userdata.contract){
-//             UserModel.findOne({ username: userdata.contract }, function (err, contractdata){
-//               res.send(contractdata);
-//             });
-//           } else { res.send(null); }
-//         }
-//       });
-//     }
-//   }); 
-// };
+exports.contractUpdate = function (req, res){
+  GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
+    if (groupdata !== null){
+      var messageObj = {};
+      if (!groupdata.started && !groupdata.winner){
+        messageObj.flag = 'user';
+        messageObj.message = 'Game has not started yet.';
+        res.send(messageObj);
+      } else {
+        UserModel.findOne({ username: req.session.username }, 'contract', function (err, userdata){
+          if (userdata === null){ res.send(); }
+          else {
+            if (groupdata.winner){
+              UserModel.findOne({ username: groupdata.winner}, function (err, winnerdata){
+                messageObj.flag = 'user';
+                if (req.session.username === groupdata.admin){ messageObj.flag = 'admin'; }
+                messageObj.message = winnerdata.fname + " " + winnerdata.lname + " won!";
+                res.send(messageObj);
+              });
+            } else if (userdata.contract){
+              UserModel.findOne({ username: userdata.contract }, function (err, contractdata){
+                res.send(contractdata);
+              });
+            } else { res.send(null); }
+          }
+        });
+      }
+    } else {
+      res.send(null);
+    }
+  }); 
+};

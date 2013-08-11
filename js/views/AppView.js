@@ -26,6 +26,10 @@ var AppView = Backbone.View.extend({
     this.model.on('goHome', function (){
       self.render(new HomeView({ model: self.model.get('home') }));
     });
+    
+    this.model.on('goAdmin', function (){
+      self.render(new AdminView({ model: self.model.get('admin') }));
+    });
 
     this.model.checkView();
   },

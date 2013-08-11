@@ -31,6 +31,10 @@ app.post('/signup', function (req, res){
   router.signup(req, res);
 });
 
+app.post('/checkAdmin', function (req, res){
+  router.checkAdmin(req, res);
+});
+
 app.post('/checkUsername', function (req, res){
   router.checkUsername(req, res);
 });
@@ -59,8 +63,8 @@ app.post('/checklist', function (req, res){
   router.checklist(req, res);
 });
 
-app.post('/startgame', function (req, res){
-  router.startgame(req, res);
+app.post('/gamestart', function (req, res){
+  router.gamestart(req, res);
 });
 
 app.post('/contractUpdate', function (req, res){
@@ -183,6 +187,11 @@ app.get('/js/models/Home.js', function (req, res){
   res.sendfile('js/models/Home.js');
 });
 
+app.get('/js/models/Admin.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('js/models/Admin.js');
+});
+
 app.get('/js/views/AppView.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
   res.sendfile('js/views/AppView.js');
@@ -216,6 +225,11 @@ app.get('/js/views/CreateView.js', function (req, res){
 app.get('/js/views/HomeView.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
   res.sendfile('js/views/HomeView.js');
+});
+
+app.get('/js/views/AdminView.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('js/views/AdminView.js');
 });
 
 app.get('/css/login.css', function (req, res){
@@ -253,7 +267,7 @@ io.sockets.on('connection', function (socket){
   });
 
   socket.on('gamestart', function (data){
-    io.sockets.emit('gamestart');
+    io.sockets.emit('roomUpdate');
   });
 
   socket.on('gameover', function (data){

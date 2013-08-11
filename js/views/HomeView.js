@@ -1,6 +1,11 @@
 var HomeView = Backbone.View.extend({
 
   initialize: function (){
+    var self = this;
+    this.model.on('homeRefresh', function (){
+      console.log('contract refresh');
+      self.render();
+    });
   },
 
   tagName: 'div',
@@ -17,10 +22,10 @@ var HomeView = Backbone.View.extend({
         <div class="well">\
           <h2 class="info" id="name"><%= name %></h2>\
           <p id="nocontract" ><%= message %></p>\
-          <p class="info" ><b>Assassin Name: </b><span id="username"><%= username %></span></p>\
-          <p class="info" ><b>Age: </b><span id="age"><%= age %></span></p>\
-          <p class="info" ><b>Weapon of Choice: </b><span id="weapon"><%= weapon %></span></p>\
-          <p class="info" ><b>Interesting Fact: </b><span id="fact"><%= fact %></span></p><br>\
+          <p class="info" ><span id="username"><%= username %></span></p>\
+          <p class="info" ><span id="age"><%= age %></span></p>\
+          <p class="info" ><span id="weapon"><%= weapon %></span></p>\
+          <p class="info" ><span id="fact"><%= fact %></span></p><br>\
         </div>\
         <button  class="red large" id="killbutton" >Kill Target</button>\
         <button  class="black large" id="resetbutton" >Reset Game</button>\

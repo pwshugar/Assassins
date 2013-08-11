@@ -9,10 +9,17 @@ var App = Backbone.Model.extend({
     this.set('join', new Join());
     this.set('create', new Create());
     this.set('home', new Home());
+    this.set('admin', new Admin());
 
 
     socket.on('roomUpdate', function (){
+      console.log('?');
       self.get('home').contractUpdate(self.get('home'));
+      self.get('admin').listUpdate(self.get('admin'));
+    });
+
+    this.get('login').on('goAdmin', function (){
+      self.goAdmin();
     });
 
     this.get('login').on('goSignup', function (){
@@ -60,7 +67,7 @@ var App = Backbone.Model.extend({
 
     this.get('join').on('joinGame', function (){
       socket.emit('roomUpdate');
-      self.goHome();
+      self.checkAdmin(self, socket);
     });
 
     this.get('create').on('goJoin', function (){
@@ -74,7 +81,7 @@ var App = Backbone.Model.extend({
 
     this.get('create').on('createGame', function (){
       socket.emit('roomUpdate');
-      self.goHome();
+      self.checkAdmin(self, socket);
     });
 
     this.get('home').on('logout', function (){
@@ -82,14 +89,42 @@ var App = Backbone.Model.extend({
       self.goLogin();
     });
 
+    this.get('admin').on('logout', function (){
+      socket.emit('roomUpdate');
+      self.goLogin();
+    });
+
+    this.get('admin').on('gamestart', function (){
+      socket.emit('gamestart');
+      self.goHome();
+    });
+
   },
 
   checkView: function (){ this.trigger('goLogin'); },
+  listReady: function (){ this.trigger('listReady'); },
   goSignup: function (){ this.trigger('goSignup'); },
   goProfile: function (){ this.trigger('goProfile'); },
   goLogin: function (){ this.trigger('goLogin'); },
   goJoin: function (){ this.trigger('goJoin'); },
   goCreate: function (){ this.trigger('goCreate'); },
-  goHome: function (){ this.trigger('goHome'); }
+  goHome: function (){ this.trigger('goHome'); },
+  goAdmin: function (){ this.trigger('goAdmin'); },
+
+  checkAdmin: function (self, socket){
+    $.ajax({
+      url:"/checkAdmin",
+      type: "post",
+      data: {},
+      success: function (data){
+        socket.emit('roomUpdate');
+        if (data === 'admin'){
+          self.trigger('goAdmin');
+        } else {
+          self.trigger('goHome');
+        }
+      }
+    });
+  }
 
 }); 
