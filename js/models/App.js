@@ -8,6 +8,12 @@ var App = Backbone.Model.extend({
     this.set('profile', new Profile());
     this.set('join', new Join());
     this.set('create', new Create());
+    this.set('home', new Home());
+
+
+    socket.on('roomUpdate', function (){
+      self.get('home').contractUpdate(self.get('home'));
+    });
 
     this.get('login').on('goSignup', function (){
       self.goSignup();
@@ -71,6 +77,11 @@ var App = Backbone.Model.extend({
       self.goHome();
     });
 
+    this.get('home').on('logout', function (){
+      socket.emit('roomUpdate');
+      self.goLogin();
+    });
+
   },
 
   checkView: function (){ this.trigger('goLogin'); },
@@ -79,6 +90,6 @@ var App = Backbone.Model.extend({
   goLogin: function (){ this.trigger('goLogin'); },
   goJoin: function (){ this.trigger('goJoin'); },
   goCreate: function (){ this.trigger('goCreate'); },
-  goHome: function (){ this.trigger('goLogin'); }
+  goHome: function (){ this.trigger('goHome'); }
 
 }); 

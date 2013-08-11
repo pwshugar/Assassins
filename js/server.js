@@ -178,6 +178,11 @@ app.get('/js/models/Create.js', function (req, res){
   res.sendfile('js/models/Create.js');
 });
 
+app.get('/js/models/Home.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('js/models/Home.js');
+});
+
 app.get('/js/views/AppView.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
   res.sendfile('js/views/AppView.js');
@@ -206,6 +211,11 @@ app.get('/js/views/JoinView.js', function (req, res){
 app.get('/js/views/CreateView.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
   res.sendfile('js/views/CreateView.js');
+});
+
+app.get('/js/views/HomeView.js', function (req, res){
+  res.setHeader('Content-Type', 'text/javascript');
+  res.sendfile('js/views/HomeView.js');
 });
 
 app.get('/css/login.css', function (req, res){
