@@ -66,7 +66,7 @@ var HomeView = Backbone.View.extend({
             //   username: roomObj.username,
             //   contract: data.username,
             //   groupname: roomObj.roomName
-            });
+            // });
           } else { alert('Assassination Fail. Wrong information.'); }
         }
       }
@@ -75,7 +75,7 @@ var HomeView = Backbone.View.extend({
 
   render: function (){
     this.$el.html(this.template(this.model.attributes));
-    if(this.model.attributes.username){ $('#killbutton').css('display', 'block'); }
+    // if(this.model.attributes.username){ $('#killbutton').css('display', 'block'); }
     return this.el;
   }
 

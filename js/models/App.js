@@ -6,14 +6,13 @@ var App = Backbone.Model.extend({
     this.set('login', new Login());
     this.set('signup', new Signup());
     this.set('profile', new Profile());
-    this.set('join', new Join());
+    // this.set('join', new Join());
     this.set('create', new Create());
     this.set('home', new Home());
     this.set('admin', new Admin());
 
 
     socket.on('roomUpdate', function (){
-      console.log('?');
       self.get('home').contractUpdate(self.get('home'));
       self.get('admin').listUpdate(self.get('admin'));
     });
@@ -56,18 +55,37 @@ var App = Backbone.Model.extend({
       self.goSignup();
     });
 
-    this.get('join').on('goCreate', function (){
+    // this.get('join').on('goCreate', function (){
+    //   self.goCreate();
+    // });
+
+    // this.get('join').on('logout', function (){
+    //   socket.emit('roomUpdate');
+    //   self.goLogin();
+    // });
+
+    // this.get('join').on('joinGame', function (){
+    //   socket.emit('roomUpdate');
+    //   self.checkAdmin(self, socket);
+    // });
+
+    this.get('home').on('goHome', function (){
+      socket.emit('roomUpdate');
+      self.goHome();
+    });
+
+    this.get('home').on('goCreate', function (){
       self.goCreate();
     });
 
-    this.get('join').on('logout', function (){
-      socket.emit('roomUpdate');
-      self.goLogin();
-    });
-
-    this.get('join').on('joinGame', function (){
+    this.get('home').on('joinGame', function (){
       socket.emit('roomUpdate');
       self.checkAdmin(self, socket);
+    });
+
+    this.get('home').on('logout', function (){
+      socket.emit('roomUpdate');
+      self.goLogin();
     });
 
     this.get('create').on('goJoin', function (){
@@ -82,11 +100,6 @@ var App = Backbone.Model.extend({
     this.get('create').on('createGame', function (){
       socket.emit('roomUpdate');
       self.checkAdmin(self, socket);
-    });
-
-    this.get('home').on('logout', function (){
-      socket.emit('roomUpdate');
-      self.goLogin();
     });
 
     this.get('admin').on('logout', function (){

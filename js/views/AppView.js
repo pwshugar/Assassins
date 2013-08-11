@@ -16,7 +16,7 @@ var AppView = Backbone.View.extend({
     });
 
     this.model.on('goJoin', function (){
-      self.render(new JoinView({ model: self.model.get('join') }));
+      self.render(new JoinView({ model: self.model.get('home') }));
     });
     
     this.model.on('goCreate', function (){
@@ -37,11 +37,6 @@ var AppView = Backbone.View.extend({
   render: function (view){
     $('.signIn_fancy').remove();
     $('body').append(view.render());
-  }  
-
-  renderHome: function (view){
-    $('.signIn_fancy').remove();
-    $('body').append(view.render();
   }
 
 });

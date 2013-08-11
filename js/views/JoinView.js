@@ -70,7 +70,7 @@ var JoinView = Backbone.View.extend({
             $('#password')[0].value = '';
             alert("You cannot join another game until you finish the game in progress.");
           } else {
-            model.trigger('joinGame');
+            model.joinGame();
           }
         }
       });
