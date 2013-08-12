@@ -3,8 +3,16 @@ var AdminView = Backbone.View.extend({
   initialize: function (){
     var self = this;
     this.model.on('listRefresh', function (){
-      self.render();
+      listUpdate(self.model.attributes.list);
     });
+
+    var listUpdate = function (data){
+      $('li').remove();
+      for (var i = 0; i < data.length; i++){
+        $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
+      }
+    };
+
   },
 
   tagName: 'div',
@@ -60,10 +68,7 @@ var AdminView = Backbone.View.extend({
 
   render: function (){
   	this.$el.html(this.template());
-    var data  = this.model.attributes.list || 0;
-    for (var i = 0; i < data.length; i++){
-      $('#list').append('<li>' + data[i].username[0].toUpperCase() + data[i].username.slice(1));
-    }
+
     return this.el;
   }
 
