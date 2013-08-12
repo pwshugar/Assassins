@@ -1,10 +1,11 @@
 var HomeView = Backbone.View.extend({
 
   initialize: function (){
-    var self = this;
-    this.model.on('homeRefresh', function (){
-      self.render();
-    });
+    // var self = this;
+    // this.model.on('homeRefresh', function (){
+    //   self.render();
+    // });
+    this.model.bind('change', this.render, this);
   },
 
   tagName: 'div',
@@ -26,19 +27,21 @@ var HomeView = Backbone.View.extend({
           <p class="info" ><span id="weapon"><%= weapon %></span></p>\
           <p class="info" ><span id="fact"><%= fact %></span></p><br>\
         </div>\
-        <button  class="red large" id="killbutton" >Kill Target</button>\
-        <button  class="black large" id="resetbutton" >Reset Game</button>\
+        <button class="red large" id="killbutton" >Kill Target</button>\
+        <button class="black large" id="resetbutton" >Reset Game</button>\
       </div>\
     </div>'
   ),
 
   events: {
     'click #logout': 'clicklogout',
-    'click #killbutton': 'kill',
-    'click #resetbutton': 'reset'
+    'click #killbutton': 'clickkill',
+    'click #resetbutton': 'clickreset'
   },
 
   clicklogout: function (){ this.logout(this.model); },
+  clickkill: function (){ this.killTarget(this.model); },
+  clickreset: function (){ this.reset(this.model); },
 
   logout: function (model){           
     $.ajax({
@@ -51,7 +54,6 @@ var HomeView = Backbone.View.extend({
     });
   },
 
-  kill: function (){ this.killTarget(this.model); },
 
   killTarget: function (model){
     $.ajax({
@@ -76,9 +78,22 @@ var HomeView = Backbone.View.extend({
     });
   },
 
+  reset: function (model){
+    $.ajax({
+      url:"/reset",
+      type: "post",
+      data: {},
+      success: function (data){
+        model.trigger('reset');
+      }
+    });
+  },
+
   render: function (){
     this.$el.html(this.template(this.model.attributes));
     if(this.model.attributes.username){ $('#killbutton').css('display', 'block'); }
+    console.log(this.model.attributes.data.flag);
+    if(this.model.attributes.data.flag === 'admin'){ $('#resetbutton').css('display', 'block'); }
     return this.el;
   }
 

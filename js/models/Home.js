@@ -2,7 +2,7 @@ var Home = Backbone.Model.extend({
 
   initialize: function (){
   	this.set('username', undefined);
-    this.set('data', {message:'hello'});
+    this.set('data', {message:'Game has not started yet.'});
   },
 
   contractUpdate: function (self){
@@ -14,12 +14,12 @@ var Home = Backbone.Model.extend({
         if (data.username !== self.attributes.data.username){
           self.set('data', data);
           self.helper(data);
-          self.trigger('homeRefresh');
+          // self.trigger('homeRefresh');
         } else {
           if (data.message !== self.attributes.data.message){
             self.set('data', data);
             self.helper(data);
-            self.trigger('homeRefresh');
+            // self.trigger('homeRefresh');
           }
         }
       }
