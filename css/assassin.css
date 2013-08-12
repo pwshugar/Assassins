@@ -19,6 +19,10 @@
   color: gray !important;
 }
 
+.info {
+  display:none;
+}
+
 #killbutton {
   display:none;
 }

@@ -2,10 +2,10 @@
   "name": "assassins",
   "subdomain": "assassins",
   "scripts": {
-    "start": "node server.js"
+    "start": "node js/server.js"
   },
   "description": "test",
-  "version": "0.0.1-13",
+  "version": "0.0.1-16",
   "engines": {
     "node": "v0.8.x"
   },

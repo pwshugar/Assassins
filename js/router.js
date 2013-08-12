@@ -36,7 +36,7 @@ var SessionModel = mongoose.model('sessions', Session);
 
 // var user = new UserModel();
 // user.collection.drop();
-// var group = new GroupModel();
+// var group = new GroupModel(); 
 // group.collection.drop();
 // var session = new SessionModel();
 // session.collection.drop();
