@@ -82,26 +82,19 @@ app.post('/reset', function (req, res){
 // get requests
 
 app.get('/', function (req, res){
-  res.sendfile('js/index.html');
+  res.sendfile('index.html');
 });
 
 // css get requests
 
-
-
-app.get("/js/templates/login", function (req, res){
+app.get('/js/lib/backbone-min.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile("js/templates/login");
+  res.sendfile('js/lib/backbone-min.js');
 });
 
-app.get('/js/lib/backbone.js', function (req, res){
+app.get('/js/lib/underscore-min.js', function (req, res){
   res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('js/lib/backbone.js');
-});
-
-app.get('/js/lib/underscore.js', function (req, res){
-  res.setHeader('Content-Type', 'text/javascript');
-  res.sendfile('js/lib/underscore.js');
+  res.sendfile('js/lib/underscore-min.js');
 });
 
 app.get('/js/models/App.js', function (req, res){
