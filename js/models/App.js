@@ -73,7 +73,7 @@ var App = Backbone.Model.extend({
       self.goLogin();
     });
     this.get('admin').on('gamestart', function (){
-      socket.emit('gamestart');
+      socket.emit('roomUpdate');
       self.goHome();
     });
 
