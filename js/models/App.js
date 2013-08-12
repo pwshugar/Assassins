@@ -128,7 +128,6 @@ var App = Backbone.Model.extend({
 
   },
 
-  checkView: function (){ this.trigger('goLogin'); },
   listReady: function (){ this.trigger('listReady'); },
   goSignup: function (){ this.trigger('goSignup'); },
   goProfile: function (){ this.trigger('goProfile'); },
@@ -144,11 +143,10 @@ var App = Backbone.Model.extend({
       type: "post",
       data: {},
       success: function (data){
-        socket.emit('roomUpdate');
-        if (data === 'admin'){
-          self.trigger('goAdmin');
+        if (data){
+          self.get('home').joinGame();
         } else {
-          self.trigger('goHome');
+          self.goSignup();
         }
       }
     });

@@ -31,7 +31,7 @@ var AppView = Backbone.View.extend({
       self.render(new AdminView({ model: self.model.get('admin') }));
     });
 
-    this.model.checkView();
+    this.model.checkAdmin(this.model);
   },
 
   render: function (view){

@@ -81,60 +81,8 @@ app.post('/reset', function (req, res){
 
 // get requests
 
-app.get('/practice', function (req, res){
+app.get('/', function (req, res){
   res.sendfile('js/index.html');
-});
-
-app.get('/home', function (req, res){
-  if (req.session.username && req.session.groupname){
-    if (req.session.admin){
-      res.sendfile('./html/admin.html');
-    } else {
-      res.sendfile('./html/home.html');
-    }
-  } else {
-    res.redirect('/signup');
-  }
-});
-
-app.get('/login', function (req, res){
-  if (req.session.username && req.session.groupname){
-	  res.redirect('/home');
-  } else if (req.session.username){
-    res.sendfile('./html/join.html');
-  } else {
-    res.sendfile('./html/login.html');
-  }
-});
-
-app.get('/signup', function (req, res){
-  if (req.session.username && req.session.groupname){
-	  res.redirect('/home');
-  } else if (req.session.username){
-    res.sendfile('./html/join.html');
-  } else {
-    res.sendfile('./html/signup.html');
-  }
-});
-
-app.get('/join', function (req, res){
-  if (req.session.username && req.session.groupname){
-    res.redirect('/home');
-  } else if (req.session.username){
-    res.sendfile('./html/join.html');
-  } else {
-    res.redirect('/login');
-  }
-});
-
-app.get('/create', function (req, res){
-  if (req.session.username && req.session.groupname){
-    res.redirect('/home');
-  } else if (req.session.username){
-    res.sendfile('./html/create.html');
-  } else {
-    res.redirect('/login');
-  }
 });
 
 // css get requests
@@ -253,9 +201,9 @@ app.get('/css/assassin.css', function (req, res){
 
 // all other requests redirect to home
 
-// app.get('/*', function (req, res){
-//   res.redirect('/home');
-// });
+app.get('/*', function (req, res){
+  res.redirect('/');
+});
 
 // socket io events
 

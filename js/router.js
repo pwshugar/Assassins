@@ -201,10 +201,12 @@ exports.reset = function (req, res){
 
 
 exports.checkAdmin = function (req, res){
-  if (req.session.admin){
+  if (req.session.groupname && req.session.admin){
     res.send('admin');
-  } else {
+  } else if (req.session.groupname) {
     res.send('user');
+  } else {
+    res.send(false);
   }
 };
 
