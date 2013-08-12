@@ -1,6 +1,4 @@
 var SignupView = Backbone.View.extend({
-  initialize: function (){
-  },
 
   tagName: 'div',
   className: 'frame signIn_fancy',
@@ -25,16 +23,15 @@ var SignupView = Backbone.View.extend({
 
   events: {
     'click #goLogin': 'goLogin',
-    'click #check': 'check',
+    'click #check': 'validate',
     'keypress input': 'keypress'
   },
 
   goLogin: function (){ this.model.trigger('goLogin'); },
-
-  keypress: function (e){ if(e.which === 13) { this.validate(this.model); }},
-  check: function (){ this.validate(this.model); },
-
-  validate: function (model){
+  keypress: function (e){ if(e.which === 13) { this.validate(); }},
+  
+  validate: function (){
+    var model = this.model;
     if ($('#username')[0].value.length < 1){
       alert("Please enter a username!");
     } else if ($('#username')[0].value.length > 20){

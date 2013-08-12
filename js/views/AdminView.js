@@ -1,10 +1,9 @@
 var AdminView = Backbone.View.extend({
 
   initialize: function (){
-    var self = this;
     this.model.on('listRefresh', function (){
-      listUpdate(self.model.attributes.list);
-    });
+      listUpdate(this.model.attributes.list);
+    }, this);
 
     var listUpdate = function (data){
       $('li').remove();
@@ -17,7 +16,7 @@ var AdminView = Backbone.View.extend({
 
   tagName: 'div',
   className: 'frame signIn_fancy',
-
+  
   template: _.template(
     '<div class="header">\
       <h1>Welcome</h1>\
@@ -33,14 +32,12 @@ var AdminView = Backbone.View.extend({
   ),
 
   events: {
-    'click #logout': 'clicklogout',
-    'click #start': 'start'
+    'click #logout': 'logout',
+    'click #start': 'gamestart'
   },
 
-  clicklogout: function (){ this.logout(this.model); },
-  start: function (){ this.gamestart(this.model); },
-
-  logout: function (model){           
+  logout: function (){
+    var model = this.model;
     $.ajax({
       url:"/logout",
       type: "post",
@@ -52,6 +49,7 @@ var AdminView = Backbone.View.extend({
   },
 
   gamestart: function (model){
+    var model = this.model;
     $.ajax({
       url:"/gamestart",
       type: "post",
@@ -68,7 +66,6 @@ var AdminView = Backbone.View.extend({
 
   render: function (){
   	this.$el.html(this.template());
-
     return this.el;
   }
 

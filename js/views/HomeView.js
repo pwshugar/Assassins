@@ -1,14 +1,9 @@
 var HomeView = Backbone.View.extend({
 
   initialize: function (){
-    var self = this;
-    // this.model.on('homeRefresh', function (){
-    //   self.render();
-    // });
-    // this.model.bind('change', this.render, this);
     this.model.on('change', function (){
-      updateTemp(self.model.attributes.data);
-    });
+      updateTemp(this.model.attributes.data);
+    }, this);
 
     var updateTemp = function (data){
       if (data){
@@ -64,16 +59,15 @@ var HomeView = Backbone.View.extend({
   ),
 
   events: {
-    'click #logout': 'clicklogout',
-    'click #killbutton': 'clickkill',
-    'click #resetbutton': 'clickreset'
+    'click #logout': 'logout',
+    'click #killbutton': 'killTarget',
+    'click #resetbutton': 'reset'
   },
 
-  clicklogout: function (){ this.logout(this.model); },
-  clickkill: function (){ this.killTarget(this.model); },
-  clickreset: function (){ this.reset(this.model); },
+  logout: function (){ this.logout(); },
 
-  logout: function (model){           
+  logout: function (){
+    var model = this.model;         
     $.ajax({
       url:"/logout",
       type: "post",
@@ -84,8 +78,8 @@ var HomeView = Backbone.View.extend({
     });
   },
 
-
-  killTarget: function (model){
+  killTarget: function (){
+    var model = this.model;
     $.ajax({
       url:"/contractUpdate",
       type: "post",
@@ -108,7 +102,8 @@ var HomeView = Backbone.View.extend({
     });
   },
 
-  reset: function (model){
+  reset: function (){
+    var model = this.model;         
     $.ajax({
       url:"/reset",
       type: "post",
@@ -121,10 +116,6 @@ var HomeView = Backbone.View.extend({
 
   render: function (){
     this.$el.html(this.template());
-    console.log(this.model.attributes.data.message);
-    console.log(this.model.attributes.data.flag);
-    // if(this.model.attributes.username){ $('#killbutton').css('display', 'block'); }
-    // if(this.model.attributes.data.flag === 'admin'){ $('#resetbutton').css('display', 'block'); }
     return this.el;
   }
 

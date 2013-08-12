@@ -1,6 +1,1 @@
-var Profile = Backbone.Model.extend({
-
-  initialize: function (){
-  }
-
-}); 
+var Profile = Backbone.Model.extend({}); 

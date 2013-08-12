@@ -1,6 +1,1 @@
-var Signup = Backbone.Model.extend({
-
-  initialize: function (params){
-  }
-
-});
+var Signup = Backbone.Model.extend({});

@@ -1,4 +1,5 @@
 var ProfileView = Backbone.View.extend({
+
   tagName: 'div',
   className: 'frame signIn_fancy',
 
@@ -32,15 +33,15 @@ var ProfileView = Backbone.View.extend({
 
   events: {
     'click #goLogin': 'goLogin',
-    'click #create': 'create',
+    'click #create': 'createProfile',
     'keypress input': 'keypress'
   },
 
   goLogin: function (){ this.model.trigger('goLogin'); },
-  keypress: function (e){ if(e.which === 13) { this.createProfile(this.model); }},
-  create: function (){ this.createProfile(this.model); },
+  keypress: function (e){ if(e.which === 13) { this.createProfile(); }},
 
-  createProfile: function (model){
+  createProfile: function (){
+    var model = this.model;
     for (var i = 0; i < $("input").length; i++){
       if ($("input")[i].value === ''){
         alert("Please fill out all info.");

@@ -1,6 +1,6 @@
 var AppView = Backbone.View.extend({
 
-  initialize: function (params){
+  initialize: function (){
     var self = this;
 
     this.model.on('goLogin', function (){
@@ -15,12 +15,12 @@ var AppView = Backbone.View.extend({
       self.render(new ProfileView({ model: self.model.get('profile') }));
     });
 
-    this.model.on('goJoin', function (){
-      self.render(new JoinView({ model: self.model.get('home') }));
-    });
-    
     this.model.on('goCreate', function (){
       self.render(new CreateView({ model: self.model.get('create') }));
+    });
+
+    this.model.on('goJoin', function (){
+      self.render(new JoinView({ model: self.model.get('home') }));
     });
     
     this.model.on('goHome', function (){

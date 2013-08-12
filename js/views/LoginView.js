@@ -1,6 +1,4 @@
 var LoginView = Backbone.View.extend({
-  initialize: function (){
-  },
 
   tagName: 'div',
   className: 'frame signIn_fancy',
@@ -24,16 +22,15 @@ var LoginView = Backbone.View.extend({
 
   events: {
     'click #goSignup': 'goSignup',
-    'click #login': 'log',
+    'click #login': 'login',
     'keypress input': 'keypress'
   },
 
   goSignup: function (){ this.model.trigger('goSignup'); },
+  keypress: function (e){ if(e.which === 13) { this.login(); }},
   
-  keypress: function (e){ if(e.which === 13) { this.login(this.model); }},
-  log: function () { this.login(this.model); },
-  
-  login: function (model){
+  login: function (){
+    var model = this.model;
     $.ajax({  
       url:"/login",
       type: "post",

@@ -1,4 +1,5 @@
 var JoinView = Backbone.View.extend({
+
   tagName: 'div',
   className: 'frame signIn_fancy',
 
@@ -22,15 +23,17 @@ var JoinView = Backbone.View.extend({
   ),
 
   events: {
-    'click #logout': 'clicklogout',
+    'click #logout': 'logout',
     'click #goCreate': 'goCreate',
-    'click #join': 'join',
+    'click #join': 'joinGame',
     'keypress input': 'keypress'
   },
 
-  clicklogout: function (){ this.logout(this.model); },
+  goCreate: function (){ this.model.trigger('goCreate'); },
+  keypress: function (e){ if(e.which === 13) { this.joinGame(); }},
 
-  logout: function (model){           
+  logout: function (){ 
+    var model = this.model;          
     $.ajax({
       url:"/logout",
       type: "post",
@@ -41,12 +44,8 @@ var JoinView = Backbone.View.extend({
     });
   },
 
-  goCreate: function (){ this.model.trigger('goCreate'); },
-
-  join: function (){ this.joinGame(this.model); },
-  keypress: function (e){ if(e.which === 13) { this.joinGame(this.model); }},
-
-  joinGame: function (model){
+  joinGame: function (){
+    var model = this.model;
     if ($('#groupname')[0].value === '' || $('#password')[0].value === ''){
       alert('Please enter a groupname and password.')
     } else {
