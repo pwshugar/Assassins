@@ -6,25 +6,28 @@ exports.methods = {
 
   signup: function(req, res){
     UserModel.findOne({ username: req.body.username }, function (err, data){
-      if (!data.username){
-        req.session.username = data.tempUsername;
-        data.username = data.tempUsername;
-        data.password = data.tempPassword;
-        data.fname = req.body.fname[0].toUpperCase() + req.body.fname.slice(1);
-        data.lname = req.body.lname[0].toUpperCase() + req.body.lname.slice(1);
-        data.age = req.body.age;
-        data.weapon = req.body.weapon;
-        data.fact = req.body.fact;
-        data.secret = req.body.secret;
-        data.save();
-        res.send('success')
+      if (!data){
+        var user_data = {
+          username: req.body.username,
+          password: req.body.password,
+          fname: req.body.fname[0].toUpperCase() + req.body.fname.slice(1),
+          lname: req.body.lname[0].toUpperCase() + req.body.lname.slice(1),
+          age: req.body.age,
+          weapon: req.body.weapon,
+          fact: req.body.fact,
+          secret: req.body.secret
+        };
+        var user = new UserModel(user_data);
+        user.save(function (err, data){
+          res.send('success')
+        });
       } else { res.send('fail'); }
     });
   },
 
   login: function (req, res){
     var username = req.body.username;
-    UserModel.findOne({'username': username}, function (err, data){
+    UserModel.findOne({ username: username }, function (err, data){
       if (data === null){ res.send('false'); }
       else if (data.password !== req.body.password){ res.send('false'); }
       else {
@@ -38,16 +41,7 @@ exports.methods = {
 
   checkUsername: function (req, res){
     UserModel.findOne({ username: req.body.username }, function (err, data){
-      if (data === null){
-        var user_data = {
-          tempUsername: req.body.username,
-          tempPassword: req.body.password
-        };
-        var user = new UserModel(user_data);
-        user.save(function (error, data){
-          res.send(null);
-        });
-      } else { res.send(true); }
+      res.send(data);
     });
   },
 

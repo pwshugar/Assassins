@@ -12,7 +12,7 @@ var AppView = Backbone.View.extend({
     });
 
     this.model.on('goProfile', function (){
-      self.render(new ProfileView({ model: self.model.get('profile') }));
+      self.render(new ProfileView({ model: self.model.get('signup') }));
     });
 
     this.model.on('goCreate', function (){

@@ -13,9 +13,7 @@ var User = new Schema({
   secret: { type: String, trim: true, lowercase: true },
   contract: { type: String, trim: true },
   login: { type: Boolean, 'default': true },
-  started:{ type: Boolean, 'default': false },
-  tempUsername: { type: String, trim: true, lowercase: true, unique: true },
-  tempPassword: { type: String, trim: true },
+  started:{ type: Boolean, 'default': false }
 });
 
 var Group = new Schema({

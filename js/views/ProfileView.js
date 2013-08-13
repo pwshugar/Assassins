@@ -65,6 +65,8 @@ var ProfileView = Backbone.View.extend({
       url:"/signup",
       type: "post",  
       data: {
+        username: model.attributes.data.username,
+        password: model.attributes.data.password,
         fname: $('#fname')[0].value.toLowerCase(),
         lname: $('#lname')[0].value.toLowerCase(),
         age: $('#age')[0].value,
@@ -93,5 +95,3 @@ var ProfileView = Backbone.View.extend({
   }
 
 });
-
-

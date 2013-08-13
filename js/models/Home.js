@@ -37,4 +37,3 @@ var Home = Backbone.Model.extend({
   }
 
 });
-

@@ -67,7 +67,7 @@ var SignupView = Backbone.View.extend({
             $('#retype')[0].value = '';
             alert("Username already taken.");
           } else {
-            model.trigger('checkedUsername');
+            model.saveUsername({ username: $('#username')[0].value.toLowerCase(), password: $('#password')[0].value });
           }
         }
       });

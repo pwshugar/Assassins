@@ -14,8 +14,6 @@ exports.setup = function (app, controller, io){
   app.post('/contractUpdate', controller.methods.contractUpdate);
   app.post('/reset', controller.methods.reset);
 
-
-
   app.get('/', function (req, res){ res.sendfile('index.html'); });
   app.get('/node_modules/fastclick/lib/fastclick.js', function (req, res){ res.sendfile('node_modules/fastclick/lib/fastclick.js'); });
   app.get('/js/lib/backbone-min.js', function (req, res){ res.sendfile('js/lib/backbone-min.js'); });
@@ -23,7 +21,6 @@ exports.setup = function (app, controller, io){
   app.get('/js/models/App.js', function (req, res){ res.sendfile('js/models/App.js'); });
   app.get('/js/models/Login.js', function (req, res){ res.sendfile('js/models/Login.js'); });
   app.get('/js/models/Signup.js', function (req, res){ res.sendfile('js/models/Signup.js'); });
-  app.get('/js/models/Profile.js', function (req, res){ res.sendfile('js/models/Profile.js'); });
   app.get('/js/models/Create.js', function (req, res){ res.sendfile('js/models/Create.js'); });
   app.get('/js/models/Home.js', function (req, res){ res.sendfile('js/models/Home.js'); });
   app.get('/js/models/Admin.js', function (req, res){ res.sendfile('js/models/Admin.js'); });

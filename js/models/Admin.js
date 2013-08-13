@@ -17,4 +17,3 @@ var Admin = Backbone.Model.extend({
   }
 
 });
-

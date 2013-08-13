@@ -70,11 +70,3 @@ var AdminView = Backbone.View.extend({
   }
 
 });
-
-
-
-
-
-
-
-

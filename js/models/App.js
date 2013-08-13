@@ -5,7 +5,6 @@ var App = Backbone.Model.extend({
   	var self = this;
     this.set('login', new Login());
     this.set('signup', new Signup());
-    this.set('profile', new Profile());
     this.set('create', new Create());
     this.set('home', new Home());
     this.set('admin', new Admin());
@@ -23,12 +22,10 @@ var App = Backbone.Model.extend({
     });
 
     this.get('signup').on('goLogin', function (){ self.goLogin(); });
-    this.get('signup').on('checkedUsername', function (){ self.goProfile(); });
-
-    this.get('profile').on('goLogin', function (){ self.goLogin(); });
-    this.get('profile').on('goJoin', function (){ self.goJoin(); });
-    this.get('profile').on('goSignup', function (){ self.goSignup(); });
-    this.get('profile').on('createdProfile', function (){
+    this.get('signup').on('goSignup', function (){ self.goSignup(); });
+    this.get('signup').on('goProfile', function (){ self.goProfile(); });
+    this.get('signup').on('goJoin', function (){ self.goJoin(); });
+    this.get('signup').on('createdProfile', function (){
       socket.emit('roomUpdate');
       self.goJoin();
     });
