@@ -14,7 +14,10 @@ exports.setup = function (app, controller, io){
   app.post('/contractUpdate', controller.methods.contractUpdate);
   app.post('/reset', controller.methods.reset);
 
+
+
   app.get('/', function (req, res){ res.sendfile('index.html'); });
+  app.get('/node_modules/fastclick/lib/fastclick.js', function (req, res){ res.sendfile('node_modules/fastclick/lib/fastclick.js'); });
   app.get('/js/lib/backbone-min.js', function (req, res){ res.sendfile('js/lib/backbone-min.js'); });
   app.get('/js/lib/underscore-min.js', function (req, res){ res.sendfile('js/lib/underscore-min.js'); });
   app.get('/js/models/App.js', function (req, res){ res.sendfile('js/models/App.js'); });

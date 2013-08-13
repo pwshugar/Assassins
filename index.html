@@ -8,9 +8,8 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="js/lib/underscore-min.js"></script>
-  </head>
-  <body class="iOCSS black">
     <script src="js/lib/backbone-min.js"></script>
+    <script type='application/javascript' src='node_modules/fastclick/lib/fastclick.js'></script>
     <script src="js/models/App.js"></script>
     <script src="js/models/Login.js"></script>
     <script src="js/models/Signup.js"></script>
@@ -26,8 +25,11 @@
     <script src="js/views/CreateView.js"></script>
     <script src="js/views/HomeView.js"></script>
     <script src="js/views/AdminView.js"></script>
+  </head>
+  <body class="iOCSS black">
     <script>
       $(document).ready(function (){
+        FastClick.attach(document.body);
         var socket = io.connect('/');
         $('body').append(new AppView({ model: new App(socket) }));
       });

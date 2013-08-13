@@ -17,13 +17,15 @@ You can access the deployed app at www.assassins.jit.su
 
 ## Tech Stack
 
+* backbone
+* underscore
+* jquery
 * node.js
 * express
 * socket.io
 * Mongodb
 * Mongoose
 * connect-mongo
-* jquery
 * iOCSS
 
 
