@@ -5,7 +5,7 @@
     "start": "node js/server.js"
   },
   "description": "test",
-  "version": "0.0.1-20",
+  "version": "0.0.1-23",
   "engines": {
     "node": "v0.8.x"
   },

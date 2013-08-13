@@ -19,6 +19,7 @@ exports.methods = {
         };
         var user = new UserModel(user_data);
         user.save(function (err, data){
+          req.session.username = req.body.username;
           res.send('success')
         });
       } else { res.send('fail'); }
