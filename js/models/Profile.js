@@ -1,1 +1,0 @@
-var Profile = Backbone.Model.extend({}); 
