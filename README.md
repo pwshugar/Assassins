@@ -17,8 +17,8 @@ You can access the deployed app at www.assassins.jit.su
 
 ## Tech Stack
 
-* backbone
-* underscore
+* backbone.js
+* underscore.js
 * jquery
 * node.js
 * express
