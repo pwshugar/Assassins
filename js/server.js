@@ -7,7 +7,7 @@ var controller = require('./controller.js')
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
 
-mongoose.connect('mongodb://nodejitsu:7b724dcedab5de16f70e1b7a1ff7168e@dharma.mongohq.com:10081/nodejitsudb3550895571');
+mongoose.connect('mongodb://nodejitsu:1939e708e2bf9bbf4331eda22d2049b3@paulo.mongohq.com:10041/nodejitsudb4362159396');
 // mongoose.connect('mongodb://127.0.0.1/assassin');
 console.log("Connected to 'assassin' database");
 
