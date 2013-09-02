@@ -12,7 +12,7 @@ After signing in, one player must create a group that every other player will jo
 
 ## Link
 
-You can access the deployed app at www.assassins.jit.su
+You can access the deployed app at www.assassingame.jit.su
 
 
 ## Tech Stack

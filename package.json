@@ -1,11 +1,15 @@
 {
-  "name": "assassins",
-  "subdomain": "assassins",
+  "name": "assassingame",
+  "subdomain": "assassingame",
   "scripts": {
     "start": "node js/server.js"
   },
+  "domains": [
+    "assassingame.net",
+    "www.assassingame.net"
+  ],
   "description": "test",
-  "version": "0.0.1-24",
+  "version": "0.0.1-25",
   "engines": {
     "node": "v0.8.x"
   },
