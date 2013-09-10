@@ -5,15 +5,15 @@ var Admin = Backbone.Model.extend({
   },
 
   listUpdate: function (self){
-	$.ajax({
-	  url:"/checklist",
-	  type: "post",
-	  data: {},
-	  success: function (data){
-		self.set('list', data);
-		self.trigger('listRefresh');
-	  }
-	});
+    $.ajax({
+      url:"/checklist",
+      type: "post",
+      data: {},
+      success: function (data){
+        self.set('list', data);
+        self.trigger('listRefresh');
+      }
+    });
   }
 
 });
