@@ -29,6 +29,7 @@ var LoginView = Backbone.View.extend({
   goSignup: function (){ this.model.trigger('goSignup'); },
   keypress: function (e){ if(e.which === 13) { this.login(); }},
   
+  // validates player's username and password and logs player in
   login: function (){
     var model = this.model;
     $.ajax({  

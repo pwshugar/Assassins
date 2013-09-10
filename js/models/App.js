@@ -76,6 +76,7 @@ var App = Backbone.Model.extend({
 
   },
 
+  // triggers listeners on AppView
   listReady: function (){ this.trigger('listReady'); },
   goSignup: function (){ this.trigger('goSignup'); },
   goProfile: function (){ this.trigger('goProfile'); },
@@ -84,6 +85,7 @@ var App = Backbone.Model.extend({
   goCreate: function (){ this.trigger('goCreate'); },
   goHome: function (){ this.trigger('goHome'); },
   goAdmin: function (){ this.trigger('goAdmin'); },
+  // checks admin status, render admin page if admin status is true
   checkAdmin: function (){
     var self = this;
     $.ajax({

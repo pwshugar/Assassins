@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema, ObjectId = Schema.ObjectID;
+var mongoose = require('mongoose')
+  , Schema = mongoose.Schema, ObjectId = Schema.ObjectID;
 
 var User = new Schema({
   username: { type: String, trim: true, lowercase: true, unique: true },
@@ -24,15 +24,5 @@ var Group = new Schema({
   winner: { type: String }
 });
 
-var Session = new Schema({});
-
 var UserModel = exports.UM = mongoose.model('users', User);
 var GroupModel = exports.GM = mongoose.model('groups', Group);
-var SessionModel = mongoose.model('sessions', Session);
-
-// var user = new UserModel();
-// user.collection.drop();
-// var group = new GroupModel(); 
-// group.collection.drop();
-// var session = new SessionModel();
-// session.collection.drop();

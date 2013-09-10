@@ -30,6 +30,7 @@ var SignupView = Backbone.View.extend({
   goLogin: function (){ this.model.trigger('goLogin'); },
   keypress: function (e){ if(e.which === 13) { this.validate(); }},
   
+  // validates that player has chosen unique username and creates new user account
   validate: function (){
     var model = this.model;
     if ($('#username')[0].value.length < 1){

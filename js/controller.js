@@ -4,6 +4,7 @@ var mongo = require('./schema.js')
 
 exports.methods = {
 
+  // creates a new user profile when user signs up
   signup: function(req, res){
     UserModel.findOne({ username: req.body.username }, function (err, data){
       if (!data){
@@ -19,6 +20,7 @@ exports.methods = {
         };
         var user = new UserModel(user_data);
         user.save(function (err, data){
+          // creates username in cookie
           req.session.username = req.body.username;
           res.send('success')
         });
@@ -26,12 +28,14 @@ exports.methods = {
     });
   },
 
+  // checks username and password when user logs in
   login: function (req, res){
     var username = req.body.username;
     UserModel.findOne({ username: username }, function (err, data){
       if (data === null){ res.send('false'); }
       else if (data.password !== req.body.password){ res.send('false'); }
       else {
+        // adds username in cookie
         req.session.username = username;
         data.login = true;
         data.save();
@@ -40,12 +44,14 @@ exports.methods = {
     });
   },
 
+  // queries user's information from their username
   checkUsername: function (req, res){
     UserModel.findOne({ username: req.body.username }, function (err, data){
       res.send(data);
     });
   },
 
+  // logs out user from game
   logout: function (req, res){
     UserModel.findOne({ 'username': req.session.username }, function (err, data){
       if (data){
@@ -53,10 +59,12 @@ exports.methods = {
         data.save();
       }
     });
+    // deletes user's cookies
     req.session.destroy();
     res.end();
   },
 
+  // cheks user's cookies to make sure they are logged in
   logcheck: function (req, res){
     if (req.session.username){
       res.send({
@@ -66,6 +74,7 @@ exports.methods = {
     } else { res.end(); }
   },
 
+  // creates a new group and the user is becomes the admin
   creategroup: function (req, res){
     var groupname = req.body.groupname;
     GroupModel.findOne({ groupname: groupname }, function (err, data){
@@ -77,6 +86,7 @@ exports.methods = {
         };
         var group = new GroupModel(group_data);
         group.save(function (err, data){
+          // adds groupname and admin status to cookies
           req.session.groupname = groupname;
           req.session.admin = true;
           UserModel.findOne({ username: req.session.username }, function (err, userdata){
@@ -89,6 +99,7 @@ exports.methods = {
     });
   },
 
+  // player joins a group that has already been created
   joingroup: function (req, res){
     var groupname = req.body.groupname;
     GroupModel.findOne({ groupname: groupname }, function (err, groupdata){
@@ -99,11 +110,15 @@ exports.methods = {
           if (userdata.groupname !== groupname && userdata.started){
             res.send('ingame');
           } else {
+            /* if the player is an admin, this checks to see if the game has started,
+               if it hasn't, player gets admin status true and goes to admin page,
+               otherwise player does not get admin status and goes back to the game*/
             if (req.session.username === groupdata.admin && !groupdata.started && !groupdata.winner){
               req.session.admin = true;
             }
             userdata.groupname = groupname;
             userdata.save();
+            // adds groupname to cookie
             req.session.groupname = req.body.groupname;
             res.send('success');
           }
@@ -112,27 +127,30 @@ exports.methods = {
     });
   },
 
+  // pulls list of players that are in admin's group to display players who are logged in
   checklist: function (req, res){
     UserModel.find({groupname: req.session.groupname, login: true}, 'username', function (err, data){
       res.send(data);
     })
   },
 
-  // gets a list of users, assigns each user an assassination contract from the next user in the array
+  // gets a list of players, assigns each user an assassination contract from the next player in the array
   gamestart: function (req, res){
     UserModel.find({ groupname: req.session.groupname, login: true }, 'username', function (err, userdata){
       if (userdata.length < 2){
         res.send('false');
       } else {
+        // admin status becomes false once game starts so that admin leaves admin page
         req.session.admin = false;
         GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
           groupdata.started = true;
           groupdata.save();
           var names = userdata;
           for (var i = 0; i < names.length; i++){
+            // assigns assassination contracts for players, setTimeout deals with async of database
             setTimeout(function (i){
               var j = i + 1;
-              if (i === names.length - 1){ j = 0; } // contract of last user in names gets the first username in names
+              if (i === names.length - 1){ j = 0; }
               UserModel.findOne({ username: names[i].username }, function (err, data){
                 data.started = true;
                 data.contract = names[j].username;
@@ -146,7 +164,9 @@ exports.methods = {
     });
   },
 
+  // admin can reset game with same players who are still logged in
   reset: function (req, res){
+    // when game resets, admin gains admin status again and goes back to admin page
     req.session.admin = true;
     GroupModel.findOne({ groupname: req.session.groupname }, function (err, data){
       data.winner = undefined;
@@ -156,6 +176,7 @@ exports.methods = {
   },
 
 
+  // sends admin to admin page if admin status is true
   checkAdmin: function (req, res){
     if (req.session.groupname && req.session.admin){
       res.send('admin');
@@ -167,12 +188,13 @@ exports.methods = {
   },
 
 
-
+  // updates message to payer when they are waiting for game to start, in-game, and end-game
   contractUpdate: function (req, res){
     GroupModel.findOne({ groupname: req.session.groupname }, function (err, groupdata){
       if (groupdata !== null){
         var messageObj = { admin: req.session.admin };
         if (!groupdata.started && !groupdata.winner){
+          // players have this message displayed when game hasn't started
           messageObj.flag = 'user';
           messageObj.message = 'Game has not started yet.';
           res.send(messageObj);
@@ -184,6 +206,7 @@ exports.methods = {
                 UserModel.findOne({ username: groupdata.winner}, function (err, winnerdata){
                   messageObj.flag = 'user';
                   if (req.session.username === groupdata.admin){ messageObj.flag = 'admin'; }
+                  // displays winner information to all players
                   messageObj.message = winnerdata.fname + " " + winnerdata.lname + " won!";
                   res.send(messageObj);
                 });
@@ -201,6 +224,7 @@ exports.methods = {
     }); 
   },
 
+  // player takes new contract from the player they assassinated, assassinated player is given dead status
   killTarget: function (req, res){
     UserModel.findOne({ username: req.session.username }, function (err, userdata){
       UserModel.findOne({ username: userdata.contract }, function (err, contractdata){
@@ -212,6 +236,7 @@ exports.methods = {
                   alluserdata[i].started = false;
                   alluserdata[i].save();
                 }
+                // updates winner data for the group in the database
                 groupdata.winner = userdata.username;
                 groupdata.started = false;
                 groupdata.save();

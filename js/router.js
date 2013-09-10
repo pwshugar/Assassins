@@ -1,4 +1,4 @@
-exports.setup = function (app, controller, io){
+exports.setup = function (app, controller){
 
   app.post('/killTarget', controller.methods.killTarget);
   app.post('/signup', controller.methods.signup);
@@ -35,9 +35,5 @@ exports.setup = function (app, controller, io){
   app.get('/css/io.css', function (req, res){ res.sendfile('./css/io.css'); });
   app.get('/css/assassin.css', function (req, res){ res.sendfile('./css/assassin.css') });
   app.get('/*', function (req, res){ res.redirect('/'); });
-
-  io.sockets.on('connection', function (socket){
-    socket.on('roomUpdate', function (data){ io.sockets.volatile.emit('roomUpdate'); });
-  });
   
 };

@@ -5,6 +5,7 @@ var HomeView = Backbone.View.extend({
       updateTemp(this.model.attributes.data);
     }, this);
 
+    // changes view depending on whether game has started or not
     var updateTemp = function (data){
       if (data){
         if (data.flag){
@@ -78,6 +79,7 @@ var HomeView = Backbone.View.extend({
     });
   },
 
+  // kills target and updates new target information, triggered by player clicking kill target button
   killTarget: function (){
     var model = this.model;
     $.ajax({
@@ -87,7 +89,7 @@ var HomeView = Backbone.View.extend({
       success: function (data){
         var secret = prompt("What is " + data.fname + " " + data.lname + "'s password?");
         if (secret !== null && secret !== ""){
-          if (secret.toLowerCase() === data.secret || secret.toLowerCase() === 'puck'){
+          if (secret.toLowerCase() === data.secret){
             $.ajax({
               url:"/killTarget",
               type: "post",
@@ -102,6 +104,7 @@ var HomeView = Backbone.View.extend({
     });
   },
 
+  // admin has access to reset button, which restarts game with players who are still logged in
   reset: function (){
     var model = this.model;         
     $.ajax({

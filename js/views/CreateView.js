@@ -45,6 +45,7 @@ var CreateView = Backbone.View.extend({
   goJoin: function (){ this.model.trigger('goJoin'); },
   keypress: function (e){ if(e.which === 13) { this.createGame(); }},
 
+  // validates game information before creating game
   createGame: function (){
     var model = this.model;
     if ($('#groupname')[0].value.length < 1){

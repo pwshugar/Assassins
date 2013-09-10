@@ -44,6 +44,7 @@ var JoinView = Backbone.View.extend({
     });
   },
 
+  // validates player's groupname and password and logs player into group
   joinGame: function (){
     var model = this.model;
     if ($('#groupname')[0].value === '' || $('#password')[0].value === ''){

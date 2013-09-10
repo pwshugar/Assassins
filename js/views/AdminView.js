@@ -5,6 +5,7 @@ var AdminView = Backbone.View.extend({
       listUpdate(this.model.attributes.list);
     }, this);
 
+    // updates list of players whenever a player joins, triggered by socket.io
     var listUpdate = function (data){
       $('li').remove();
       for (var i = 0; i < data.length; i++){
@@ -36,6 +37,7 @@ var AdminView = Backbone.View.extend({
     'click #start': 'gamestart'
   },
 
+  // logs player out, deletes cookies
   logout: function (){
     var model = this.model;
     $.ajax({
@@ -48,6 +50,7 @@ var AdminView = Backbone.View.extend({
     });
   },
 
+  // triggered when admin clicks start button on admin page
   gamestart: function (model){
     var model = this.model;
     $.ajax({
@@ -55,6 +58,7 @@ var AdminView = Backbone.View.extend({
       type: "post",
       data: {},
       success: function (data){
+        // game starts only if there are two or more people
         if (data === 'true'){
           model.trigger('gamestart');
         } else {

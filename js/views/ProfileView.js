@@ -40,6 +40,7 @@ var ProfileView = Backbone.View.extend({
   goLogin: function (){ this.model.trigger('goLogin'); },
   keypress: function (e){ if(e.which === 13) { this.createProfile(); }},
 
+  // validates player's profile information, updates player's profile, and logs player in
   createProfile: function (){
     var model = this.model;
     for (var i = 0; i < $("input").length; i++){

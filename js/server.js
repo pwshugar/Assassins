@@ -1,5 +1,6 @@
 var controller = require('./controller.js')
-  , router = require('./router')
+  , router = require('./router.js')
+  , socket = require('./socket.js')
   , mongoose = require('mongoose')
   , express = require('express')
   , app = express()
@@ -14,6 +15,7 @@ console.log("Connected to 'assassin' database");
 server.listen(8080);
 console.log('Listening on port 8080...');
 
+// cookies are stored in database
 app.use(express.cookieParser());
 app.use(express.session({
   secret: '1234567890QWERTY',
@@ -21,4 +23,8 @@ app.use(express.session({
 }));
 app.use(express.bodyParser());
 
-router.setup(app, controller, io);
+// routes located in router.js
+router.setup(app, controller);
+
+// sockets located in socket.js
+socket.setup(app, io);

@@ -23,6 +23,7 @@ var Home = Backbone.Model.extend({
     });
   },
 
+  // triggered when player joins a game
   joinGame: function (){
     var self = this;
     $.ajax({
